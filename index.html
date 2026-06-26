@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>中翻英複習　Spaced Review</title>
+<style>
+  :root{
+    --paper:#FBFAF7; --ink:#211D1A; --muted:#6B635A; --line:#E4DED4;
+    --panel:#F3EFE8; --pine:#1E5F57; --pine-d:#164b45;
+    --mark:#FFE08A;
+    --again:#C2453D; --hard:#B5791F; --good:#2F7A4F; --easy:#2D6CA6;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Microsoft JhengHei","Noto Sans TC",sans-serif;
+    line-height:1.6; min-height:100vh;
+    display:flex; flex-direction:column; align-items:center;
+    padding:24px 16px 64px;
+  }
+  .wrap{width:100%; max-width:640px;}
+  header{display:flex; align-items:baseline; justify-content:space-between; gap:12px; margin-bottom:18px;}
+  h1{font-size:18px; font-weight:650; letter-spacing:.01em; margin:0;}
+  h1 small{display:block; font-weight:450; color:var(--muted); font-size:12px; letter-spacing:.08em; text-transform:uppercase; margin-top:3px;}
+  .counts{display:flex; gap:14px; font-size:13px; color:var(--muted); white-space:nowrap;}
+  .counts b{color:var(--ink); font-variant-numeric:tabular-nums;}
+  .dot{display:inline-block; width:7px; height:7px; border-radius:50%; margin-right:5px; vertical-align:middle;}
+  .dot.r{background:var(--easy);} .dot.n{background:var(--pine);}
+
+  .card{
+    background:#fff; border:1px solid var(--line); border-radius:14px;
+    box-shadow:0 1px 0 rgba(33,29,26,.03),0 12px 30px -22px rgba(33,29,26,.4);
+    overflow:hidden;
+  }
+  .tagbar{display:flex; gap:8px; padding:12px 18px 0; flex-wrap:wrap;}
+  .tag{font-size:11px; letter-spacing:.06em; color:var(--muted); border:1px solid var(--line); border-radius:999px; padding:2px 9px;}
+  .front{padding:26px 22px;}
+  .qlabel{font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--pine); font-weight:650; margin-bottom:10px;}
+  .prompt{
+    font-family:"Songti TC","Noto Serif TC",Georgia,"PingFang TC",serif;
+    font-size:21px; line-height:1.7; color:var(--ink);
+  }
+  .divider{height:1px; background:var(--line); margin:0;}
+  .back{padding:20px 22px 4px; background:var(--panel);}
+  .back .seg{margin-bottom:16px;}
+  .seg-h{font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin-bottom:6px;}
+  .answer{font-size:18px; line-height:1.7;}
+  mark{background:var(--mark); padding:0 2px; border-radius:3px;}
+  .analysis{font-size:14.5px; color:#3a342e;}
+  .analysis div{margin:4px 0; padding-left:2px;}
+  .analysis .ar{color:var(--pine); font-weight:650;}
+  .ipa{color:var(--muted); font-size:15px;}
+  .say{display:inline-flex; gap:6px; margin-left:8px; vertical-align:middle;}
+  .sayb{background:#fff; border:1px solid var(--line); color:var(--pine); padding:4px 10px; font-size:12px; border-radius:999px; font-weight:600; cursor:pointer;}
+  .sayb:hover{background:var(--panel);}
+  a{color:var(--pine);}
+
+  .controls{padding:16px 22px 22px; background:var(--panel);}
+  button{font-family:inherit; cursor:pointer; border:none; border-radius:10px; font-size:15px;}
+  .reveal{width:100%; padding:14px; background:var(--pine); color:#fff; font-weight:600; letter-spacing:.03em;}
+  .reveal:hover{background:var(--pine-d);}
+  .grades{display:grid; grid-template-columns:repeat(4,1fr); gap:8px;}
+  .grade{padding:12px 6px; color:#fff; font-weight:600; display:flex; flex-direction:column; gap:2px; align-items:center;}
+  .grade .iv{font-size:11px; font-weight:500; opacity:.9;}
+  .g-again{background:var(--again);} .g-hard{background:var(--hard);}
+  .g-good{background:var(--good);} .g-easy{background:var(--easy);}
+  .grade:hover{filter:brightness(1.06);}
+
+  .done{text-align:center; padding:48px 22px; background:#fff; border:1px solid var(--line); border-radius:14px;}
+  .done .big{font-size:30px; margin-bottom:10px;}
+  .done p{color:var(--muted); margin:6px 0;}
+
+  footer{margin-top:18px; display:flex; justify-content:space-between; align-items:center; font-size:12px; color:var(--muted);}
+  .ghost{background:none; color:var(--muted); border:1px solid var(--line); padding:6px 12px; font-size:12px; border-radius:8px; cursor:pointer;}
+  .ghost:hover{color:var(--ink);}
+  .hide{display:none;}
+  @media (max-width:430px){ .prompt{font-size:19px;} .answer{font-size:16.5px;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>中翻英複習<small>Spaced Review · Day 1–2</small></h1>
+    <div class="counts">
+      <span><span class="dot r"></span>複習 <b id="c-rev">0</b></span>
+      <span><span class="dot n"></span>新卡 <b id="c-new">0</b></span>
+    </div>
+  </header>
+  <div id="stage"></div>
+  <footer>
+    <span id="foot">進度自動保存在這個瀏覽器</span>
+    <button class="ghost" id="reset">重設進度</button>
+  </footer>
+</div>
+
+<script>
+const C = "https://dictionary.cambridge.org/dictionary/english-chinese-traditional/";
+const DECK = [
+  // ---------- Day 1 ----------
+  { id:"s1", type:"sentence", tags:["句子","日常","D1"], qlabel:"中譯英",
+    front:"昨天我熬夜到半夜兩點，結果今天一整天都昏昏欲睡、提不起勁。",
+    answer:`I stayed up <mark>until</mark> 2 a.m. <mark>last night, so I've felt drowsy and sluggish</mark> all day.`,
+    analysis:[["until","stay up until 2 a.m.（用 until，非 to）"],["so","「結果」接整句用 so / as a result（非 it results）"],["I've felt","延續到現在 → 現在完成式"],["sluggish","「提不起勁」用 sluggish，sleepy 只到「睏」"]]},
+  { id:"s2", type:"sentence", tags:["句子","職場","D1"], qlabel:"中譯英",
+    front:"這份報告必須在週五截止前完成，否則我們就趕不上這次招標了。",
+    answer:`The report must be finished before <mark>Friday's deadline; otherwise, we'll miss this tender.</mark>`,
+    analysis:[["miss","「趕不上」= miss（非 catch up）"],["tender","招標 = tender（美式 bid）"],["otherwise","「否則」正式用 otherwise，前用分號/句號"]]},
+  { id:"s3", type:"sentence", tags:["句子","時事","D1"], qlabel:"中譯英",
+    front:"隨著利率持續上升，許多家庭正在重新評估自己的消費習慣。",
+    answer:`<mark>As interest rates keep</mark> rising, many <mark>households are reassessing</mark> their <mark>spending</mark> habits.`,
+    analysis:[["As","「隨著」= As（非 By）；利率 interest rates"],["households","「家庭」複數 households / families"],["are reassessing","現在進行式；reassess（evaluate 拼字）"],["spending","消費 = spending / consumption（非 custom）"]]},
+  { id:"v1", type:"vocab", tags:["單字","D1"], qlabel:"中 → 英", speak:"drowsy",
+    front:"「睡意朦朧的、昏昏欲睡的」(adj.) — 英文？",
+    answer:`drowsy <span class="ipa">/ˈdraʊzi/</span>`,
+    analysis:[["中文","睡意朦朧的、昏昏欲睡的（A1）"],["EN","feeling tired and wanting to sleep"],["例","The long meeting after lunch made everyone drowsy."],["🔊",`<a href='${C}drowsy' target='_blank'>Cambridge 真人發音</a>`]]},
+  { id:"v2", type:"vocab", tags:["單字","D1"], qlabel:"中 → 英", speak:"sluggish",
+    front:"「行動緩慢的、遲緩的、提不起勁的」(adj.) — 英文？",
+    answer:`sluggish <span class="ipa">/ˈslʌɡ.ɪʃ/</span>`,
+    analysis:[["中文","行動緩慢的、遲緩的、提不起勁的（B1）"],["EN","moving or operating more slowly than usual, with less energy"],["例","I felt sluggish after staying up late."],["🔊",`<a href='${C}sluggish' target='_blank'>Cambridge 真人發音</a>`]]},
+  { id:"v3", type:"vocab", tags:["單字","D1"], qlabel:"中 → 英", speak:"tender",
+    front:"「招標／投標（書）」(n.) — 英文？",
+    answer:`tender <span class="ipa">/ˈten.dər/ (UK) /ˈten.dɚ/ (US)</span>`,
+    analysis:[["中文","招標／投標（書）；主要英式，美式常用 bid"],["EN","a written or formal offer to supply goods or do a job for an agreed price"],["片語","put something out to tender = 對…招標"],["片語例","The city government put the bridge maintenance contract out to tender."],["🔊",`<a href='${C}tender' target='_blank'>Cambridge 真人發音</a>`]]},
+  { id:"v4", type:"vocab", tags:["單字","D1"], qlabel:"中 → 英", speak:"reassess",
+    front:"「重新評估、重新考慮」(v.) — 英文？",
+    answer:`reassess <span class="ipa">/ˌriː.əˈses/</span>`,
+    analysis:[["中文","重新評估、重新考慮（C1）"],["EN","to think about something again in order to decide whether to change your plan or opinion"],["例","After the market dropped, she decided to reassess her investment plan."],["🔊",`<a href='${C}reassess' target='_blank'>Cambridge 真人發音</a>`]]},
+  { id:"g1", type:"grammar", tags:["文法","D1"], qlabel:"文法",
+    front:"as a result 的標點怎麼放？（前後）",
+    answer:`後面幾乎一定接逗號：<mark>As a result,</mark> ...`,
+    analysis:[["句首","前面不用標點 → As a result, sales fell."],["連兩句","前面用句號或分號（只用逗號是 comma splice）→ Sales fell. As a result, we cut costs."],["對比 so","so 是對等連接詞：前逗號、後不加 → Sales fell, so we cut costs."]]},
+  { id:"d1", type:"vocab", tags:["辨析","D1"], qlabel:"辨析",
+    front:"spending habits 與 consumption habits 差在哪？",
+    answer:`兩個都對，差在<mark>語感</mark>`,
+    analysis:[["spending habits","日常／理財語感，指「怎麼花錢」，最自然常用"],["consumption habits","Cambridge 收錄的搭配，較正式／學術，指「消費什麼、多少」"],["這句","家庭因升息調整 → spending 較貼；學術語境用 consumption 也對"]]},
+
+  // ---------- Day 2 ----------
+  { id:"s4", type:"sentence", tags:["句子","日常","D2"], qlabel:"中譯英",
+    front:"如果我早點知道會塞車，就會改搭捷運了。",
+    answer:`If I <mark>had known earlier</mark> there <mark>would be a traffic jam</mark>, I <mark>would have taken</mark> the MRT instead.`,
+    analysis:[["had known","if 子句不用 would；與過去相反 → 過去完成式"],["earlier","「早點」要補 earlier"],["traffic jam","塞車是 jam（gym 是健身房）"],["would have taken","與過去相反的結果 → would have + p.p."]]},
+  { id:"s5", type:"sentence", tags:["句子","職場","D2"], qlabel:"中譯英",
+    front:"感謝您的耐心，我們會在三個工作天內回覆您的申請。",
+    answer:`<mark>Thank you for your patience.</mark> We will <mark>respond to</mark> your application <mark>within three business days</mark>.`,
+    analysis:[["patience","名詞「耐心」是 patience（patient 是形容詞）"],["respond to","回覆要 respond to / reply to，不能直接接受詞"],["within … business days","內 = within；工作天 = business / working days"]]},
+  { id:"s6", type:"sentence", tags:["句子","財經","D2"], qlabel:"中譯英",
+    front:"這家公司上一季營收成長了百分之十二，主要受惠於海外需求強勁。",
+    answer:`The company's <mark>revenue</mark> <mark>grew 12%</mark> <mark>last quarter</mark>, <mark>mainly driven by strong overseas demand</mark>.`,
+    analysis:[["revenue","營收 = revenue；earnings 是獲利"],["last quarter","財報的季 = quarter（非 season）"],["grew 12%","過去式 grew；數字是 12%"],["driven by","受惠於 = driven by / benefit from（非 profit from）；overseas demand；補 strong"]]},
+  { id:"v5", type:"vocab", tags:["單字","D2"], qlabel:"中 → 英", speak:"revenue",
+    front:"「（公司）營收、收益」(n.) — 英文？",
+    answer:`revenue <span class="ipa">/ˈrev.ən.juː/ (UK) /ˈrev.ə.nuː/ (US)</span>`,
+    analysis:[["中文","（公司的）營收、收益；（政府的）稅收、歲入（C1）"],["EN","money that a company, organization, or government receives regularly"],["例","The company's revenue rose sharply last quarter."],["辨析","revenue（總收入）≠ earnings / profit（扣成本後的獲利）"],["🔊",`<a href='${C}revenue' target='_blank'>Cambridge 真人發音</a>`]]},
+  { id:"v6", type:"vocab", tags:["單字","D2"], qlabel:"中 → 英", speak:"patience",
+    front:"「耐心、忍耐」(n.) — 英文？",
+    answer:`patience <span class="ipa">/ˈpeɪ.ʃəns/</span>`,
+    analysis:[["中文","耐心、忍耐（B1）"],["EN","the ability to wait or stay calm without getting angry"],["例","Learning a language takes a lot of patience."],["片語","thank you for your patience = 感謝您的耐心／久候"],["片語例","Thank you for your patience while we process your request."],["🔊",`<a href='${C}patience' target='_blank'>Cambridge 真人發音</a>`]]},
+  { id:"v7", type:"vocab", tags:["單字","D2"], qlabel:"中 → 英", speak:"overseas",
+    front:"「海外的、國外的」(adj.) — 英文？",
+    answer:`overseas <span class="ipa">/ˌəʊ.vəˈsiːz/ (UK) /ˌoʊ.vɚˈsiːz/ (US)</span>`,
+    analysis:[["中文","海外的、國外的；到海外（B1）"],["EN","in, to, or from a foreign country, especially across the sea"],["例","The firm relies heavily on overseas demand."],["🔊",`<a href='${C}overseas' target='_blank'>Cambridge 真人發音</a>`]]},
+  { id:"v8", type:"vocab", tags:["單字","D2"], qlabel:"中 → 英", speak:"quarter",
+    front:"「（財報的）季、一季」(n.) — 英文？",
+    answer:`quarter <span class="ipa">/ˈkwɔː.tər/ (UK) /ˈkwɔːr.t̬ɚ/ (US)</span>`,
+    analysis:[["中文","（財報的）季，三個月；也指四分之一"],["EN","a period of three months, especially for financial reporting"],["例","Sales improved in the second quarter."],["片語","quarter-on-quarter (QoQ) = 較前一季；year-on-year (YoY) = 較去年同期"],["片語例","Profit grew 5% quarter-on-quarter."],["🔊",`<a href='${C}quarter' target='_blank'>Cambridge 真人發音</a>`]]},
+  { id:"v9", type:"vocab", tags:["單字","D2"], qlabel:"中 → 英", speak:"traffic jam",
+    front:"「塞車、交通堵塞」(n.) — 英文？",
+    answer:`traffic jam <span class="ipa">/ˈtræf.ɪk ˌdʒæm/</span>`,
+    analysis:[["中文","塞車、交通堵塞（B1）"],["EN","a line of vehicles that can move only very slowly or not at all"],["例","We were stuck in a traffic jam for an hour."],["片語","be stuck in traffic = 困在車陣中"],["片語例","Sorry I'm late — I got stuck in traffic."],["🔊",`<a href='${C}traffic-jam' target='_blank'>Cambridge 真人發音</a>`]]},
+  { id:"g2", type:"grammar", tags:["文法","D2"], qlabel:"文法",
+    front:"「與過去事實相反」的假設句怎麼造？（第三條件句）",
+    answer:`If + <mark>過去完成式 (had + p.p.)</mark>，主句 <mark>would have + p.p.</mark>`,
+    analysis:[["例","If I had known there would be a traffic jam, I would have taken the MRT."],["重點","if 子句不可用 would"],["對比","第二條件句（與現在相反）：If + 過去式, would + 原形動詞"]]}
+];
+
+// ---------- Storage (localStorage) ----------
+const KEY="ce-srs-v1";
+const NEW_PER_DAY=10;
+function loadRaw(){ try{ return JSON.parse(localStorage.getItem(KEY)||"null"); }catch(e){ return null; } }
+function saveRaw(s){ try{ localStorage.setItem(KEY, JSON.stringify(s)); }catch(e){} }
+
+function today(){ const d=new Date(); d.setHours(0,0,0,0); return d; }
+function dstr(d){ const z=new Date(d.getTime()-d.getTimezoneOffset()*60000); return z.toISOString().slice(0,10); }
+function addDays(n){ const d=today(); d.setDate(d.getDate()+n); return dstr(d); }
+const TODAY=dstr(today());
+
+function loadState(){
+  let s=loadRaw();
+  if(!s){ s={cards:{}, newByDate:{}}; }
+  for(const c of DECK){ if(!s.cards[c.id]) s.cards[c.id]={ef:2.5,interval:0,reps:0,due:null,introduced:false}; }
+  return s;
+}
+function saveState(s){ saveRaw(s); }
+
+// ---------- Pronunciation (device TTS) ----------
+let VOICES=[];
+function loadVoices(){ try{ VOICES = window.speechSynthesis ? speechSynthesis.getVoices() : []; }catch(e){ VOICES=[]; } }
+if(window.speechSynthesis){ loadVoices(); window.speechSynthesis.onvoiceschanged=loadVoices; }
+function speak(word,lang){
+  if(!window.speechSynthesis){ alert("此裝置不支援內建發音，請點 Cambridge 連結。"); return; }
+  try{ speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(word); u.lang=lang; u.rate=0.9;
+    const v=VOICES.find(v=>v.lang&&v.lang.replace("_","-")===lang)||VOICES.find(v=>v.lang&&v.lang.toLowerCase().startsWith(lang.slice(0,2)));
+    if(v) u.voice=v; speechSynthesis.speak(u);
+  }catch(e){}
+}
+
+// ---------- Scheduling (SM-2 lite) ----------
+function preview(cs,q){ let iv=cs.interval,reps=cs.reps,ef=cs.ef;
+  if(q==="again") return "<1分";
+  if(q==="hard"){ iv=iv<1?1:Math.round(iv*1.2); }
+  else if(q==="good"){ reps+=1; iv=reps===1?1:reps===2?3:Math.round(iv*ef); }
+  else if(q==="easy"){ const base=iv<1?1:iv; iv=Math.round(base*ef*1.3); }
+  return iv+"天";
+}
+function applyGrade(s,c,q){ const cs=s.cards[c.id];
+  if(!cs.introduced){ cs.introduced=true; s.newByDate[TODAY]=(s.newByDate[TODAY]||0)+1; }
+  if(q==="again"){ cs.reps=0; cs.interval=0; cs.ef=Math.max(1.3,cs.ef-0.2); cs.due=TODAY; return "again"; }
+  if(q==="hard"){ cs.reps+=1; cs.interval=cs.interval<1?1:Math.round(cs.interval*1.2); cs.ef=Math.max(1.3,cs.ef-0.15); cs.due=addDays(cs.interval); }
+  else if(q==="good"){ cs.reps+=1; cs.interval=cs.reps===1?1:cs.reps===2?3:Math.round(cs.interval*cs.ef); cs.due=addDays(cs.interval); }
+  else if(q==="easy"){ const base=cs.interval<1?1:cs.interval; cs.reps+=1; cs.interval=Math.round(base*cs.ef*1.3); cs.ef+=0.15; cs.due=addDays(cs.interval); }
+  return "scheduled";
+}
+
+// ---------- Session ----------
+let STATE, queue=[];
+function buildQueue(){
+  const rev=[],news=[];
+  for(const c of DECK){ const cs=STATE.cards[c.id];
+    if(cs.introduced){ if(cs.due && cs.due<=TODAY) rev.push(c.id); } else news.push(c.id); }
+  const allow=Math.max(0,NEW_PER_DAY-(STATE.newByDate[TODAY]||0));
+  queue=[...rev,...news.slice(0,allow)];
+}
+function counts(){ let r=0,n=0; for(const id of queue){ STATE.cards[id].introduced?r++:n++; }
+  document.getElementById("c-rev").textContent=r; document.getElementById("c-new").textContent=n; }
+function nextDue(){ let m=null; for(const c of DECK){ const d=STATE.cards[c.id].due; if(d&&(!m||d<m)) m=d; } return m; }
+
+function render(){
+  counts();
+  const stage=document.getElementById("stage");
+  if(queue.length===0){ const nd=nextDue();
+    stage.innerHTML=`<div class="done"><div class="big">🎉</div><p>今天的卡都複習完了。</p><p>${nd?("下次到期："+nd):"明天再來累積新卡"}</p></div>`; return; }
+  const c=DECK.find(x=>x.id===queue[0]); const cs=STATE.cards[c.id]; const isNew=!cs.introduced;
+  stage.innerHTML=`
+    <div class="card">
+      <div class="tagbar">${c.tags.map(t=>`<span class="tag">${t}</span>`).join("")}${isNew?'<span class="tag" style="color:var(--pine);border-color:var(--pine)">新</span>':''}</div>
+      <div class="front"><div class="qlabel">${c.qlabel}</div><div class="prompt">${c.front}</div></div>
+      <div id="backwrap" class="hide">
+        <div class="divider"></div>
+        <div class="back">
+          <div class="seg"><div class="seg-h">參考答案</div>
+            <div class="answer">${c.answer}${c.speak?`<span class="say"><button class="sayb" data-w="${c.speak}" data-l="en-GB">🔊 UK</button><button class="sayb" data-w="${c.speak}" data-l="en-US">🔊 US</button></span>`:''}</div></div>
+          <div class="seg"><div class="seg-h">解析</div>
+            <div class="analysis">${c.analysis.map(a=>`<div><span class="ar">${a[0]}</span> → ${a[1]}</div>`).join("")}</div></div>
+        </div>
+      </div>
+      <div class="controls">
+        <button class="reveal" id="revealBtn">顯示答案</button>
+        <div class="grades hide" id="grades">
+          <button class="grade g-again" data-q="again">重來<span class="iv">${preview(cs,'again')}</span></button>
+          <button class="grade g-hard"  data-q="hard">困難<span class="iv">${preview(cs,'hard')}</span></button>
+          <button class="grade g-good"  data-q="good">良好<span class="iv">${preview(cs,'good')}</span></button>
+          <button class="grade g-easy"  data-q="easy">簡單<span class="iv">${preview(cs,'easy')}</span></button>
+        </div>
+      </div>
+    </div>`;
+  document.getElementById("revealBtn").onclick=()=>{
+    document.getElementById("backwrap").classList.remove("hide");
+    document.getElementById("revealBtn").classList.add("hide");
+    document.getElementById("grades").classList.remove("hide");
+    if(c.speak) speak(c.speak,"en-US");
+  };
+  document.querySelectorAll(".sayb").forEach(b=>{ b.onclick=()=>speak(b.dataset.w,b.dataset.l); });
+  document.querySelectorAll(".grade").forEach(b=>{
+    b.onclick=()=>{ const q=b.dataset.q; const r=applyGrade(STATE,c,q); saveState(STATE);
+      queue.shift(); if(r==="again") queue.push(c.id); render(); };
+  });
+}
+
+STATE=loadState(); buildQueue(); render();
+document.getElementById("reset").onclick=()=>{
+  if(!confirm("確定要清除所有複習進度嗎？")) return;
+  STATE={cards:{},newByDate:{}}; for(const c of DECK){ STATE.cards[c.id]={ef:2.5,interval:0,reps:0,due:null,introduced:false}; }
+  saveState(STATE); buildQueue(); render();
+};
+</script>
+</body>
+</html>
