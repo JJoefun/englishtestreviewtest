@@ -82,7 +82,7 @@
 <body>
 <div class="wrap">
   <header>
-    <h1>中翻英複習<small>Spaced Review · Day 1–2</small></h1>
+    <h1>中翻英複習<small>Spaced Review · Day 1–3</small></h1>
     <div class="counts">
       <span><span class="dot r"></span>複習 <b id="c-rev">0</b></span>
       <span><span class="dot n"></span>新卡 <b id="c-new">0</b></span>
@@ -172,7 +172,49 @@ const DECK = [
   { id:"g2", type:"grammar", tags:["文法","D2"], qlabel:"文法",
     front:"「與過去事實相反」的假設句怎麼造？（第三條件句）",
     answer:`If + <mark>過去完成式 (had + p.p.)</mark>，主句 <mark>would have + p.p.</mark>`,
-    analysis:[["例","If I had known there would be a traffic jam, I would have taken the MRT."],["重點","if 子句不可用 would"],["對比","第二條件句（與現在相反）：If + 過去式, would + 原形動詞"]]}
+    analysis:[["例","If I had known there would be a traffic jam, I would have taken the MRT."],["重點","if 子句不可用 would"],["對比","第二條件句（與現在相反）：If + 過去式, would + 原形動詞"]]},
+
+  // ---------- Day 3 ----------
+  { id:"s7", type:"sentence", tags:["句子","日常","D3"], qlabel:"中譯英",
+    front:"要是我昨天有把雨傘帶出門，就不會淋成落湯雞了。",
+    answer:`If I <mark>had brought an umbrella with me yesterday</mark>, I <mark>wouldn't have got soaked</mark>.`,
+    analysis:[["wouldn't have","would have 的否定是 wouldn't have + p.p.（無「would haven't」）"],["an umbrella","可數名詞加冠詞"],["with me yesterday","「帶出門」用 brought…with me；補回 yesterday"],["got soaked","淋濕 = got soaked / drenched"]]},
+  { id:"s8", type:"sentence", tags:["句子","職場","D3"], qlabel:"中譯英",
+    front:"由於部分零件延遲到貨，產品上市時間恐怕得往後延兩週。",
+    answer:`<mark>Due to the delayed delivery of some parts</mark>, the product launch <mark>may have to be postponed by two weeks</mark>.`,
+    analysis:[["Due to + 名詞","due to 後接名詞，不接子句（要子句用 because）"],["may have to be postponed","may/might 接原形；被動 be postponed；恐怕得 = have to"],["by two weeks","往後延兩週 = postponed by two weeks"],["launch","上市 = launch"]]},
+  { id:"s9", type:"sentence", tags:["句子","財經","D3"], qlabel:"中譯英",
+    front:"央行升息後，新台幣兌美元升值，壓縮了出口商的獲利。",
+    answer:`After <mark>the central bank raised interest rates</mark>, the New Taiwan dollar <mark>appreciated against the US dollar</mark>, <mark>squeezing exporters' profits</mark>.`,
+    analysis:[["raised","rise（自升,不接受詞）vs raise（提高,接受詞）；升息 = raised interest rates"],["the central bank","加 the"],["appreciated against","兌…升值 = appreciate / strengthen against"],["squeezing exporters' profits","壓縮獲利 = squeeze profits；出口商 = exporters（非 export business）"]]},
+  { id:"d2", type:"vocab", tags:["辨析","D3"], qlabel:"辨析",
+    front:"rise 與 raise 差在哪？「升息」用哪個？",
+    answer:`<mark>raise</mark> interest rates（rise 不能接受詞）`,
+    analysis:[["rise","自己上升，不及物、不接受詞；rise–rose–risen（Prices rose.）"],["raise","把…提高，及物、要接受詞；raise–raised–raised（raised rates）"],["升息","raise interest rates ✓（rise interest rates ✗）"]]},
+  { id:"v10", type:"vocab", tags:["單字","D3"], qlabel:"中 → 英", speak:"appreciate",
+    front:"「（貨幣、資產）升值、增值」(v.) — 英文？",
+    answer:`appreciate <span class="ipa">/əˈpriː.ʃi.eɪt/</span>`,
+    analysis:[["中文","（貨幣、資產）升值、增值（也有欣賞、感謝、理解之意）"],["EN","(of money or property) to increase in value over time"],["例","The New Taiwan dollar appreciated against the US dollar."],["片語","appreciate against / by + 幅度 = 兌…升值／升值多少"],["片語例","The yen has appreciated by 5% against the dollar this year."],["反義","depreciate（貶值）"],["🔊",`<a href='${C}appreciate' target='_blank'>Cambridge 真人發音</a>`]]},
+  { id:"v11", type:"vocab", tags:["單字","D3"], qlabel:"中 → 英", speak:"postpone",
+    front:"「延期、延後」(v.) — 英文？",
+    answer:`postpone <span class="ipa">/pəˈspəʊn/ (UK) /poʊˈspoʊn/ (US)</span>`,
+    analysis:[["中文","延期、延後"],["EN","to arrange for an event to happen at a later time than planned"],["例","The product launch was postponed by two weeks."],["片語","push back / put off = 往後延（較口語）"],["片語例","They pushed back the meeting to next Monday."],["🔊",`<a href='${C}postpone' target='_blank'>Cambridge 真人發音</a>`]]},
+  { id:"v12", type:"vocab", tags:["單字","D3"], qlabel:"中 → 英", speak:"exporter",
+    front:"「出口商、出口國」(n.) — 英文？",
+    answer:`exporter <span class="ipa">/ɪkˈspɔː.tər/ (UK) /ɪkˈspɔːr.t̬ɚ/ (US)</span>`,
+    analysis:[["中文","出口商、出口國"],["EN","a person, company, or country that sells goods to another country"],["例","A strong currency hurts exporters."],["反義","importer（進口商）"],["🔊",`<a href='${C}exporter' target='_blank'>Cambridge 真人發音</a>`]]},
+  { id:"v13", type:"vocab", tags:["單字","D3"], qlabel:"中 → 英", speak:"squeeze",
+    front:"「擠壓；（財經）壓縮獲利」(v.) — 英文？",
+    answer:`squeeze <span class="ipa">/skwiːz/</span>`,
+    analysis:[["中文","擠壓；（財經）壓縮、緊縮（獲利、利潤空間）"],["EN","to press firmly; (finance) to reduce profit or margins"],["例","Rising costs squeezed the company's profits."],["片語","a profit / margin squeeze = 獲利／利潤緊縮"],["片語例","Exporters face a margin squeeze from the stronger currency."],["🔊",`<a href='${C}squeeze' target='_blank'>Cambridge 真人發音</a>`]]},
+  { id:"p1", type:"vocab", tags:["片語","D3"], qlabel:"中 → 英", speak:"get soaked",
+    front:"「淋濕、濕透（落湯雞）」— 英文？",
+    answer:`get soaked / get drenched`,
+    analysis:[["中文","淋濕、濕透"],["EN","to become completely wet"],["例","I forgot my umbrella and got soaked on the way home."],["近義","be drenched / be soaking wet"]]},
+  { id:"g3", type:"grammar", tags:["文法","D3"], qlabel:"文法",
+    front:"due to 和 because 用法差在哪？",
+    answer:`due to + <mark>名詞</mark>；because + <mark>子句</mark>`,
+    analysis:[["due to","後接名詞片語：Due to the delay, ..."],["because","後接子句（主詞+動詞）：Because it was delayed, ..."],["錯","Due to it was delayed ✗（due to 不接子句）"],["替代","owing to / because of + 名詞"]]}
 ];
 
 // ---------- Storage (localStorage) ----------
