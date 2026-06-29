@@ -82,7 +82,7 @@
 <body>
 <div class="wrap">
   <header>
-    <h1>中翻英複習<small>Spaced Review · Day 1–3</small></h1>
+    <h1>中翻英複習<small>Spaced Review · Day 1–4 ＋ 單字表</small></h1>
     <div class="counts">
       <span><span class="dot r"></span>複習 <b id="c-rev">0</b></span>
       <span><span class="dot n"></span>新卡 <b id="c-new">0</b></span>
@@ -214,8 +214,118 @@ const DECK = [
   { id:"g3", type:"grammar", tags:["文法","D3"], qlabel:"文法",
     front:"due to 和 because 用法差在哪？",
     answer:`due to + <mark>名詞</mark>；because + <mark>子句</mark>`,
-    analysis:[["due to","後接名詞片語：Due to the delay, ..."],["because","後接子句（主詞+動詞）：Because it was delayed, ..."],["錯","Due to it was delayed ✗（due to 不接子句）"],["替代","owing to / because of + 名詞"]]}
+    analysis:[["due to","後接名詞片語：Due to the delay, ..."],["because","後接子句（主詞+動詞）：Because it was delayed, ..."],["錯","Due to it was delayed ✗（due to 不接子句）"],["替代","owing to / because of + 名詞"]]},
+
+  // ---------- Day 4 ----------
+  { id:"s10", type:"sentence", tags:["句子","日常","D4"], qlabel:"中譯英",
+    front:"我昨天買了一支新手機，但那支手機的電池續航力很差。",
+    answer:`I bought a new cell phone yesterday, but <mark>the phone's battery life is poor</mark>.`,
+    analysis:[["a → the","第一次提到 a new cell phone；第二次 the phone's（✅ 你寫對了）"],["battery life","電池續航力 = battery life（非 power）"],["is poor","續航差 = is poor / short"]]},
+  { id:"s11", type:"sentence", tags:["句子","職場","D4"], qlabel:"中譯英",
+    front:"請確認您下週一是否能出席會議，並於今天下班前回覆我。",
+    answer:`Please <mark>confirm whether you can attend</mark> the meeting next Monday, and <mark>reply to me</mark> before the end of the day.`,
+    analysis:[["confirm whether","確認是否 = confirm whether（不用 confirm that if）"],["can","問是否能出席用 can（could 偏假設）"],["reply to me","reply 接人要加 to（⚠️ 第二次：reply me ✗）"]]},
+  { id:"s12", type:"sentence", tags:["句子","財經","D4"], qlabel:"中譯英",
+    front:"儘管全球需求放緩，這家晶片廠上一季仍繳出創紀錄的獲利。",
+    answer:`<mark>Despite slowing global demand</mark>, the <mark>chipmaker</mark> still <mark>posted record profits last quarter</mark>.`,
+    analysis:[["Despite + 名詞","儘管 = despite + 名詞 / although + 子句（✅ 你選 despite 方向對）"],["slowing","放緩 = slowing / slowdown（非 rise）"],["chipmaker","晶片廠 = chipmaker / chip manufacturer"],["posted record profits","繳出創紀錄獲利 = posted record profits；過去式"]]},
+  { id:"g4", type:"grammar", tags:["文法","D4"], qlabel:"文法",
+    front:"despite 和 although 用法差在哪？",
+    answer:`despite + <mark>名詞</mark>；although + <mark>子句</mark>`,
+    analysis:[["despite","後接名詞：Despite slowing demand, ..."],["although","後接子句（主詞+動詞）：Although demand slowed, ..."],["錯","Despite demand slowed ✗"],["近義","in spite of + 名詞 = despite；though = although（口語）"],["連結","跟 due to / because 同一個邏輯！"]]},
+  { id:"v14", type:"vocab", tags:["單字","D4"], qlabel:"中 → 英", speak:"slowdown",
+    front:"「放緩、趨緩（經濟）」(n.) — 英文？",
+    answer:`slowdown <span class="ipa">/ˈsləʊ.daʊn/ (UK) /ˈsloʊ.daʊn/ (US)</span>`,
+    analysis:[["中文","放緩、減速；（經濟）趨緩"],["EN","a reduction in speed or activity"],["動詞","slow down = 放慢（Global demand is slowing down.）"],["片語","a slowdown in demand / growth = 需求／成長放緩"],["片語例","There has been a slowdown in the global economy."],["🔊",`<a href='${C}slowdown' target='_blank'>Cambridge 真人發音</a>`]]},
+  { id:"v15", type:"vocab", tags:["單字","D4"], qlabel:"中 → 英", speak:"post",
+    front:"「（公司）公佈、繳出（財報、獲利）」(v.) — 英文？",
+    answer:`post <span class="ipa">/pəʊst/ (UK) /poʊst/ (US)</span>`,
+    analysis:[["中文","（公司）公佈、繳出（財報、獲利、業績）；也指張貼、發文"],["EN","(of a company) to announce financial results such as profits"],["例","The chipmaker posted record profits last quarter."],["近義","report / announce (results)"],["🔊",`<a href='${C}post' target='_blank'>Cambridge 真人發音</a>`]]},
+  { id:"v16", type:"vocab", tags:["單字","D4"], qlabel:"中 → 英", speak:"chipmaker",
+    front:"「晶片廠、晶片製造商」(n.) — 英文？",
+    answer:`chipmaker / chip manufacturer`,
+    analysis:[["中文","晶片廠、晶片製造商（半導體公司）"],["EN","a company that makes computer chips (semiconductors)"],["例","Taiwan is home to the world's largest chipmaker."],["註","常見產業用語，由 chip + maker 組成"]]},
+  { id:"v17", type:"vocab", tags:["片語","D4"], qlabel:"中 → 英", speak:"battery life",
+    front:"「電池續航力」— 英文？",
+    answer:`battery life`,
+    analysis:[["中文","電池續航力、電池使用時間"],["EN","how long a battery can provide power before needing recharging"],["例","This phone has poor battery life."],["搭配","long / short / poor battery life"]]},
+  { id:"e1", type:"vocab", tags:["易錯","D4"], qlabel:"易錯",
+    front:"「回覆我」英文怎麼說？（reply ＿ me）",
+    answer:`reply <mark>to</mark> me`,
+    analysis:[["重點","reply 後接人／事要加 to：reply to me / reply to the email"],["錯","reply me ✗（你已錯兩次，記牢！）"],["近義","respond to / get back to someone"]]},
+  { id:"u1", type:"vocab", tags:["用法","D4"], qlabel:"用法",
+    front:"「確認是否能出席」怎麼說？",
+    answer:`confirm <mark>whether</mark> you can attend`,
+    analysis:[["重點","確認是否 = confirm whether（不用 confirm that if）"],["that/if","that 和 if 不能疊用"],["例","Please confirm whether you can join."]]}
 ];
+
+// ---------- Bulk vocabulary (bidirectional 中↔英) ----------
+const WORDS = [
+  // 7000-字表（音標沿用課本 KK 式）
+  {id:"w001",en:"abbreviate",ipa:"/ə'briviˌet/",pos:"vt",u:"字表",zh:"縮寫、縮略",def:`to make a word or phrase shorter`,eg:`"Acquired Immune Deficiency Syndrome" is usually abbreviated to 'AIDS'.（…通常縮略為 AIDS）`},
+  {id:"w002",en:"abbreviation",ipa:"/əˌbrivi'eʃən/",pos:"n. (C)",u:"字表",zh:"縮寫、縮略語",def:`a short form of a word or phrase`,eg:`"IT" is the written abbreviation of "information technology".`},
+  {id:"w003",en:"abdomen",ipa:"/ˈæbdəmən/",pos:"n. (C)",u:"字表",zh:"腹部",def:`the part of the body below the chest, containing the stomach`,eg:`Tina is complaining of pain in the abdomen.（蒂娜訴說腹痛）`,syn:`= belly`},
+  {id:"w004",en:"abide",ipa:"/ə'baɪd/",pos:"vt/vi",u:"字表",zh:"容忍；遵守(by)",def:`to tolerate; (abide by) to obey or comply with`,eg:`I can't abide such rudeness. ／ You should abide by traffic rules.`,syn:`= endure, tolerate, bear；comply with`},
+  {id:"w005",en:"abnormal",ipa:"/æb'nɔrml/",pos:"adj",u:"字表",zh:"反常的、不正常的",def:`different from what is normal or usual`,eg:`It is abnormal for a boy to be interested in dolls.`,syn:`⇔ normal；* norm (C)`},
+  {id:"w006",en:"abolish",ipa:"/ə'bɑlɪʃ/",pos:"vt",u:"字表",zh:"廢除",def:`to officially end a law, system, or practice`,eg:`The president planned to abolish the death penalty.（廢除死刑）`,syn:`= put an end to；* abolition (U)`},
+  {id:"w007",en:"aboriginal",ipa:"/ˌæbə'rɪdʒənl/",pos:"adj",u:"字表",zh:"原住民的、土著的",def:`relating to the original people of a place`,eg:`Aboriginal culture should be preserved.`,syn:`= indigenous；* aborigine (C)`},
+  {id:"w008",en:"abortion",ipa:"/ə'bɔrʃən/",pos:"n. (C)",u:"字表",zh:"墮胎、流產手術",def:`the deliberate ending of a pregnancy`,eg:`A doctor is not allowed to perform an abortion on a teenager without her parents' approval.`,syn:`* abort (vt)；* abortive (adj)`},
+  {id:"w009",en:"abound",ipa:"/ə'baʊnd/",pos:"vi",u:"字表",zh:"大量存在、很多",def:`to exist in large numbers`,eg:`Rumors abound about her affair with her boss.（傳聞很多）`},
+  {id:"w010",en:"abrupt",ipa:"/ə'brʌpt/",pos:"adj",u:"字表",zh:"突然的",def:`sudden and unexpected`,eg:`The peace talks came to an abrupt end.`,syn:`= sudden, unexpected；* abruptly (adv)`,ex:`同尾字 disrupt（使混亂）‧ interrupt（打斷）‧ erupt（噴發）‧ bankrupt（破產）‧ corrupt（腐敗）`},
+  {id:"w011",en:"absent-minded",ipa:"/ˈæbsənt ˈmaɪndɪd/",pos:"adj",u:"字表",zh:"心不在焉的",def:`forgetful; not paying attention to what is around you`,eg:`I am getting more absent-minded as I get older.`,syn:`* absent-mindedness (U)`},
+  {id:"w012",en:"abstract",ipa:"/æb'strækt/",pos:"adj / n.(C)",u:"字表",zh:"抽象的；摘要",def:`existing as an idea, not concrete (adj); a summary (n)`,eg:`Beauty is abstract but a woman is not. ／ An abstract of my speech will be handed out.`,syn:`⇔ concrete；= summary；* abstraction (U)`},
+  {id:"w013",en:"absurd",ipa:"/əb'sɝd/",pos:"adj",u:"字表",zh:"荒謬的、可笑的",def:`ridiculous; clearly unreasonable`,eg:`Tim looks absurd in that coat!`,syn:`= foolish, ridiculous；* absurdity (C,U)`},
+  {id:"w014",en:"abundance",ipa:"/ə'bʌndəns/",pos:"n. (U)",u:"字表",zh:"大量、充足",def:`a very large quantity of something`,eg:`Make sure that at the party there is food and drink in abundance.`},
+  {id:"w015",en:"abundant",ipa:"/ə'bʌndənt/",pos:"adj",u:"字表",zh:"豐富的、充足的",def:`existing in large quantities; plentiful`,eg:`Taiwan is abundant in fruits. ／ Iraq has an abundant supply of oil.`,syn:`= rich, plentiful`,ex:`同尾字 redundant（多餘的）`},
+  {id:"w016",en:"abuse",ipa:"/ə'bjuz/",pos:"vt",u:"字表",zh:"濫用；虐待、辱罵",def:`to use something wrongly; to treat someone cruelly`,eg:`Once a person gains power, he tends to abuse it.`,syn:`* abuse (U)`,ex:`同尾字 use（使用）‧ misuse（誤用）‧ disuse（廢止）`},
+  {id:"w017",en:"academy",ipa:"/ə'kædəmɪ/",pos:"n. (C)",u:"字表",zh:"學院",def:`a school or college for special training`,eg:`Mark taught at a military academy.`,syn:`* academic (adj)`},
+  {id:"w018",en:"accelerate",ipa:"/æk'sɛləˌret/",pos:"vi/vt",u:"字表",zh:"加速",def:`to (cause to) move faster or happen sooner`,eg:`The car accelerated. ／ This medicine can accelerate heartbeat.`,syn:`⇔ decelerate；= hasten, speed up`},
+  {id:"w019",en:"acceleration",ipa:"/ækˌsɛlə'reʃən/",pos:"n.",u:"字表",zh:"加速、加快",def:`an increase in speed or rate`,eg:`There is an acceleration in the decline of the coal industry.`},
+  {id:"w020",en:"access",ipa:"/ˈæksɛs/",pos:"n. (U)",u:"字表",zh:"進入、取得（權）",def:`the right or ability to enter, reach, or use something`,eg:`The police managed to gain access to the building through an upstairs window.`,ex:`同尾字 recess（休息）‧ process（過程）‧ excess（過量）`},
+  {id:"w021",en:"accessible",ipa:"/æk'sɛsəbl/",pos:"adj",u:"字表",zh:"易接近的、可取得的",def:`able to be reached, obtained, or approached`,eg:`A boss should be accessible to his staff.`,syn:`= approachable；⇔ inaccessible`},
+
+  // Crime & Safety（音標為 IPA）
+  {id:"c01",en:"escape",ipa:"/ɪˈskeɪp/",pos:"v.",u:"Crime",zh:"逃跑；逃脫",def:`to get away from a place or situation`,eg:`The prisoner escaped through a window.`,syn:`搭配 escape from prison, narrow escape`},
+  {id:"c02",en:"spot",ipa:"/spɒt/",pos:"v.",u:"Crime",zh:"發現；看見",def:`to notice or see something`,eg:`An officer spotted the stolen car near the station.`,syn:`搭配 spot a problem, spot the difference`},
+  {id:"c03",en:"uniform",ipa:"/ˈjuː.nɪ.fɔːm/",pos:"n.",u:"Crime",zh:"制服",def:`the special clothes worn by police, military, etc.`,eg:`You can always recognise police by their uniform.`,syn:`搭配 police uniform, wear a uniform`},
+  {id:"c04",en:"neighborhood",ipa:"/ˈneɪ.bə.hʊd/",pos:"n.",u:"Crime",zh:"鄰近地區；社區",def:`the area around where you live`,eg:`The police work closely with the local neighborhood.`,syn:`搭配 local / safe neighborhood`},
+  {id:"c05",en:"record",ipa:"/ˈrek.ɔːd/ (n) /rɪˈkɔːd/ (v)",pos:"n./v.",u:"Crime",zh:"記錄；檔案",def:`official information kept about someone; to write down information`,eg:`He has a criminal record for shoplifting.`,syn:`搭配 criminal record, keep a record`},
+  {id:"c06",en:"trust",ipa:"/trʌst/",pos:"v./n.",u:"Crime",zh:"信任",def:`to believe that someone is honest and will not harm you`,eg:`Communities need to trust their local police.`,syn:`搭配 build trust, gain trust`},
+  {id:"c07",en:"speed",ipa:"/spiːd/",pos:"v./n.",u:"Crime",zh:"超速；速度",def:`to move too fast, especially in a vehicle`,eg:`He was caught speeding on the motorway.`,syn:`搭配 speeding ticket, speed limit`},
+  {id:"c08",en:"drunk",ipa:"/drʌŋk/",pos:"adj.",u:"Crime",zh:"醉酒的",def:`having had too much alcohol`,eg:`Drunk drivers are a serious danger on the road.`,syn:`搭配 drink and drive, drunk driving`},
+  {id:"c09",en:"cooperate",ipa:"/kəʊˈɒp.ər.eɪt/",pos:"v.",u:"Crime",zh:"配合；合作",def:`to work together or help someone`,eg:`Please cooperate with the police investigation.`,syn:`搭配 cooperate with, cooperate fully`},
+  {id:"c10",en:"public",ipa:"/ˈpʌb.lɪk/",pos:"adj./n.",u:"Crime",zh:"公共的；大眾",def:`relating to all people in a community`,eg:`The police are there to serve the public.`,syn:`搭配 public safety, the general public`},
+  {id:"c11",en:"force",ipa:"/fɔːs/",pos:"n.",u:"Crime",zh:"武力；警力",def:`physical strength or power; a group of people`,eg:`The police should only use force when necessary.`,syn:`搭配 police force, use of force`},
+
+  // Arts & Culture（音標為 IPA）
+  {id:"a01",en:"creative",ipa:"/kriˈeɪ.tɪv/",pos:"adj.",u:"Arts",zh:"有創意的；創造性的",def:`able to make new and interesting things`,eg:`She is a very creative artist who uses unusual materials.`,syn:`搭配 creative writing, creative person`},
+  {id:"a02",en:"exhibit",ipa:"/ɪɡˈzɪb.ɪt/",pos:"v./n.",u:"Arts",zh:"展覽；展示",def:`to show something in a public place; a display`,eg:`The gallery is exhibiting new works by local artists.`,syn:`搭配 art exhibit, exhibit at a gallery`},
+  {id:"a03",en:"artistic",ipa:"/ɑːˈtɪs.tɪk/",pos:"adj.",u:"Arts",zh:"藝術的；有藝術才能的",def:`relating to art or showing skill in art`,eg:`She has a very artistic eye for colour and design.`,syn:`搭配 artistic style, artistic talent`},
+  {id:"a04",en:"audience",ipa:"/ˈɔː.di.əns/",pos:"n.",u:"Arts",zh:"觀眾；聽眾",def:`people watching or listening to a performance`,eg:`The audience clapped loudly at the end of the show.`,syn:`搭配 large audience, live audience`},
+  {id:"a05",en:"performance",ipa:"/pəˈfɔː.məns/",pos:"n.",u:"Arts",zh:"表演；演出",def:`the act of entertaining people by singing, playing, acting, etc.`,eg:`The dance performance lasted two hours.`,syn:`搭配 live performance, give a performance`},
+  {id:"a06",en:"inspire",ipa:"/ɪnˈspaɪər/",pos:"v.",u:"Arts",zh:"啟發；激勵",def:`to make someone feel they want to do or create something`,eg:`The film inspired her to start painting.`,syn:`搭配 inspire someone to, feel inspired`},
+  {id:"a07",en:"gallery",ipa:"/ˈɡæl.ər.i/",pos:"n.",u:"Arts",zh:"美術館；藝廊",def:`a building or room where art is shown`,eg:`We spent the afternoon in the art gallery.`,syn:`搭配 art gallery, visit a gallery`},
+  {id:"a08",en:"portrait",ipa:"/ˈpɔː.trət/",pos:"n.",u:"Arts",zh:"肖像；人物畫",def:`a painting, drawing, or photograph of a person`,eg:`The gallery has many famous portraits.`,syn:`搭配 paint a portrait, self-portrait`},
+  {id:"a09",en:"tradition",ipa:"/trəˈdɪʃ.ən/",pos:"n.",u:"Arts",zh:"傳統",def:`a way of doing something that has existed for a long time`,eg:`This festival is an important cultural tradition.`,syn:`搭配 local tradition, keep a tradition`},
+  {id:"a10",en:"unique",ipa:"/juˈniːk/",pos:"adj.",u:"Arts",zh:"獨特的；唯一的",def:`being the only one of its kind; very special`,eg:`The artist has a very unique style.`,syn:`搭配 unique style, unique experience`},
+  {id:"a11",en:"express",ipa:"/ɪkˈspres/",pos:"v.",u:"Arts",zh:"表達；表現",def:`to show what you think or feel through words, actions, or art`,eg:`Music is a great way to express your emotions.`,syn:`搭配 express yourself, express an opinion`},
+  {id:"a12",en:"emotion",ipa:"/ɪˈməʊ.ʃən/",pos:"n.",u:"Arts",zh:"情感；情緒",def:`a strong feeling such as love, happiness, or sadness`,eg:`Her paintings are full of emotion.`,syn:`搭配 show emotion, strong emotion`}
+];
+for(const w of WORDS){
+  const link = `<a href='${C}${w.en}' target='_blank'>Cambridge</a>`;
+  const base = [];
+  if(w.def) base.push(["EN",w.def]);
+  if(w.eg) base.push(["例",w.eg]);
+  if(w.syn) base.push(["相關",w.syn]);
+  if(w.ex) base.push(["補充",w.ex]);
+  base.push(["🔊",link]);
+  DECK.push({ id:w.id+"-p", type:"vocab", tags:["單字",w.u], qlabel:"中 → 英", speak:w.en,
+    front:`「${w.zh}」${w.pos?'('+w.pos+')':''}<br>英文？`,
+    answer:`${w.en} <span class="ipa">${w.ipa}</span>`, analysis:base });
+  DECK.push({ id:w.id+"-r", type:"vocab", tags:["單字",w.u,"英→中"], qlabel:"英 → 中", speak:w.en,
+    front:`${w.en} <span class="ipa">${w.ipa}</span> ${w.pos?'('+w.pos+')':''}<br>中文意思？`,
+    answer:`${w.zh}`, analysis:base });
+}
 
 // ---------- Storage (localStorage) ----------
 const KEY="ce-srs-v1";
