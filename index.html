@@ -411,19 +411,28 @@ function speak(word,lang){
 }
 
 // ---------- Scheduling (SM-2 lite) ----------
-function preview(cs,q){ let iv=cs.interval,reps=cs.reps,ef=cs.ef;
+function nextInterval(cs,q){
+  if(q==="again") return 0;
+  if(cs.reps===0){            // 新卡第一次複習：固定階梯
+    return q==="hard"?1 : q==="good"?2 : 4;
+  }
+  const iv = cs.interval<1?1:cs.interval;
+  const hard = Math.max(1, Math.round(iv*1.2));
+  const good = Math.max(hard+1, Math.round(iv*cs.ef));
+  const easy = Math.max(good+1, Math.round(iv*cs.ef*1.5));
+  return q==="hard"?hard : q==="good"?good : easy;
+}
+function preview(cs,q){
   if(q==="again") return "<1分";
-  if(q==="hard"){ iv=iv<1?1:Math.round(iv*1.2); }
-  else if(q==="good"){ reps+=1; iv=reps===1?1:reps===2?3:Math.round(iv*ef); }
-  else if(q==="easy"){ const base=iv<1?1:iv; iv=Math.round(base*ef*1.3); }
-  return iv+"天";
+  return nextInterval(cs,q)+"天";
 }
 function applyGrade(s,c,q){ const cs=s.cards[c.id];
   if(!cs.introduced){ cs.introduced=true; s.newByDate[TODAY]=(s.newByDate[TODAY]||0)+1; }
+  const iv = nextInterval(cs,q);
   if(q==="again"){ cs.reps=0; cs.interval=0; cs.ef=Math.max(1.3,cs.ef-0.2); cs.due=TODAY; return "again"; }
-  if(q==="hard"){ cs.reps+=1; cs.interval=cs.interval<1?1:Math.round(cs.interval*1.2); cs.ef=Math.max(1.3,cs.ef-0.15); cs.due=addDays(cs.interval); }
-  else if(q==="good"){ cs.reps+=1; cs.interval=cs.reps===1?1:cs.reps===2?3:Math.round(cs.interval*cs.ef); cs.due=addDays(cs.interval); }
-  else if(q==="easy"){ const base=cs.interval<1?1:cs.interval; cs.reps+=1; cs.interval=Math.round(base*cs.ef*1.3); cs.ef+=0.15; cs.due=addDays(cs.interval); }
+  if(q==="hard") cs.ef=Math.max(1.3,cs.ef-0.15);
+  if(q==="easy") cs.ef=cs.ef+0.15;
+  cs.reps+=1; cs.interval=iv; cs.due=addDays(iv);
   return "scheduled";
 }
 
