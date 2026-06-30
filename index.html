@@ -82,7 +82,7 @@
 <body>
 <div class="wrap">
   <header>
-    <h1>中翻英複習<small>Spaced Review · Day 1–4 ＋ 單字表</small></h1>
+    <h1>中翻英複習<small>Spaced Review · Day 1–5 ＋ 單字表</small></h1>
     <div class="counts">
       <span><span class="dot r"></span>複習 <b id="c-rev">0</b></span>
       <span><span class="dot n"></span>新卡 <b id="c-new">0</b></span>
@@ -256,7 +256,25 @@ const DECK = [
   { id:"u1", type:"vocab", tags:["用法","D4"], qlabel:"用法",
     front:"「確認是否能出席」怎麼說？",
     answer:`confirm <mark>whether</mark> you can attend`,
-    analysis:[["重點","確認是否 = confirm whether（不用 confirm that if）"],["that/if","that 和 if 不能疊用"],["例","Please confirm whether you can join."]]}
+    analysis:[["重點","確認是否 = confirm whether（不用 confirm that if）"],["that/if","that 和 if 不能疊用"],["例","Please confirm whether you can join."]]},
+
+  // ---------- Day 5 ----------
+  { id:"s13", type:"sentence", tags:["句子","日常","D5"], qlabel:"中譯英",
+    front:"我答應她這週末會幫她搬家，所以不能跟你們去爬山了。",
+    answer:`I <mark>promised her I would help her move</mark> this weekend, so I can't go <mark>hiking</mark> with you.`,
+    analysis:[["promised her … would","答應某人 = promise sb；間接引述 will→would（時態後移）"],["move","幫她搬家 = help her move"],["hiking","爬山(休閒) = go hiking（mountain climbing 偏攀登）"],["✅ so","so 用得好"]]},
+  { id:"s14", type:"sentence", tags:["句子","職場","D5"], qlabel:"中譯英",
+    front:"附件是上週會議的紀錄，若有任何問題，請直接回覆這封信。",
+    answer:`<mark>Attached are the minutes of last week's meeting</mark>. If you have any <mark>questions</mark>, please reply to this email directly.`,
+    analysis:[["Attached are / attachment","attach 是動詞，名詞 attachment；email 慣用 Attached is/are… / Please find attached…"],["minutes","會議紀錄 = minutes（恆複數）；語序 of last week's meeting"],["any questions","慣用複數"],["✅ reply to this email","這次正確！🎯"]]},
+  { id:"s15", type:"sentence", tags:["句子","財經","D5"], qlabel:"中譯英",
+    front:"受到美元走強影響，這家公司第三季的毛利率較去年同期下滑。",
+    answer:`<mark>Due to a stronger US dollar</mark>, the company's <mark>third-quarter gross margin</mark> <mark>declined</mark> year-on-year.`,
+    analysis:[["✅ Due to + 名詞 / year-on-year","結構與財經用語都對"],["a stronger US dollar","美元走強 = a stronger US dollar / the strength of the US dollar（strength of，非 on；the + 單數）"],["gross margin","毛利率 = gross margin（非 profit rate）"],["declined","已完成結果 → 過去式"]]},
+  { id:"g5", type:"grammar", tags:["文法","D5"], qlabel:"文法",
+    front:"間接引述時，時態要怎麼變？（reported speech）",
+    answer:`過去動詞（said / promised / told）後，引述內容時態<mark>後移一級</mark>`,
+    analysis:[["will → would","I promised I would help.（直接：I will help.）"],["其他","can → could；現在式 → 過去式；過去式 → 過去完成式"],["重點","主要動詞是過去式時，後面子句跟著往過去退一步"]]}
 ];
 
 // ---------- Bulk vocabulary (bidirectional 中↔英) ----------
@@ -309,10 +327,17 @@ const WORDS = [
   {id:"a09",en:"tradition",ipa:"/trəˈdɪʃ.ən/",pos:"n.",u:"Arts",zh:"傳統",def:`a way of doing something that has existed for a long time`,eg:`This festival is an important cultural tradition.`,syn:`搭配 local tradition, keep a tradition`},
   {id:"a10",en:"unique",ipa:"/juˈniːk/",pos:"adj.",u:"Arts",zh:"獨特的；唯一的",def:`being the only one of its kind; very special`,eg:`The artist has a very unique style.`,syn:`搭配 unique style, unique experience`},
   {id:"a11",en:"express",ipa:"/ɪkˈspres/",pos:"v.",u:"Arts",zh:"表達；表現",def:`to show what you think or feel through words, actions, or art`,eg:`Music is a great way to express your emotions.`,syn:`搭配 express yourself, express an opinion`},
-  {id:"a12",en:"emotion",ipa:"/ɪˈməʊ.ʃən/",pos:"n.",u:"Arts",zh:"情感；情緒",def:`a strong feeling such as love, happiness, or sadness`,eg:`Her paintings are full of emotion.`,syn:`搭配 show emotion, strong emotion`}
+  {id:"a12",en:"emotion",ipa:"/ɪˈməʊ.ʃən/",pos:"n.",u:"Arts",zh:"情感；情緒",def:`a strong feeling such as love, happiness, or sadness`,eg:`Her paintings are full of emotion.`,syn:`搭配 show emotion, strong emotion`},
+
+  // Day 5 單字
+  {id:"w101",en:"promise",ipa:"/ˈprɒm.ɪs/ (UK) /ˈprɑː.mɪs/ (US)",pos:"v./n.",u:"Day5",zh:"答應、承諾",def:`to tell someone you will definitely do something`,eg:`I promised her I would help her move.`,syn:`句型 promise sb (that)… / promise to do；間接引述 will→would`},
+  {id:"w102",en:"attachment",ipa:"/əˈtætʃ.mənt/",pos:"n.",u:"Day5",zh:"附件；依附、依戀",def:`a file sent with an email`,eg:`Please find attached the minutes of the meeting.`,syn:`片語 please find attached / attached is/are = 附件是…（email 慣用）`},
+  {id:"w103",en:"minutes",ipa:"/ˈmɪn.ɪts/",pos:"n. (pl.)",u:"Day5",zh:"會議紀錄",def:`an official written record of what is said and decided at a meeting`,eg:`Attached are the minutes of last week's meeting.`,syn:`此義恆為複數 minutes`},
+  {id:"w104",en:"gross margin",ipa:"/ˌɡrəʊs ˈmɑː.dʒɪn/",pos:"n.",u:"Day5",zh:"毛利率",def:`a company's profit from selling goods or services before indirect costs`,eg:`The company's gross margin fell year-on-year.`,syn:`辨析 gross margin 毛利率 ≠ net margin 淨利率；profit margin 利潤率(泛)`},
+  {id:"w105",en:"hiking",ipa:"/ˈhaɪ.kɪŋ/",pos:"n.",u:"Day5",zh:"健行、爬山",def:`the activity of walking in the countryside or mountains for pleasure`,eg:`We went hiking in the mountains last weekend.`,syn:`辨析 hiking 休閒走山 ≠ mountain climbing / mountaineering 攀登(技術性)；go hiking`}
 ];
 for(const w of WORDS){
-  const link = `<a href='${C}${w.en}' target='_blank'>Cambridge</a>`;
+  const link = `<a href='${C}${(w.cam||w.en).replace(/ /g,'-')}' target='_blank'>Cambridge</a>`;
   const base = [];
   if(w.def) base.push(["EN",w.def]);
   if(w.eg) base.push(["例",w.eg]);
@@ -327,9 +352,36 @@ for(const w of WORDS){
     answer:`${w.zh}`, analysis:base });
 }
 
+// ---------- Legacy vocab → add 英→中 reverse (Day 1–4 pure vocab) ----------
+const LEGACY_REV = [
+  {id:"v1",zh:"睡意朦朧的、昏昏欲睡的 (adj.)"},
+  {id:"v2",zh:"行動緩慢的、遲緩的、提不起勁的 (adj.)"},
+  {id:"v3",zh:"招標／投標（書）(n.)"},
+  {id:"v4",zh:"重新評估、重新考慮 (v.)"},
+  {id:"v5",zh:"（公司的）營收、收益 (n.)"},
+  {id:"v6",zh:"耐心、忍耐 (n.)"},
+  {id:"v7",zh:"海外的、國外的 (adj./adv.)"},
+  {id:"v8",zh:"（財報的）季，一季三個月 (n.)"},
+  {id:"v9",zh:"塞車、交通堵塞 (n.)"},
+  {id:"v10",zh:"（貨幣、資產）升值、增值 (v.)"},
+  {id:"v11",zh:"延期、延後 (v.)"},
+  {id:"v12",zh:"出口商、出口國 (n.)"},
+  {id:"v13",zh:"擠壓；（財經）壓縮獲利 (v.)"},
+  {id:"v14",zh:"放緩、趨緩（經濟）(n.)"},
+  {id:"v15",zh:"（公司）公佈、繳出（財報、獲利）(v.)"},
+  {id:"v16",zh:"晶片廠、晶片製造商 (n.)"},
+  {id:"v17",zh:"電池續航力（片語）"}
+];
+for(const r of LEGACY_REV){
+  const f = DECK.find(c=>c.id===r.id);
+  if(!f) continue;
+  DECK.push({ id:r.id+"-r", type:"vocab", tags:[...(f.tags||[]),"英→中"], qlabel:"英 → 中", speak:f.speak,
+    front:`${f.answer}<br>中文意思？`, answer:r.zh, analysis:f.analysis });
+}
+
 // ---------- Storage (localStorage) ----------
 const KEY="ce-srs-v1";
-const NEW_PER_DAY=10;
+const NEW_PER_DAY=30;
 function loadRaw(){ try{ return JSON.parse(localStorage.getItem(KEY)||"null"); }catch(e){ return null; } }
 function saveRaw(s){ try{ localStorage.setItem(KEY, JSON.stringify(s)); }catch(e){} }
 
