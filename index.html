@@ -82,7 +82,7 @@
 <body>
 <div class="wrap">
   <header>
-    <h1>中翻英複習<small>Spaced Review · Day 1–5 ＋ 單字表</small></h1>
+    <h1>中翻英複習<small>Spaced Review · Day 1–6 ＋ 單字表</small></h1>
     <div class="counts">
       <span><span class="dot r"></span>複習 <b id="c-rev">0</b></span>
       <span><span class="dot n"></span>新卡 <b id="c-new">0</b></span>
@@ -274,7 +274,33 @@ const DECK = [
   { id:"g5", type:"grammar", tags:["文法","D5"], qlabel:"文法",
     front:"間接引述時，時態要怎麼變？（reported speech）",
     answer:`過去動詞（said / promised / told）後，引述內容時態<mark>後移一級</mark>`,
-    analysis:[["will → would","I promised I would help.（直接：I will help.）"],["其他","can → could；現在式 → 過去式；過去式 → 過去完成式"],["重點","主要動詞是過去式時，後面子句跟著往過去退一步"]]}
+    analysis:[["will → would","I promised I would help.（直接：I will help.）"],["其他","can → could；現在式 → 過去式；過去式 → 過去完成式"],["重點","主要動詞是過去式時，後面子句跟著往過去退一步"]]},
+
+  // ---------- Day 6 ----------
+  { id:"s16", type:"sentence", tags:["句子","日常","D6"], qlabel:"中譯英",
+    front:"她明明知道我在忙，卻還一直傳訊息問我什麼時候要回她。",
+    answer:`<mark>Even though</mark> she knows I'm busy, she keeps messaging me, <mark>asking when I'll reply</mark>.`,
+    analysis:[["Even though","「明明…卻」= 對比讓步語氣，比 but 更貼切"],["asking when I'll reply","間接問句語序：疑問詞後接直述句語序（非 when do I reply）"]]},
+  { id:"s17", type:"sentence", tags:["句子","職場","D6"], qlabel:"中譯英",
+    front:"如果預算沒有增加，我們就必須重新考慮這個計畫的時程。",
+    answer:`If the budget <mark>doesn't increase</mark>, we <mark>will have to</mark> reconsider the <mark>project's timeline</mark>.`,
+    analysis:[["doesn't increase","⚠️ 還沒發生、有可能的事 → 第一條件句：If + 現在式（非過去式 didn't）"],["will have to","主句配合第一條件句用 will"],["project's timeline","project 較準；timeline 財經／專案語境常用"]]},
+  { id:"s18", type:"sentence", tags:["句子","財經","D6"], qlabel:"中譯英",
+    front:"台積電宣布將在美國新建一座晶圓廠，這項投資預計耗資超過兩百億美元。",
+    answer:`TSMC announced that it <mark>will build</mark> a new <mark>fab</mark> in <mark>the US</mark>, and the investment <mark>is expected to cost</mark> more than $20 billion.`,
+    analysis:[["will build","will 後接原形（非 built）"],["fab","晶圓廠業界標準說法 = fab（非 chip factory）"],["the US","國家名用 the US / the United States（American 是形容詞）"],["is expected to cost","投資本身耗資用 cost（非 spend）；官方語氣用 is expected to"]]},
+  { id:"d3", type:"vocab", tags:["辨析","D6"], qlabel:"辨析",
+    front:"cost 與 spend 差在哪？",
+    answer:`cost：<mark>事／物</mark>當主詞；spend：<mark>人／公司</mark>當主詞`,
+    analysis:[["cost","這件事本身要花多少錢：The investment costs $20 billion."],["spend","人／公司主動花錢：TSMC will spend $20 billion."],["搭配","be expected to cost = 預計耗資"]]},
+  { id:"g6", type:"grammar", tags:["文法","D6"], qlabel:"文法",
+    front:"間接問句的語序規則？",
+    answer:`疑問詞後接<mark>直述句語序</mark>（主詞+動詞），不用 do/does/did`,
+    analysis:[["例","She asked when I would reply.（✗ when did I reply）"],["對照","直接問句：When do I reply? → 間接問句：…asking when I reply / I'll reply"]]},
+  { id:"g7", type:"grammar", tags:["文法","D6"], qlabel:"文法",
+    front:"第一條件句和第二／第三條件句怎麼判斷該用哪個？",
+    answer:`問自己：這件事<mark>還有沒有可能發生</mark>？`,
+    analysis:[["第一條件句","未來真實可能，還沒發生：If + 現在式, will + 原形"],["第二條件句","與現在事實相反：If + 過去式, would + 原形"],["第三條件句","與過去事實相反：If + had + p.p., would have + p.p."],["提醒","還沒發生、有可能 → 用第一條件句，別套過去式！"]]}
 ];
 
 // ---------- Bulk vocabulary (bidirectional 中↔英) ----------
@@ -334,7 +360,11 @@ const WORDS = [
   {id:"w102",en:"attachment",ipa:"/əˈtætʃ.mənt/",pos:"n.",u:"Day5",zh:"附件；依附、依戀",def:`a file sent with an email`,eg:`Please find attached the minutes of the meeting.`,syn:`片語 please find attached / attached is/are = 附件是…（email 慣用）`},
   {id:"w103",en:"minutes",ipa:"/ˈmɪn.ɪts/",pos:"n. (pl.)",u:"Day5",zh:"會議紀錄",def:`an official written record of what is said and decided at a meeting`,eg:`Attached are the minutes of last week's meeting.`,syn:`此義恆為複數 minutes`},
   {id:"w104",en:"gross margin",ipa:"/ˌɡrəʊs ˈmɑː.dʒɪn/",pos:"n.",u:"Day5",zh:"毛利率",def:`a company's profit from selling goods or services before indirect costs`,eg:`The company's gross margin fell year-on-year.`,syn:`辨析 gross margin 毛利率 ≠ net margin 淨利率；profit margin 利潤率(泛)`},
-  {id:"w105",en:"hiking",ipa:"/ˈhaɪ.kɪŋ/",pos:"n.",u:"Day5",zh:"健行、爬山",def:`the activity of walking in the countryside or mountains for pleasure`,eg:`We went hiking in the mountains last weekend.`,syn:`辨析 hiking 休閒走山 ≠ mountain climbing / mountaineering 攀登(技術性)；go hiking`}
+  {id:"w105",en:"hiking",ipa:"/ˈhaɪ.kɪŋ/",pos:"n.",u:"Day5",zh:"健行、爬山",def:`the activity of walking in the countryside or mountains for pleasure`,eg:`We went hiking in the mountains last weekend.`,syn:`辨析 hiking 休閒走山 ≠ mountain climbing / mountaineering 攀登(技術性)；go hiking`},
+
+  // Day 6 單字
+  {id:"w201",en:"fab",ipa:"/fæb/",pos:"n.",u:"Day6",zh:"晶圓廠、半導體製造廠",def:`a factory for making advanced electronic products, such as semiconductor chips (short for fabrication plant)`,eg:`TSMC will build a new fab in the US.`,syn:`辨析 口語 fab 也可指 fabulous；業界幾乎都指晶圓廠`},
+  {id:"w202",en:"announce",ipa:"/əˈnaʊns/",pos:"v.",u:"Day6",zh:"宣布、公告",def:`to tell people about something officially or publicly`,eg:`TSMC announced plans to build a new fab.`,syn:`片語 announce plans to do sth = 宣布計畫要…`}
 ];
 for(const w of WORDS){
   const link = `<a href='${C}${(w.cam||w.en).replace(/ /g,'-')}' target='_blank'>Cambridge</a>`;
