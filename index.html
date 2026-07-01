@@ -467,23 +467,34 @@ function applyGrade(s,c,q){ const cs=s.cards[c.id];
 }
 
 // ---------- Session ----------
-let STATE, queue=[];
+let STATE, queue=[], extraToday=0;
+const BATCH=15;
 function buildQueue(){
   const rev=[],news=[];
   for(const c of DECK){ const cs=STATE.cards[c.id];
     if(cs.introduced){ if(cs.due && cs.due<=TODAY) rev.push(c.id); } else news.push(c.id); }
-  const allow=Math.max(0,NEW_PER_DAY-(STATE.newByDate[TODAY]||0));
+  const allow=Math.max(0,NEW_PER_DAY-(STATE.newByDate[TODAY]||0))+extraToday;
   queue=[...rev,...news.slice(0,allow)];
 }
 function counts(){ let r=0,n=0; for(const id of queue){ STATE.cards[id].introduced?r++:n++; }
   document.getElementById("c-rev").textContent=r; document.getElementById("c-new").textContent=n; }
 function nextDue(){ let m=null; for(const c of DECK){ const d=STATE.cards[c.id].due; if(d&&(!m||d<m)) m=d; } return m; }
+function remainingUnseen(){ return DECK.filter(c=>!STATE.cards[c.id].introduced).length; }
 
 function render(){
   counts();
   const stage=document.getElementById("stage");
-  if(queue.length===0){ const nd=nextDue();
-    stage.innerHTML=`<div class="done"><div class="big">🎉</div><p>今天的卡都複習完了。</p><p>${nd?("下次到期："+nd):"明天再來累積新卡"}</p></div>`; return; }
+  if(queue.length===0){
+    const nd=nextDue(); const left=remainingUnseen();
+    stage.innerHTML=`<div class="done"><div class="big">🎉</div><p>這批複習完了。</p>
+      <p>${nd?("到期複習下次："+nd):"目前沒有其他到期卡"}</p>
+      ${left>0?`<p style="margin-top:14px;">還有 <b>${left}</b> 張新卡沒看過</p>
+        <button class="reveal" id="moreBtn" style="margin-top:8px;">再複習一批新卡（${Math.min(BATCH,left)} 張）</button>`
+        : `<p>新卡也都看過了 👏</p>`}
+      </div>`;
+    if(left>0){ document.getElementById("moreBtn").onclick=()=>{ extraToday+=BATCH; buildQueue(); render(); }; }
+    return;
+  }
   const c=DECK.find(x=>x.id===queue[0]); const cs=STATE.cards[c.id]; const isNew=!cs.introduced;
   stage.innerHTML=`
     <div class="card">
