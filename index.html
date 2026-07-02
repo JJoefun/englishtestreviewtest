@@ -28,6 +28,12 @@
   .counts b{color:var(--ink); font-variant-numeric:tabular-nums;}
   .dot{display:inline-block; width:7px; height:7px; border-radius:50%; margin-right:5px; vertical-align:middle;}
   .dot.r{background:var(--easy);} .dot.n{background:var(--pine);}
+  .modebar{display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:16px;}
+  .chip{background:#fff; border:1px solid var(--line); color:var(--muted); padding:6px 12px; font-size:12.5px; border-radius:999px; cursor:pointer; font-weight:600;}
+  .chip:hover{color:var(--ink);}
+  .chip.active{background:var(--pine); border-color:var(--pine); color:#fff;}
+  .sep{width:1px; height:18px; background:var(--line); margin:0 2px;}
+  .freebadge{display:inline-block; font-size:11px; color:var(--pine); border:1px solid var(--pine); border-radius:999px; padding:2px 9px; margin-bottom:10px;}
 
   .card{
     background:#fff; border:1px solid var(--line); border-radius:14px;
@@ -88,6 +94,15 @@
       <span><span class="dot n"></span>新卡 <b id="c-new">0</b></span>
     </div>
   </header>
+  <div class="modebar" id="modebar">
+    <button class="chip active" data-mode="srs">📅 正式複習</button>
+    <button class="chip" data-mode="free">🔁 自由練習</button>
+    <span class="sep"></span>
+    <button class="chip active" data-filter="all">全部</button>
+    <button class="chip" data-filter="單字">單字</button>
+    <button class="chip" data-filter="句子">句子</button>
+    <button class="chip" data-filter="grammar">文法／觀念</button>
+  </div>
   <div id="stage"></div>
   <footer>
     <span id="foot">進度自動保存在這個瀏覽器</span>
@@ -490,39 +505,66 @@ function applyGrade(s,c,q){ const cs=s.cards[c.id];
   return "scheduled";
 }
 
+// ---------- Filtering ----------
+const GRAMMAR_TAGS = ["文法","辨析","易錯","用法"];
+function isGrammar(c){ return c.type==="grammar" || c.tags.some(t=>GRAMMAR_TAGS.includes(t)); }
+function isVocab(c){ return c.type==="vocab" && !isGrammar(c); }
+function isSentence(c){ return c.type==="sentence"; }
+let FILTER="all";
+function matchesFilter(c){
+  if(FILTER==="all") return true;
+  if(FILTER==="單字") return isVocab(c);
+  if(FILTER==="句子") return isSentence(c);
+  if(FILTER==="grammar") return isGrammar(c);
+  return true;
+}
+function shuffle(arr){ const a=[...arr]; for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+
 // ---------- Session ----------
-let STATE, queue=[], extraToday=0;
+let STATE, queue=[], extraToday=0, MODE="srs";
 const BATCH=15;
 function buildQueue(){
+  if(MODE==="free"){ queue=shuffle(DECK.filter(matchesFilter).map(c=>c.id)); return; }
+  const pool=DECK.filter(matchesFilter);
   const rev=[],news=[];
-  for(const c of DECK){ const cs=STATE.cards[c.id];
+  for(const c of pool){ const cs=STATE.cards[c.id];
     if(cs.introduced){ if(cs.due && cs.due<=TODAY) rev.push(c.id); } else news.push(c.id); }
   const allow=Math.max(0,NEW_PER_DAY-(STATE.newByDate[TODAY]||0))+extraToday;
   queue=[...rev,...news.slice(0,allow)];
 }
-function counts(){ let r=0,n=0; for(const id of queue){ STATE.cards[id].introduced?r++:n++; }
-  document.getElementById("c-rev").textContent=r; document.getElementById("c-new").textContent=n; }
-function nextDue(){ let m=null; for(const c of DECK){ const d=STATE.cards[c.id].due; if(d&&(!m||d<m)) m=d; } return m; }
-function remainingUnseen(){ return DECK.filter(c=>!STATE.cards[c.id].introduced).length; }
+function counts(){
+  if(MODE==="free"){ document.getElementById("c-rev").textContent=queue.length; document.getElementById("c-new").textContent="—"; return; }
+  let r=0,n=0; for(const id of queue){ STATE.cards[id].introduced?r++:n++; }
+  document.getElementById("c-rev").textContent=r; document.getElementById("c-new").textContent=n;
+}
+function nextDue(){ let m=null; for(const c of DECK.filter(matchesFilter)){ const d=STATE.cards[c.id].due; if(d&&(!m||d<m)) m=d; } return m; }
+function remainingUnseen(){ return DECK.filter(matchesFilter).filter(c=>!STATE.cards[c.id].introduced).length; }
 
 function render(){
   counts();
   const stage=document.getElementById("stage");
   if(queue.length===0){
+    if(MODE==="free"){
+      stage.innerHTML=`<div class="done"><div class="big">🔁</div><p>這輪自由練習做完了（不影響正式進度）。</p>
+        <button class="reveal" id="againBtn" style="margin-top:10px;">再來一輪（重新洗牌）</button></div>`;
+      document.getElementById("againBtn").onclick=()=>{ buildQueue(); render(); };
+      return;
+    }
     const nd=nextDue(); const left=remainingUnseen();
     stage.innerHTML=`<div class="done"><div class="big">🎉</div><p>這批複習完了。</p>
       <p>${nd?("到期複習下次："+nd):"目前沒有其他到期卡"}</p>
       ${left>0?`<p style="margin-top:14px;">還有 <b>${left}</b> 張新卡沒看過</p>
         <button class="reveal" id="moreBtn" style="margin-top:8px;">再複習一批新卡（${Math.min(BATCH,left)} 張）</button>`
-        : `<p>新卡也都看過了 👏</p>`}
+        : `<p>這個範圍的卡都看過了 👏</p>`}
       </div>`;
     if(left>0){ document.getElementById("moreBtn").onclick=()=>{ extraToday+=BATCH; buildQueue(); render(); }; }
     return;
   }
   const c=DECK.find(x=>x.id===queue[0]); const cs=STATE.cards[c.id]; const isNew=!cs.introduced;
   stage.innerHTML=`
+    ${MODE==="free"?'<span class="freebadge">🔁 自由練習中（不影響正式進度）</span>':''}
     <div class="card">
-      <div class="tagbar">${c.tags.map(t=>`<span class="tag">${t}</span>`).join("")}${isNew?'<span class="tag" style="color:var(--pine);border-color:var(--pine)">新</span>':''}</div>
+      <div class="tagbar">${c.tags.map(t=>`<span class="tag">${t}</span>`).join("")}${isNew&&MODE==="srs"?'<span class="tag" style="color:var(--pine);border-color:var(--pine)">新</span>':''}</div>
       <div class="front"><div class="qlabel">${c.qlabel}</div><div class="prompt">${c.front}</div></div>
       <div id="backwrap" class="hide">
         <div class="divider"></div>
@@ -536,10 +578,15 @@ function render(){
       <div class="controls">
         <button class="reveal" id="revealBtn">顯示答案</button>
         <div class="grades hide" id="grades">
+          ${MODE==="free" ? `
+          <button class="grade g-again" data-q="again">還不熟</button>
+          <button class="grade g-hard"  data-q="hard">普通</button>
+          <button class="grade g-good"  data-q="good">會了</button>
+          <button class="grade g-easy"  data-q="easy">秒懂</button>` : `
           <button class="grade g-again" data-q="again">重來<span class="iv">${preview(cs,'again')}</span></button>
           <button class="grade g-hard"  data-q="hard">困難<span class="iv">${preview(cs,'hard')}</span></button>
           <button class="grade g-good"  data-q="good">良好<span class="iv">${preview(cs,'good')}</span></button>
-          <button class="grade g-easy"  data-q="easy">簡單<span class="iv">${preview(cs,'easy')}</span></button>
+          <button class="grade g-easy"  data-q="easy">簡單<span class="iv">${preview(cs,'easy')}</span></button>`}
         </div>
       </div>
     </div>`;
@@ -551,10 +598,32 @@ function render(){
   };
   document.querySelectorAll(".sayb").forEach(b=>{ b.onclick=()=>speak(b.dataset.w,b.dataset.l); });
   document.querySelectorAll(".grade").forEach(b=>{
-    b.onclick=()=>{ const q=b.dataset.q; const r=applyGrade(STATE,c,q); saveState(STATE);
-      queue.shift(); if(r==="again") queue.push(c.id); render(); };
+    b.onclick=()=>{
+      const q=b.dataset.q;
+      if(MODE==="free"){
+        queue.shift(); if(q==="again") queue.push(c.id); render(); return; // 不寫回 STATE，不影響正式進度
+      }
+      const r=applyGrade(STATE,c,q); saveState(STATE);
+      queue.shift(); if(r==="again") queue.push(c.id); render();
+    };
   });
 }
+
+// ---------- Mode bar wiring ----------
+document.querySelectorAll('.chip[data-mode]').forEach(b=>{
+  b.onclick=()=>{
+    MODE=b.dataset.mode;
+    document.querySelectorAll('.chip[data-mode]').forEach(x=>x.classList.toggle('active',x===b));
+    extraToday=0; buildQueue(); render();
+  };
+});
+document.querySelectorAll('.chip[data-filter]').forEach(b=>{
+  b.onclick=()=>{
+    FILTER=b.dataset.filter;
+    document.querySelectorAll('.chip[data-filter]').forEach(x=>x.classList.toggle('active',x===b));
+    extraToday=0; buildQueue(); render();
+  };
+});
 
 STATE=loadState(); buildQueue(); render();
 document.getElementById("reset").onclick=()=>{
