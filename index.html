@@ -82,7 +82,7 @@
 <body>
 <div class="wrap">
   <header>
-    <h1>中翻英複習<small>Spaced Review · Day 1–6 ＋ 單字表</small></h1>
+    <h1>中翻英複習<small>Spaced Review · Day 1–7 ＋ 單字表</small></h1>
     <div class="counts">
       <span><span class="dot r"></span>複習 <b id="c-rev">0</b></span>
       <span><span class="dot n"></span>新卡 <b id="c-new">0</b></span>
@@ -300,7 +300,25 @@ const DECK = [
   { id:"g7", type:"grammar", tags:["文法","D6"], qlabel:"文法",
     front:"第一條件句和第二／第三條件句怎麼判斷該用哪個？",
     answer:`問自己：這件事<mark>還有沒有可能發生</mark>？`,
-    analysis:[["第一條件句","未來真實可能，還沒發生：If + 現在式, will + 原形"],["第二條件句","與現在事實相反：If + 過去式, would + 原形"],["第三條件句","與過去事實相反：If + had + p.p., would have + p.p."],["提醒","還沒發生、有可能 → 用第一條件句，別套過去式！"]]}
+    analysis:[["第一條件句","未來真實可能，還沒發生：If + 現在式, will + 原形"],["第二條件句","與現在事實相反：If + 過去式, would + 原形"],["第三條件句","與過去事實相反：If + had + p.p., would have + p.p."],["提醒","還沒發生、有可能 → 用第一條件句，別套過去式！"]]},
+
+  // ---------- Day 7 ----------
+  { id:"s19", type:"sentence", tags:["句子","日常","D7"], qlabel:"中譯英",
+    front:"早知道會下雨，我就不會約你們去野餐了。",
+    answer:`If I had known it would rain, I wouldn't have invited you <mark>to a picnic</mark>.`,
+    analysis:[["✅ 整句結構","第三條件句 + 子句內過去看未來(would rain)，全對！"],["a picnic","野餐 = picnic（非 camping，那是露營過夜）"]]},
+  { id:"s20", type:"sentence", tags:["句子","職場","D7"], qlabel:"中譯英",
+    front:"很抱歉造成不便，我們正在盡快處理您回報的問題。",
+    answer:`Sorry for <mark>the inconvenience</mark>. We are <mark>resolving the issue you reported</mark> as soon as possible.`,
+    analysis:[["the inconvenience","固定講法 sorry for the inconvenience（用 the，非 your）"],["the issue you reported","report 當動詞：the issue you reported；issue(問題)非 question(疑問句)"],["resolving","解決 = resolving，比 processing 更貼語感"]]},
+  { id:"s21", type:"sentence", tags:["句子","財經","D7"], qlabel:"中譯英",
+    front:"分析師預期，若通膨持續降溫，央行可能在下半年開始降息。",
+    answer:`<mark>Analysts anticipate</mark> that <mark>if inflation continues to ease</mark>, the central bank may <mark>cut interest rates</mark> <mark>in the second half of the year</mark>.`,
+    analysis:[["Analysts","泛指分析師們，用複數 analysts 避開單複數問題"],["if（非 when）","⚠️「若」= 不確定，用 if；when 表示確定會發生"],["continues to ease","降溫財經用 ease，較 slowing 專業"],["cut interest rates","降息（跟 raise 相反）；interest rate 拼法：interest 不加 s"],["in the second half of the year","下半年固定講法（非 next half year）"]]},
+  { id:"g8", type:"grammar", tags:["文法","D7"], qlabel:"文法",
+    front:"if 和 when 的語氣差在哪？",
+    answer:`if：<mark>不確定</mark>會不會發生；when：<mark>確定</mark>會發生`,
+    analysis:[["if","條件、不確定：If inflation eases, rates may fall."],["when","時間、確定會發生：When the meeting ends, we'll eat."],["提醒","中文「若／如果」通常對應 if，不要跟「當…時」when 搞混"]]}
 ];
 
 // ---------- Bulk vocabulary (bidirectional 中↔英) ----------
@@ -364,7 +382,13 @@ const WORDS = [
 
   // Day 6 單字
   {id:"w201",en:"fab",ipa:"/fæb/",pos:"n.",u:"Day6",zh:"晶圓廠、半導體製造廠",def:`a factory for making advanced electronic products, such as semiconductor chips (short for fabrication plant)`,eg:`TSMC will build a new fab in the US.`,syn:`辨析 口語 fab 也可指 fabulous；業界幾乎都指晶圓廠`},
-  {id:"w202",en:"announce",ipa:"/əˈnaʊns/",pos:"v.",u:"Day6",zh:"宣布、公告",def:`to tell people about something officially or publicly`,eg:`TSMC announced plans to build a new fab.`,syn:`片語 announce plans to do sth = 宣布計畫要…`}
+  {id:"w202",en:"announce",ipa:"/əˈnaʊns/",pos:"v.",u:"Day6",zh:"宣布、公告",def:`to tell people about something officially or publicly`,eg:`TSMC announced plans to build a new fab.`,syn:`片語 announce plans to do sth = 宣布計畫要…`},
+
+  // Day 7 單字
+  {id:"w301",en:"picnic",ipa:"/ˈpɪk.nɪk/",pos:"n.",u:"Day7",zh:"野餐",def:`an occasion when a meal is eaten outdoors, often in a park or countryside`,eg:`We invited them to a picnic in the park.`,syn:`辨析 picnic(白天出遊) ≠ camping(露營過夜)`},
+  {id:"w302",en:"issue",ipa:"/ˈɪʃ.uː/",pos:"n.",u:"Day7",zh:"問題、狀況",def:`a problem or difficulty`,eg:`We are resolving the issue you reported.`,syn:`辨析 issue(問題、狀況) ≠ question(疑問句)`},
+  {id:"w303",en:"inconvenience",ipa:"/ˌɪn.kənˈviː.ni.əns/",pos:"n.",u:"Day7",zh:"不便、麻煩",def:`a situation that causes trouble or difficulty`,eg:`We are sorry for the inconvenience this may have caused.`,syn:`片語 sorry for the inconvenience = 造成不便非常抱歉（用 the，非 your）`},
+  {id:"w304",en:"ease",ipa:"/iːz/",pos:"v.",u:"Day7",zh:"（經濟數據）趨緩、放鬆",def:`to become less severe or intense`,eg:`Analysts expect inflation to ease in the coming months.`,syn:`同源 slowdown/slowing；財經常用來講通膨、壓力趨緩`}
 ];
 for(const w of WORDS){
   const link = `<a href='${C}${(w.cam||w.en).replace(/ /g,'-')}' target='_blank'>Cambridge</a>`;
