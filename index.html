@@ -58,7 +58,9 @@
   .analysis div{margin:4px 0; padding-left:2px;}
   .analysis .ar{color:var(--pine); font-weight:650;}
   .ipa{color:var(--muted); font-size:15px;}
-  .say{display:inline-flex; gap:6px; margin-left:8px; vertical-align:middle;}
+  .say{display:flex; flex-wrap:wrap; gap:12px; margin-top:8px;}
+  .sayword{display:inline-flex; align-items:center; gap:6px;}
+  .sayword em{font-style:normal; font-size:12.5px; color:var(--muted); margin-right:2px;}
   .sayb{background:#fff; border:1px solid var(--line); color:var(--pine); padding:4px 10px; font-size:12px; border-radius:999px; font-weight:600; cursor:pointer;}
   .sayb:hover{background:var(--panel);}
   a{color:var(--pine);}
@@ -222,7 +224,7 @@ const DECK = [
     front:"「擠壓；（財經）壓縮獲利」(v.) — 英文？",
     answer:`squeeze <span class="ipa">/skwiːz/</span>`,
     analysis:[["中文","擠壓；（財經）壓縮、緊縮（獲利、利潤空間）"],["EN","to press firmly; (finance) to reduce profit or margins"],["例","Rising costs squeezed the company's profits."],["片語","a profit / margin squeeze = 獲利／利潤緊縮"],["片語例","Exporters face a margin squeeze from the stronger currency."],["🔊",`<a href='${C}squeeze' target='_blank'>Cambridge 真人發音</a>`]]},
-  { id:"p1", type:"vocab", tags:["片語","D3"], qlabel:"中 → 英", speak:"get soaked",
+  { id:"p1", type:"vocab", tags:["片語","D3"], qlabel:"中 → 英", speak:["get soaked","get drenched"],
     front:"「淋濕、濕透（落湯雞）」— 英文？",
     answer:`get soaked / get drenched`,
     analysis:[["中文","淋濕、濕透"],["EN","to become completely wet"],["例","I forgot my umbrella and got soaked on the way home."],["近義","be drenched / be soaking wet"]]},
@@ -256,7 +258,7 @@ const DECK = [
     front:"「（公司）公佈、繳出（財報、獲利）」(v.) — 英文？",
     answer:`post <span class="ipa">/pəʊst/ (UK) /poʊst/ (US)</span>`,
     analysis:[["中文","（公司）公佈、繳出（財報、獲利、業績）；也指張貼、發文"],["EN","(of a company) to announce financial results such as profits"],["例","The chipmaker posted record profits last quarter."],["近義","report / announce (results)"],["🔊",`<a href='${C}post' target='_blank'>Cambridge 真人發音</a>`]]},
-  { id:"v16", type:"vocab", tags:["單字","D4"], qlabel:"中 → 英", speak:"chipmaker",
+  { id:"v16", type:"vocab", tags:["單字","D4"], qlabel:"中 → 英", speak:["chipmaker","chip manufacturer"],
     front:"「晶片廠、晶片製造商」(n.) — 英文？",
     answer:`chipmaker / chip manufacturer`,
     analysis:[["中文","晶片廠、晶片製造商（半導體公司）"],["EN","a company that makes computer chips (semiconductors)"],["例","Taiwan is home to the world's largest chipmaker."],["註","常見產業用語，由 chip + maker 組成"]]},
@@ -570,7 +572,8 @@ function render(){
         <div class="divider"></div>
         <div class="back">
           <div class="seg"><div class="seg-h">參考答案</div>
-            <div class="answer">${c.answer}${c.speak?`<span class="say"><button class="sayb" data-w="${c.speak}" data-l="en-GB">🔊 UK</button><button class="sayb" data-w="${c.speak}" data-l="en-US">🔊 US</button></span>`:''}</div></div>
+            <div class="answer">${c.answer}${c.speak?(()=>{ const words=Array.isArray(c.speak)?c.speak:[c.speak];
+              return `<span class="say">${words.map(w=>`<span class="sayword">${words.length>1?`<em>${w}</em>`:''}<button class="sayb" data-w="${w}" data-l="en-GB">🔊 UK</button><button class="sayb" data-w="${w}" data-l="en-US">🔊 US</button></span>`).join('')}</span>`; })():''}</div></div>
           <div class="seg"><div class="seg-h">解析</div>
             <div class="analysis">${c.analysis.map(a=>`<div><span class="ar">${a[0]}</span> → ${a[1]}</div>`).join("")}</div></div>
         </div>
@@ -594,7 +597,7 @@ function render(){
     document.getElementById("backwrap").classList.remove("hide");
     document.getElementById("revealBtn").classList.add("hide");
     document.getElementById("grades").classList.remove("hide");
-    if(c.speak) speak(c.speak,"en-US");
+    if(c.speak) speak(Array.isArray(c.speak)?c.speak[0]:c.speak,"en-US");
   };
   document.querySelectorAll(".sayb").forEach(b=>{ b.onclick=()=>speak(b.dataset.w,b.dataset.l); });
   document.querySelectorAll(".grade").forEach(b=>{
