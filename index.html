@@ -34,6 +34,17 @@
   .chip.active{background:var(--pine); border-color:var(--pine); color:#fff;}
   .sep{width:1px; height:18px; background:var(--line); margin:0 2px;}
   .freebadge{display:inline-block; font-size:11px; color:var(--pine); border:1px solid var(--pine); border-radius:999px; padding:2px 9px; margin-bottom:10px;}
+  .daybar{display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:16px; font-size:12.5px; color:var(--muted);}
+  .daylabel{font-weight:600;}
+  .daybar input[type=number]{width:56px; padding:5px 7px; border:1px solid var(--line); border-radius:8px; font-size:12.5px; font-family:inherit;}
+  .dayto{color:var(--muted);}
+  .wlcheck{display:inline-flex; align-items:center; gap:5px; margin-left:4px;}
+  .wlcheck input{cursor:pointer;}
+  .topicbar{display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:16px; font-size:12.5px; color:var(--muted);}
+  .topicchips{display:flex; gap:6px; flex-wrap:wrap;}
+  .chip.small{padding:4px 10px; font-size:11.5px;}
+  .chip.topic-off{background:#fff; color:var(--muted); opacity:.55; text-decoration:line-through;}
+  .chip.topic-on{background:var(--pine); border-color:var(--pine); color:#fff;}
 
   .card{
     background:#fff; border:1px solid var(--line); border-radius:14px;
@@ -104,6 +115,28 @@
     <button class="chip" data-filter="單字">單字</button>
     <button class="chip" data-filter="句子">句子</button>
     <button class="chip" data-filter="grammar">文法／觀念</button>
+  </div>
+  <div class="daybar" id="daybar">
+    <span class="daylabel">Day 範圍（每日翻譯練習）：</span>
+    <input type="number" id="dayFrom" min="1" placeholder="從">
+    <span class="dayto">～</span>
+    <input type="number" id="dayTo" min="1" placeholder="到">
+    <button class="chip" id="applyDay">套用</button>
+    <button class="chip" id="clearDay">清除</button>
+  </div>
+  <div class="daybar" id="hwbar">
+    <span class="daylabel">作業範圍（英文課回家複習）：</span>
+    <input type="number" id="hwFrom" min="1" placeholder="從">
+    <span class="dayto">～</span>
+    <input type="number" id="hwTo" min="1" placeholder="到">
+    <button class="chip" id="applyHw">套用</button>
+    <button class="chip" id="clearHw">清除</button>
+  </div>
+  <div class="topicbar" id="topicbarWrap">
+    <span class="daylabel">主題（不分日期／週次）：</span>
+    <div class="topicchips" id="topicbar"></div>
+    <button class="chip small" id="topicAll">全選</button>
+    <button class="chip small" id="topicNone">全不選</button>
   </div>
   <div id="stage"></div>
   <footer>
@@ -535,11 +568,61 @@ function applyGrade(s,c,q){ const cs=s.cards[c.id];
 
 // ---------- Filtering ----------
 const GRAMMAR_TAGS = ["文法","辨析","易錯","用法"];
+const FUNCTIONAL_TAGS = new Set(["單字","句子","文法","辨析","易錯","用法","片語","英→中"]);
 function isGrammar(c){ return c.type==="grammar" || c.tags.some(t=>GRAMMAR_TAGS.includes(t)); }
 function isVocab(c){ return c.type==="vocab" && !isGrammar(c); }
 function isSentence(c){ return c.type==="sentence"; }
 let FILTER="all";
+let DAY_MIN=null, DAY_MAX=null;
+let HW_MIN=null, HW_MAX=null;
+function dayOf(c){
+  for(const t of c.tags){
+    let m=/^D(\d+)$/.exec(t); if(m) return parseInt(m[1]);
+    m=/^Day(\d+)$/.exec(t); if(m) return parseInt(m[1]);
+  }
+  return null; // 無日期標籤的卡（每日翻譯練習以外的批次）
+}
+// 英文課回家複習週次（例如 HW1、HW2…），跟 Day 系統完全分開的另一條時間軸
+function hwOf(c){
+  for(const t of c.tags){
+    const m=/^HW(\d+)$/.exec(t); if(m) return parseInt(m[1]);
+  }
+  return null;
+}
+// 主題：只用於「既沒有 Day 也沒有 HW 週次」的一次性批次（例如字表/Crime/Arts、單次考試單字）
+function topicOf(c){
+  if(dayOf(c)!==null || hwOf(c)!==null) return null;
+  const t=c.tags.find(t=>!FUNCTIONAL_TAGS.has(t));
+  return t||null;
+}
+let ALL_TOPICS=[]; let TOPIC_ACTIVE=new Set();
+function initTopics(){
+  ALL_TOPICS=[...new Set(DECK.map(topicOf).filter(Boolean))];
+  TOPIC_ACTIVE=new Set(ALL_TOPICS); // 預設全選
+}
+function matchesDayRange(c){
+  const d=dayOf(c);
+  if(d===null) return true; // 無 Day 標籤的卡不受此列限制
+  if(DAY_MIN!==null && d<DAY_MIN) return false;
+  if(DAY_MAX!==null && d>DAY_MAX) return false;
+  return true;
+}
+function matchesHwRange(c){
+  const h=hwOf(c);
+  if(h===null) return true; // 無 HW 標籤的卡不受此列限制
+  if(HW_MIN!==null && h<HW_MIN) return false;
+  if(HW_MAX!==null && h>HW_MAX) return false;
+  return true;
+}
+function matchesTopic(c){
+  const tp=topicOf(c);
+  if(tp===null) return true; // 有 Day 或 HW 標籤的卡不受主題篩選限制
+  return TOPIC_ACTIVE.has(tp);
+}
 function matchesFilter(c){
+  if(!matchesDayRange(c)) return false;
+  if(!matchesHwRange(c)) return false;
+  if(!matchesTopic(c)) return false;
   if(FILTER==="all") return true;
   if(FILTER==="單字") return isVocab(c);
   if(FILTER==="句子") return isSentence(c);
@@ -653,7 +736,46 @@ document.querySelectorAll('.chip[data-filter]').forEach(b=>{
     extraToday=0; buildQueue(); render();
   };
 });
+document.getElementById('applyDay').onclick=()=>{
+  const f=document.getElementById('dayFrom').value, t=document.getElementById('dayTo').value;
+  DAY_MIN = f!==""?parseInt(f):null;
+  DAY_MAX = t!==""?parseInt(t):null;
+  extraToday=0; buildQueue(); render();
+};
+document.getElementById('clearDay').onclick=()=>{
+  DAY_MIN=null; DAY_MAX=null;
+  document.getElementById('dayFrom').value=""; document.getElementById('dayTo').value="";
+  extraToday=0; buildQueue(); render();
+};
+document.getElementById('applyHw').onclick=()=>{
+  const f=document.getElementById('hwFrom').value, t=document.getElementById('hwTo').value;
+  HW_MIN = f!==""?parseInt(f):null;
+  HW_MAX = t!==""?parseInt(t):null;
+  extraToday=0; buildQueue(); render();
+};
+document.getElementById('clearHw').onclick=()=>{
+  HW_MIN=null; HW_MAX=null;
+  document.getElementById('hwFrom').value=""; document.getElementById('hwTo').value="";
+  extraToday=0; buildQueue(); render();
+};
 
+// ---------- Topic chips (dynamic, one per non-day batch e.g. 字表/Crime/Arts/考試批次) ----------
+function renderTopicBar(){
+  const wrap=document.getElementById('topicbar');
+  if(ALL_TOPICS.length===0){ document.getElementById('topicbarWrap').style.display='none'; return; }
+  wrap.innerHTML=ALL_TOPICS.map(tp=>`<button class="chip small ${TOPIC_ACTIVE.has(tp)?'topic-on':'topic-off'}" data-topic="${tp}">${tp}</button>`).join('');
+  wrap.querySelectorAll('.chip[data-topic]').forEach(b=>{
+    b.onclick=()=>{
+      const tp=b.dataset.topic;
+      if(TOPIC_ACTIVE.has(tp)) TOPIC_ACTIVE.delete(tp); else TOPIC_ACTIVE.add(tp);
+      renderTopicBar(); extraToday=0; buildQueue(); render();
+    };
+  });
+}
+document.getElementById('topicAll').onclick=()=>{ TOPIC_ACTIVE=new Set(ALL_TOPICS); renderTopicBar(); extraToday=0; buildQueue(); render(); };
+document.getElementById('topicNone').onclick=()=>{ TOPIC_ACTIVE=new Set(); renderTopicBar(); extraToday=0; buildQueue(); render(); };
+
+initTopics(); renderTopicBar();
 STATE=loadState(); buildQueue(); render();
 document.getElementById("reset").onclick=()=>{
   if(!confirm("確定要清除所有複習進度嗎？")) return;
