@@ -90,7 +90,7 @@
 <body>
 <div class="wrap">
   <header>
-    <h1>中翻英複習<small>Spaced Review · Day 1–7 ＋ 單字表</small></h1>
+    <h1>中翻英複習<small>Spaced Review · Day 1–8 ＋ 單字表</small></h1>
     <div class="counts">
       <span><span class="dot r"></span>複習 <b id="c-rev">0</b></span>
       <span><span class="dot n"></span>新卡 <b id="c-new">0</b></span>
@@ -335,7 +335,29 @@ const DECK = [
   { id:"g8", type:"grammar", tags:["文法","D7"], qlabel:"文法",
     front:"if 和 when 的語氣差在哪？",
     answer:`if：<mark>不確定</mark>會不會發生；when：<mark>確定</mark>會發生`,
-    analysis:[["if","條件、不確定：If inflation eases, rates may fall."],["when","時間、確定會發生：When the meeting ends, we'll eat."],["提醒","中文「若／如果」通常對應 if，不要跟「當…時」when 搞混"]]}
+    analysis:[["if","條件、不確定：If inflation eases, rates may fall."],["when","時間、確定會發生：When the meeting ends, we'll eat."],["提醒","中文「若／如果」通常對應 if，不要跟「當…時」when 搞混"]]},
+
+  // ---------- Day 8 ----------
+  { id:"s22", type:"sentence", tags:["句子","日常","D8"], qlabel:"中譯英",
+    front:"這間餐廳每次都要排隊排很久，但食物真的值得等待。",
+    answer:`<mark>You always have to wait in a long line at this restaurant</mark>, but the food is really <mark>worth the wait</mark>.`,
+    analysis:[["主詞邏輯","餐廳本身不會排隊，是「人」在排隊；主詞應為 you/people"],["worth the wait","worth 接名詞/動名詞，非 to V（✗ worth to wait）"],["its → 提醒","its(所有格) vs it's(=it is)，這句用 the food 就避開了"]]},
+  { id:"s23", type:"sentence", tags:["句子","職場","D8"], qlabel:"中譯英",
+    front:"若貴公司能提供更優惠的價格，我們願意簽訂長期合約。",
+    answer:`If your company can <mark>offer a more competitive price</mark>, we will <mark>be willing to</mark> sign a long-term contract.`,
+    analysis:[["✅ If + can, will","第一條件句判斷正確！還沒發生、有可能成立的商業提議"],["a more competitive price","商業書信用 competitive 較 cheaper 正式"],["be willing to","「願意」= be willing to，比 agree to（同意）更貼語氣"]]},
+  { id:"s24", type:"sentence", tags:["句子","財經","D8"], qlabel:"中譯英",
+    front:"由於缺工問題嚴重，這個產業的人力成本近年來持續攀升。",
+    answer:`Due to the severe <mark>labor shortage</mark>, <mark>labor costs</mark> in this industry <mark>have been rising</mark> in <mark>recent years</mark>.`,
+    analysis:[["labor shortage","缺工固定講法（非 lack of human resource）"],["labor costs","人力成本固定講法（非 cost of human resource）"],["have been rising","近年持續攀升 → 現在完成進行式，非單純 keeps"],["recent years","近年來固定講法（非 these years）"]]},
+  { id:"g9", type:"grammar", tags:["用法","D8"], qlabel:"用法",
+    front:"worth 後面可以接 to V 嗎？該接什麼？",
+    answer:`worth + <mark>名詞</mark> 或 <mark>動名詞(V-ing)</mark>，✗ 不接 to V`,
+    analysis:[["例","It's worth the wait. ／ It's worth waiting for.（皆正確）"],["錯","✗ worth to wait（此結構不存在）"]]},
+  { id:"g10", type:"grammar", tags:["易錯","D8"], qlabel:"易錯",
+    front:"its 和 it's 差在哪？",
+    answer:`its＝<mark>它的</mark>（所有格，無撇號）；it's＝<mark>it is</mark>（縮寫，有撇號）`,
+    analysis:[["its","所有格：Its food is great.（它的食物）"],["it's","it is 的縮寫：It's great food.（這是很棒的食物）"],["提醒","拼字很像，意思完全不同，寫作時務必檢查"]]}
 ];
 
 // ---------- Bulk vocabulary (bidirectional 中↔英) ----------
@@ -405,7 +427,11 @@ const WORDS = [
   {id:"w301",en:"picnic",ipa:"/ˈpɪk.nɪk/",pos:"n.",u:"Day7",zh:"野餐",def:`an occasion when a meal is eaten outdoors, often in a park or countryside`,eg:`We invited them to a picnic in the park.`,syn:`辨析 picnic(白天出遊) ≠ camping(露營過夜)`},
   {id:"w302",en:"issue",ipa:"/ˈɪʃ.uː/",pos:"n.",u:"Day7",zh:"問題、狀況",def:`a problem or difficulty`,eg:`We are resolving the issue you reported.`,syn:`辨析 issue(問題、狀況) ≠ question(疑問句)`},
   {id:"w303",en:"inconvenience",ipa:"/ˌɪn.kənˈviː.ni.əns/",pos:"n.",u:"Day7",zh:"不便、麻煩",def:`a situation that causes trouble or difficulty`,eg:`We are sorry for the inconvenience this may have caused.`,syn:`片語 sorry for the inconvenience = 造成不便非常抱歉（用 the，非 your）`},
-  {id:"w304",en:"ease",ipa:"/iːz/",pos:"v.",u:"Day7",zh:"（經濟數據）趨緩、放鬆",def:`to become less severe or intense`,eg:`Analysts expect inflation to ease in the coming months.`,syn:`同源 slowdown/slowing；財經常用來講通膨、壓力趨緩`}
+  {id:"w304",en:"ease",ipa:"/iːz/",pos:"v.",u:"Day7",zh:"（經濟數據）趨緩、放鬆",def:`to become less severe or intense`,eg:`Analysts expect inflation to ease in the coming months.`,syn:`同源 slowdown/slowing；財經常用來講通膨、壓力趨緩`},
+
+  // Day 8 單字
+  {id:"w401",en:"shortage",ipa:"/ˈʃɔː.tɪdʒ/",pos:"n.",u:"Day8",zh:"短缺、不足",def:`a situation in which there is not enough of something that is needed`,eg:`The industry is struggling with a severe labor shortage.`,syn:`片語 labor shortage = 缺工（Cambridge 收錄搭配詞）`,cam:"shortage"},
+  {id:"w402",en:"labor costs",ipa:"/ˈleɪ.bər kɒst/",pos:"n.",u:"Day8",zh:"人力成本、勞動成本",def:`the cost of employing workers, including wages and benefits`,eg:`Labor costs in this industry have been rising in recent years.`,syn:`辨析 labor costs(人力成本) ≠ human resources(人資部門/概念)`}
 ];
 for(const w of WORDS){
   const link = `<a href='${C}${(w.cam||w.en).replace(/ /g,'-')}' target='_blank'>Cambridge</a>`;
