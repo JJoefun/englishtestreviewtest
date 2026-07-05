@@ -37,6 +37,8 @@
   .daybar{display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:16px; font-size:12.5px; color:var(--muted);}
   .daylabel{font-weight:600;}
   .daybar input[type=number]{width:56px; padding:5px 7px; border:1px solid var(--line); border-radius:8px; font-size:12.5px; font-family:inherit;}
+  .filterbelt{margin-top:20px; padding-top:16px; border-top:1px dashed var(--line);}
+  select.dropdown{background:#fff; border:1px solid var(--line); color:var(--ink); padding:6px 10px; font-size:12.5px; border-radius:8px; font-family:inherit; cursor:pointer;}
   .dayto{color:var(--muted);}
   .wlcheck{display:inline-flex; align-items:center; gap:5px; margin-left:4px;}
   .wlcheck input{cursor:pointer;}
@@ -93,6 +95,10 @@
 
   footer{margin-top:18px; display:flex; justify-content:space-between; align-items:center; font-size:12px; color:var(--muted);}
   .ghost{background:none; color:var(--muted); border:1px solid var(--line); padding:6px 12px; font-size:12px; border-radius:8px; cursor:pointer;}
+  .gear{background:none; border:none; color:var(--line); font-size:15px; cursor:pointer; padding:4px 8px; opacity:.6;}
+  .gear:hover{opacity:1; color:var(--muted);}
+  #advPanel{margin-top:10px; text-align:right;}
+  .ghost.armed{background:var(--again); border-color:var(--again); color:#fff; font-weight:600;}
   .ghost:hover{color:var(--ink);}
   .hide{display:none;}
   @media (max-width:430px){ .prompt{font-size:19px;} .answer{font-size:16.5px;} }
@@ -101,52 +107,62 @@
 <body>
 <div class="wrap">
   <header>
-    <h1>中翻英複習<small>Spaced Review · Day 1–8 ＋ 單字表</small></h1>
+    <h1>中翻英複習<small>Spaced Review · Day 1–10 ＋ 單字表</small></h1>
     <div class="counts">
       <span><span class="dot r"></span>複習 <b id="c-rev">0</b></span>
       <span><span class="dot n"></span>新卡 <b id="c-new">0</b></span>
     </div>
   </header>
-  <div class="modebar" id="modebar">
-    <button class="chip active" data-mode="srs">📅 正式複習</button>
-    <button class="chip" data-mode="free">🔁 自由練習</button>
-    <span class="sep"></span>
-    <button class="chip active" data-filter="all">全部</button>
-    <button class="chip" data-filter="單字">單字</button>
-    <button class="chip" data-filter="句子">句子</button>
-    <button class="chip" data-filter="grammar">文法／觀念</button>
-  </div>
-  <div class="daybar" id="daybar">
-    <span class="daylabel">Day 範圍（每日翻譯練習）：</span>
-    <input type="number" id="dayFrom" min="1" placeholder="從">
-    <span class="dayto">～</span>
-    <input type="number" id="dayTo" min="1" placeholder="到">
-    <button class="chip" id="applyDay">套用</button>
-    <button class="chip" id="clearDay">清除</button>
-  </div>
-  <div class="daybar" id="hwbar">
-    <span class="daylabel">作業範圍（英文課回家複習）：</span>
-    <input type="number" id="hwFrom" min="1" placeholder="從">
-    <span class="dayto">～</span>
-    <input type="number" id="hwTo" min="1" placeholder="到">
-    <button class="chip" id="applyHw">套用</button>
-    <button class="chip" id="clearHw">清除</button>
-  </div>
-  <div class="topicbar" id="topicbarWrap">
-    <span class="daylabel">主題（不分日期／週次）：</span>
-    <div class="topicchips" id="topicbar"></div>
-    <button class="chip small" id="topicAll">全選</button>
-    <button class="chip small" id="topicNone">全不選</button>
-  </div>
   <div id="stage"></div>
+  <div class="filterbelt" id="filterbelt">
+    <div class="modebar" id="modebar">
+      <button class="chip active" data-mode="srs">📅 正式複習</button>
+      <button class="chip" data-mode="free">🔁 自由練習</button>
+      <span class="sep"></span>
+      <button class="chip active" data-filter="all">全部</button>
+      <button class="chip" data-filter="單字">單字</button>
+      <button class="chip" data-filter="句子">句子</button>
+      <button class="chip" data-filter="grammar">文法／觀念</button>
+    </div>
+    <div class="daybar" id="daybar">
+      <span class="daylabel">Day 範圍（每日翻譯練習）：</span>
+      <input type="number" id="dayFrom" min="1" placeholder="從" class="daynum">
+      <span class="dayto">～</span>
+      <input type="number" id="dayTo" min="1" placeholder="到" class="daynum">
+      <button class="chip" id="applyDay">套用</button>
+      <button class="chip" id="clearDay">清除</button>
+    </div>
+    <div class="daybar" id="hwbar">
+      <span class="daylabel">英文課回家複習：</span>
+      <select id="hwModeSelect" class="dropdown">
+        <option value="latest" selected>只看最新一次</option>
+        <option value="all">全部作業</option>
+      </select>
+    </div>
+    <div class="topicbar" id="topicbarWrap" style="display:none;">
+      <span class="daylabel">主題（不分日期／週次）：</span>
+      <div class="topicchips" id="topicbar"></div>
+      <button class="chip small" id="topicAll">全選</button>
+      <button class="chip small" id="topicNone">全不選</button>
+    </div>
+  </div>
   <footer>
     <span id="foot">進度自動保存在這個瀏覽器</span>
-    <button class="ghost" id="reset">重設進度</button>
+    <button class="gear" id="gearToggle" title="進階設定">⚙</button>
   </footer>
+  <div id="advPanel" class="hide">
+    <button class="ghost" id="reset">重設進度</button>
+  </div>
 </div>
 
 <script>
 const C = "https://dictionary.cambridge.org/dictionary/english-chinese-traditional/";
+// Day → 真實日期對照表。只收錄「確認過」的日期，不用猜的。
+// Day1 的日期來自匯出檔檔名 anki_day1_2026-06-25.txt，可靠。
+// Day2~Day8 目前沒有可靠依據，先留空；之後每加一個新 Day，會補上當天的真實日期。
+const DAY_DATES = {
+  1: "2026-06-25"
+};
 const DECK = [
   // ---------- Day 1 ----------
   { id:"s1", type:"sentence", tags:["句子","日常","D1"], qlabel:"中譯英",
@@ -390,7 +406,59 @@ const DECK = [
   { id:"g10", type:"grammar", tags:["易錯","D8"], qlabel:"易錯",
     front:"its 和 it's 差在哪？",
     answer:`its＝<mark>它的</mark>（所有格，無撇號）；it's＝<mark>it is</mark>（縮寫，有撇號）`,
-    analysis:[["its","所有格：Its food is great.（它的食物）"],["it's","it is 的縮寫：It's great food.（這是很棒的食物）"],["提醒","拼字很像，意思完全不同，寫作時務必檢查"]]}
+    analysis:[["its","所有格：Its food is great.（它的食物）"],["it's","it is 的縮寫：It's great food.（這是很棒的食物）"],["提醒","拼字很像，意思完全不同，寫作時務必檢查"]]},
+
+  // ---------- Day 9 ----------
+  { id:"s25", type:"sentence", tags:["句子","日常","D9"], qlabel:"中譯英",
+    front:"我原本打算今天整理房間，結果一整天都在滑手機。",
+    answer:`I <mark>was going to</mark> clean my room today, but I <mark>ended up scrolling through my phone</mark> all day.`,
+    analysis:[["was going to","「原本打算…結果」專門表達落空的計畫，比中性的 planned to 更貼切（來源：權威文法網站 frustrated plan 用法）"],["scrolling through my phone","滑手機 = scroll through my phone（✗ play the phone 不存在，中式直譯）"],["ended up","「結果卻」語感，比單純 but 更貼近計畫落空"],["同義","had planned to 也可以，稍正式"]]},
+  { id:"s26", type:"sentence", tags:["句子","職場","D9"], qlabel:"中譯英",
+    front:"附上本季的銷售報告，麻煩您於本週五前提供意見。",
+    answer:`Attached is <mark>this quarter's sales report</mark>. Please provide your <mark>feedback</mark> <mark>by Friday</mark>.`,
+    analysis:[["this quarter's sales report","語序：所有格+名詞；單數報告配 Attached is"],["feedback","商務「提供意見」= feedback（非 opinions，較個人籠統）"],["by Friday","截止日常用 by（含當天）；before 則不含當天"]]},
+  { id:"s27", type:"sentence", tags:["句子","財經","D9"], qlabel:"中譯英",
+    front:"若聯準會如市場預期般降息，科技股可能會迎來一波反彈。",
+    answer:`If <mark>the Fed cuts</mark> interest rates <mark>as the market expects</mark>, tech stocks may <mark>see a rally</mark>.`,
+    analysis:[["the Fed","⚠️ 聯準會 = the Fed（美國央行，管利率），非 IMF（國際貨幣基金組織，管跨國金融穩定）"],["cuts","第一條件句 If+現在式，第三人稱單數加 s"],["as the market expects","如市場預期 = as the market expects / in line with market expectations"],["see a rally","反彈財經標準用字 = rally（非籠統的 rise）"]]},
+  { id:"g11", type:"grammar", tags:["辨析","D9"], qlabel:"辨析",
+    front:"the Fed 和 IMF 差在哪？",
+    answer:`the Fed：<mark>美國央行</mark>，管美國利率；IMF：<mark>國際貨幣基金組織</mark>，管跨國金融穩定`,
+    analysis:[["the Fed","the Federal Reserve，決定美國升降息、貨幣政策"],["IMF","International Monetary Fund，對陷入危機的國家放款、監督全球金融穩定"],["提醒","講「聯準會升降息」只能用 the Fed，不是 IMF"]]},
+  { id:"g12", type:"grammar", tags:["易錯","D9"], qlabel:"易錯",
+    front:"by 和 before 表示截止日期時差在哪？",
+    answer:`by：<mark>含當天</mark>的最晚期限；before：<mark>不含當天</mark>`,
+    analysis:[["by Friday","最晚週五（週五當天仍算數）"],["before Friday","週五之前，嚴格說不含週五本身"],["提醒","中文「本週五前」通常指 by Friday"]]},
+  { id:"g13", type:"grammar", tags:["文法","D9"], qlabel:"文法",
+    front:"第一條件句的主要子句一定要用 will 嗎？",
+    answer:`不一定，可換成 <mark>may / might / can / could / should</mark>`,
+    analysis:[["規則","判斷第幾類條件句看 if 子句的動詞形式（現在式=第一類），不是看主要子句用哪個助動詞"],["will","確定會發生：If it rains, I will stay home."],["may/might","有可能發生（may 較肯定、might 較保守）：If it rains, I may/might stay home."],["can/could/should","can=能夠、could=較委婉的可能、should=建議：If he trains harder, he could win."],["來源","Cambridge Grammar、Test-English 等文法資料一致確認"]]},
+
+  // ---------- Day 10 ----------
+  { id:"s28", type:"sentence", tags:["句子","日常","D10"], qlabel:"中譯英",
+    front:"這款筆電雖然比較貴，但用了兩年多，效能完全沒有變差。",
+    answer:`Although this laptop is more expensive, its <mark>performance hasn't declined at all</mark> <mark>after two years of use</mark>.`,
+    analysis:[["this laptop(非this kind of)","中文「這款」+個人使用經驗會自動窄化成「我這一台」；英文 this kind of 不會自動窄化，會被讀成「這整個型號普遍來說」，跟後面個人經驗對不起來"],["laptop/notebook","兩個都對，非修正！laptop 是日常口語最常見、無歧義；notebook 較常見於業界規格語境（且可能跟紙本筆記本混淆）"],["Although(不加but)","although/but 都表轉折，只能選一個，不可疊用"],["performance","效能=performance，非 efficiency（效率，資源使用得好不好）"],["hasn't declined","從過去持續到現在的狀態用現在完成式；變差=decline"],["after two years of use","「用了兩年」= after + 時間 + of use"]]},
+  { id:"s29", type:"sentence", tags:["句子","職場","D10"], qlabel:"中譯英",
+    front:"由於人手不足，這個專案恐怕得延到下個月才能啟動。",
+    answer:`Due to the labor shortage, this project may have to be <mark>postponed until next month</mark>.`,
+    analysis:[["✅ Due to the labor shortage / may have to be","Day8 shortage 和 have to 都用對了"],["postponed until","延到某時間點標準搭配是 postpone...until（非 to start by）"]]},
+  { id:"s30", type:"sentence", tags:["句子","財經","D10"], qlabel:"中譯英",
+    front:"分析師指出，這波股市反彈可能只是短期現象，投資人仍應保持謹慎。",
+    answer:`Analysts pointed out that <mark>the stock rally</mark> may be <mark>a short-term phenomenon</mark>, <mark>and</mark> investors should <mark>remain cautious</mark>.`,
+    analysis:[["the stock rally","股市反彈語序=stock rally（非 the rally of the stock）；rally 拼字"],["a short-term phenomenon","現象=phenomenon，非 performance（表現、績效，不同概念）"],["and","逗號連接兩個完整句子需加連接詞，否則是 comma splice"],["should remain cautious","「應」是建議語氣，用 should 較 have to 貼切"]]},
+  { id:"g14", type:"grammar", tags:["易錯","D10"], qlabel:"易錯",
+    front:"although 和 but 可以一起用嗎？（雖然…但）",
+    answer:`不行，<mark>只能選一個</mark>`,
+    analysis:[["規則","although 和 but 都表轉折，中文「雖然…但」兩個都要，但英文只能擇一"],["對","Although it's expensive, it's worth it. ／ It's expensive, but it's worth it."],["錯","✗ Although it's expensive, but it's worth it."]]},
+  { id:"g15", type:"grammar", tags:["文法","D10"], qlabel:"文法",
+    front:"什麼是 comma splice（逗號連句）？該怎麼修？",
+    answer:`兩個完整句子只用<mark>逗號</mark>連接，是錯誤用法`,
+    analysis:[["錯","✗ It's late, we should go."],["修法1","加連接詞：It's late, so we should go."],["修法2","改句號或分號：It's late. We should go. ／ It's late; we should go."]]},
+  { id:"g16", type:"grammar", tags:["辨析","D10"], qlabel:"辨析",
+    front:"中文「這款/這類＋個人使用經驗」翻成英文 this kind of 會有什麼問題？",
+    answer:`英文 <mark>this kind of 不會自動窄化</mark>成「我這一台」，仍讀作「這整個型號」`,
+    analysis:[["中文","「這款筆電...我用了兩年」→ 中文母語者自動理解成「我這一台」，款不構成問題"],["英文","「this kind of laptop...I've used it for two years」→ 仍讀作在講一整個型號的普遍狀況，跟後面個人使用經驗對不起來"],["修法","講自己這一台特定的東西，直接用 this + 名詞（this laptop），不要加 kind of / type of"],["提醒","這是中翻英陷阱：中文某些字會因上下文自動調整意思，英文逐字對應詞不一定有同樣彈性"]]}
 ];
 
 // ---------- Bulk vocabulary (bidirectional 中↔英) ----------
@@ -464,7 +532,19 @@ const WORDS = [
 
   // Day 8 單字
   {id:"w401",en:"shortage",ipa:"/ˈʃɔː.tɪdʒ/",pos:"n.",u:"Day8",zh:"短缺、不足",def:`a situation in which there is not enough of something that is needed`,eg:`The industry is struggling with a severe labor shortage.`,syn:`片語 labor shortage = 缺工（Cambridge 收錄搭配詞）`,cam:"shortage"},
-  {id:"w402",en:"labor costs",ipa:"/ˈleɪ.bər kɒst/",pos:"n.",u:"Day8",zh:"人力成本、勞動成本",def:`the cost of employing workers, including wages and benefits`,eg:`Labor costs in this industry have been rising in recent years.`,syn:`辨析 labor costs(人力成本) ≠ human resources(人資部門/概念)`}
+  {id:"w402",en:"labor costs",ipa:"/ˈleɪ.bər kɒst/",pos:"n.",u:"Day8",zh:"人力成本、勞動成本",def:`the cost of employing workers, including wages and benefits`,eg:`Labor costs in this industry have been rising in recent years.`,syn:`辨析 labor costs(人力成本) ≠ human resources(人資部門/概念)`},
+
+  // Day 9 單字
+  {id:"w501",en:"scroll through",ipa:"/skrəʊl θruː/",pos:"phr. v.",u:"Day9",zh:"滑（手機／頁面）、瀏覽",def:`to move through text or images on a screen by scrolling`,eg:`I ended up scrolling through my phone all day.`,syn:`辨析 ✗ play the phone 這個講法不存在，是中式直譯`},
+  {id:"w502",en:"feedback",ipa:"/ˈfiːd.bæk/",pos:"n. (U)",u:"Day9",zh:"意見、回饋",def:`comments about how well something is working, given so it can be improved`,eg:`Please provide your feedback by Friday.`,syn:`辨析 feedback(針對特定事物的具體回饋) vs opinions(較個人籠統的看法)`},
+  {id:"w503",en:"the Fed",ipa:"/ðə fed/",pos:"n.",u:"Day9",zh:"聯準會（美國中央銀行，正式名稱 the Federal Reserve）",def:`the central bank of the United States, responsible for setting US interest rates and monetary policy`,eg:`Tech stocks may see a rally if the Fed cuts rates.`,syn:`辨析 ⚠️ the Fed(美國央行,管美國利率) ≠ IMF(國際貨幣基金組織,管跨國金融穩定與貸款)，職責完全不同`},
+  {id:"w504",en:"rally",ipa:"/ˈræl.i/",pos:"n./v.",u:"Day9",zh:"（股市）反彈、回升",def:`a sudden increase in share prices after a period when they have been falling`,eg:`Tech stocks may see a rally if the Fed cuts rates.`,syn:`搭配 a rally in shares/prices；stage/enjoy a rally`},
+
+  // Day 10 單字
+  {id:"w601",en:"performance",ipa:"/pəˈfɔː.məns/",pos:"n.",u:"Day10",zh:"效能、表現",def:`how well a person, machine, or organization does a piece of work or an activity`,eg:`The laptop's performance hasn't declined at all after two years of use.`,syn:`辨析 performance(效能、表現) vs efficiency(效率，資源使用得好不好，如省電)`},
+  {id:"w602",en:"phenomenon",ipa:"/fəˈnɒm.ɪ.nən/",pos:"n.",u:"Day10",zh:"現象",def:`a fact or event that can be observed, especially one that is unusual`,eg:`This rally may be a short-term phenomenon.`,syn:`複數 phenomena（不規則複數，注意拼法）`},
+  {id:"w603",en:"postpone...until",ipa:"/pəˈspəʊn/",pos:"phr.",u:"Day10",zh:"把…延到（某時間點）",def:`postpone + 事情 + until + 時間，是最標準常見的搭配`,eg:`The project may have to be postponed until next month.`,syn:`辨析 postpone...to 也對，但語意較模糊，until 更清楚指出延到哪個時間點`},
+  {id:"w604",en:"stock rally",ipa:"/stɒk ˈræl.i/",pos:"phr.",u:"Day10",zh:"股市反彈",def:`a period of rising stock prices`,eg:`Analysts pointed out that the stock rally may be a short-term phenomenon.`,syn:`辨析 名詞+名詞語序是 stock rally，非 the rally of the stock`}
 ];
 for(const w of WORDS){
   const link = `<a href='${C}${(w.cam||w.en).replace(/ /g,'-')}' target='_blank'>Cambridge</a>`;
@@ -574,7 +654,14 @@ function isVocab(c){ return c.type==="vocab" && !isGrammar(c); }
 function isSentence(c){ return c.type==="sentence"; }
 let FILTER="all";
 let DAY_MIN=null, DAY_MAX=null;
-let HW_MIN=null, HW_MAX=null;
+let HW_MODE="latest"; // 'latest' | 'all' — 使用者通常只複習最近一次作業
+function maxHw(){ let m=null; for(const c of DECK){ const h=hwOf(c); if(h!==null && (m===null||h>m)) m=h; } return m; }
+function matchesHwRange(c){
+  const h=hwOf(c);
+  if(h===null) return true; // 無 HW 標籤的卡不受此列限制
+  if(HW_MODE==="all") return true;
+  return h===maxHw(); // latest：只保留最新一週
+}
 function dayOf(c){
   for(const t of c.tags){
     let m=/^D(\d+)$/.exec(t); if(m) return parseInt(m[1]);
@@ -605,13 +692,6 @@ function matchesDayRange(c){
   if(d===null) return true; // 無 Day 標籤的卡不受此列限制
   if(DAY_MIN!==null && d<DAY_MIN) return false;
   if(DAY_MAX!==null && d>DAY_MAX) return false;
-  return true;
-}
-function matchesHwRange(c){
-  const h=hwOf(c);
-  if(h===null) return true; // 無 HW 標籤的卡不受此列限制
-  if(HW_MIN!==null && h<HW_MIN) return false;
-  if(HW_MAX!==null && h>HW_MAX) return false;
   return true;
 }
 function matchesTopic(c){
@@ -747,15 +827,8 @@ document.getElementById('clearDay').onclick=()=>{
   document.getElementById('dayFrom').value=""; document.getElementById('dayTo').value="";
   extraToday=0; buildQueue(); render();
 };
-document.getElementById('applyHw').onclick=()=>{
-  const f=document.getElementById('hwFrom').value, t=document.getElementById('hwTo').value;
-  HW_MIN = f!==""?parseInt(f):null;
-  HW_MAX = t!==""?parseInt(t):null;
-  extraToday=0; buildQueue(); render();
-};
-document.getElementById('clearHw').onclick=()=>{
-  HW_MIN=null; HW_MAX=null;
-  document.getElementById('hwFrom').value=""; document.getElementById('hwTo').value="";
+document.getElementById('hwModeSelect').onchange=(e)=>{
+  HW_MODE=e.target.value;
   extraToday=0; buildQueue(); render();
 };
 
@@ -776,9 +849,23 @@ document.getElementById('topicAll').onclick=()=>{ TOPIC_ACTIVE=new Set(ALL_TOPIC
 document.getElementById('topicNone').onclick=()=>{ TOPIC_ACTIVE=new Set(); renderTopicBar(); extraToday=0; buildQueue(); render(); };
 
 initTopics(); renderTopicBar();
+if(maxHw()===null) document.getElementById('hwbar').style.display='none';
 STATE=loadState(); buildQueue(); render();
-document.getElementById("reset").onclick=()=>{
-  if(!confirm("確定要清除所有複習進度嗎？")) return;
+document.getElementById('gearToggle').onclick=()=>{
+  document.getElementById('advPanel').classList.toggle('hide');
+};
+let resetArmed=false, resetTimer=null;
+const resetBtn=document.getElementById("reset");
+resetBtn.onclick=()=>{
+  if(!resetArmed){
+    resetArmed=true;
+    resetBtn.textContent="⚠️ 再點一次以清除全部進度";
+    resetBtn.classList.add("armed");
+    resetTimer=setTimeout(()=>{ resetArmed=false; resetBtn.textContent="重設進度"; resetBtn.classList.remove("armed"); }, 4000);
+    return;
+  }
+  clearTimeout(resetTimer); resetArmed=false;
+  resetBtn.textContent="重設進度"; resetBtn.classList.remove("armed");
   STATE={cards:{},newByDate:{}}; for(const c of DECK){ STATE.cards[c.id]={ef:2.5,interval:0,reps:0,due:null,introduced:false}; }
   saveState(STATE); buildQueue(); render();
 };
