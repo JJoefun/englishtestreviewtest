@@ -107,7 +107,7 @@
 <body>
 <div class="wrap">
   <header>
-    <h1>中翻英複習<small>Spaced Review · Day 1–10 ＋ 單字表</small></h1>
+    <h1>中翻英複習<small>Spaced Review · Day 1–11 ＋ 單字表</small></h1>
     <div class="counts">
       <span><span class="dot r"></span>複習 <b id="c-rev">0</b></span>
       <span><span class="dot n"></span>新卡 <b id="c-new">0</b></span>
@@ -431,8 +431,8 @@ const DECK = [
     analysis:[["by Friday","最晚週五（週五當天仍算數）"],["before Friday","週五之前，嚴格說不含週五本身"],["提醒","中文「本週五前」通常指 by Friday"]]},
   { id:"g13", type:"grammar", tags:["文法","D9"], qlabel:"文法",
     front:"第一條件句的主要子句一定要用 will 嗎？",
-    answer:`不一定，可換成 <mark>may / might / can / could / should</mark>`,
-    analysis:[["規則","判斷第幾類條件句看 if 子句的動詞形式（現在式=第一類），不是看主要子句用哪個助動詞"],["will","確定會發生：If it rains, I will stay home."],["may/might","有可能發生（may 較肯定、might 較保守）：If it rains, I may/might stay home."],["can/could/should","can=能夠、could=較委婉的可能、should=建議：If he trains harder, he could win."],["來源","Cambridge Grammar、Test-English 等文法資料一致確認"]]},
+    answer:`不一定，可換成 <mark>may / might / can / could / should，甚至直接用祈使句</mark>`,
+    analysis:[["規則","判斷第幾類條件句看 if 子句的動詞形式（現在式=第一類），不是看主要子句用哪個助動詞"],["will","確定會發生：If it rains, I will stay home."],["may/might","有可能發生（may 較肯定、might 較保守）：If it rains, I may/might stay home."],["can/could/should","can=能夠、could=較委婉的可能、should=建議：If he trains harder, he could win."],["祈使句(imperative)","用在請求、建議、指示，商業書信常見：If your company is interested, please feel free to contact us."],["來源","Collins Grammar、Cambridge Grammar、Test-English、Grammaring 等文法資料一致確認"]]},
 
   // ---------- Day 10 ----------
   { id:"s28", type:"sentence", tags:["句子","日常","D10"], qlabel:"中譯英",
@@ -458,7 +458,29 @@ const DECK = [
   { id:"g16", type:"grammar", tags:["辨析","D10"], qlabel:"辨析",
     front:"中文「這款/這類＋個人使用經驗」翻成英文 this kind of 會有什麼問題？",
     answer:`英文 <mark>this kind of 不會自動窄化</mark>成「我這一台」，仍讀作「這整個型號」`,
-    analysis:[["中文","「這款筆電...我用了兩年」→ 中文母語者自動理解成「我這一台」，款不構成問題"],["英文","「this kind of laptop...I've used it for two years」→ 仍讀作在講一整個型號的普遍狀況，跟後面個人使用經驗對不起來"],["修法","講自己這一台特定的東西，直接用 this + 名詞（this laptop），不要加 kind of / type of"],["提醒","這是中翻英陷阱：中文某些字會因上下文自動調整意思，英文逐字對應詞不一定有同樣彈性"]]}
+    analysis:[["中文","「這款筆電...我用了兩年」→ 中文母語者自動理解成「我這一台」，款不構成問題"],["英文","「this kind of laptop...I've used it for two years」→ 仍讀作在講一整個型號的普遍狀況，跟後面個人使用經驗對不起來"],["修法","講自己這一台特定的東西，直接用 this + 名詞（this laptop），不要加 kind of / type of"],["提醒","這是中翻英陷阱：中文某些字會因上下文自動調整意思，英文逐字對應詞不一定有同樣彈性"]]},
+
+  // ---------- Day 11 ----------
+  { id:"s31", type:"sentence", tags:["句子","日常","D11"], qlabel:"中譯英",
+    front:"這附近新開了一家咖啡廳，聽說咖啡很棒，改天我們去看看。",
+    answer:`There's a new café nearby, and I heard the coffee is great. Let's <mark>check it out</mark> sometime.`,
+    analysis:[["check it out","check out 需接受詞，補上 it 才完整（✅ 你其他部分都對）"],["café","無撇號（✗ cafe'）"],["is（潤飾非必修）","評價目前應仍成立，用 is 較自然；was 也不算錯"]]},
+  { id:"s32", type:"sentence", tags:["句子","職場","D11"], qlabel:"中譯英",
+    front:"若貴公司有興趣合作，歡迎隨時與我們聯繫，討論細節。",
+    answer:`If your company is <mark>interested in cooperating</mark>, please <mark>feel free to contact us</mark> to discuss the details.`,
+    analysis:[["interested in cooperating","有興趣＝interested in（非 willing to，語感是「願意」不是「有興趣」）"],["please feel free to contact us","⚠️ it's welcome for you to... 結構不成立；歡迎做某事的固定講法是 feel free to"],["✅ If...is","第一條件句結構正確"]]},
+  { id:"s33", type:"sentence", tags:["句子","財經","D11"], qlabel:"中譯英",
+    front:"儘管通膨降溫，消費者的實質購買力仍未完全恢復。",
+    answer:`Despite <mark>the easing of inflation</mark>, consumers' <mark>real purchasing power</mark> <mark>has not fully recovered</mark>.`,
+    analysis:[["the easing of inflation","降溫是動態過程用動名詞 easing（非名詞 ease=輕鬆）；inflation 不可數不加 s"],["real purchasing power","實質購買力固定財經用字（非 consumption ability，此講法不存在）"],["has not fully recovered","現在完成式表從過去持續到現在；完全=fully（非 at all，意思不同）"]]},
+  { id:"g17", type:"grammar", tags:["易錯","D11"], qlabel:"易錯",
+    front:"「歡迎你做…」英文怎麼說？",
+    answer:`<mark>feel free to</mark> / you are welcome to`,
+    analysis:[["對","Please feel free to contact us. ／ You are welcome to contact us."],["錯","✗ It's welcome for you to contact us.（welcome 當形容詞不能這樣接用）"]]},
+  { id:"g18", type:"grammar", tags:["辨析","D11"], qlabel:"辨析",
+    front:"ease（名詞）和 easing（動名詞）在講「降溫」時差在哪？",
+    answer:`ease(n.)＝<mark>輕鬆、容易</mark>；easing(動名詞)＝<mark>正在趨緩的過程</mark>`,
+    analysis:[["ease(名詞)","輕鬆、容易，跟「降溫」意思完全不同"],["easing","「降溫」的動態過程要用動名詞：the easing of inflation"],["提醒","inflation 是不可數名詞，不加 s（呼應 Day7 的 inflation 用法）"]]}
 ];
 
 // ---------- Bulk vocabulary (bidirectional 中↔英) ----------
@@ -485,6 +507,24 @@ const WORDS = [
   {id:"w019",en:"acceleration",ipa:"/ækˌsɛlə'reʃən/",pos:"n.",u:"字表",zh:"加速、加快",def:`an increase in speed or rate`,eg:`There is an acceleration in the decline of the coal industry.`},
   {id:"w020",en:"access",ipa:"/ˈæksɛs/",pos:"n. (U)",u:"字表",zh:"進入、取得（權）",def:`the right or ability to enter, reach, or use something`,eg:`The police managed to gain access to the building through an upstairs window.`,ex:`同尾字 recess（休息）‧ process（過程）‧ excess（過量）`},
   {id:"w021",en:"accessible",ipa:"/æk'sɛsəbl/",pos:"adj",u:"字表",zh:"易接近的、可取得的",def:`able to be reached, obtained, or approached`,eg:`A boss should be accessible to his staff.`,syn:`= approachable；⇔ inaccessible`},
+
+  // 英文課回家複習 HW1（3000 More Essential Words in English, accessory~acknowledge）
+  {id:"w022",en:"accessory",ipa:"/æk'sɛsərɪ/",pos:"n. (C)",u:"HW1",zh:"附件、配件",def:`an extra item added to something for decoration or usefulness`,eg:`The roof rack and radio are examples of car accessories.`},
+  {id:"w023",en:"acclaim",ipa:"/ə'klem/",pos:"vt / n.(U)",u:"HW1",zh:"讚揚、稱讚；讚譽",def:`to praise publicly (vt); public praise and approval (n)`,eg:`The herbal medicine was a much-acclaimed panacea. ／ His paper received great acclaim in the symposium.`,syn:`= praise；= approval`,ex:`同尾字 claim(聲稱)‧ proclaim(宣告)‧ declaim(慷慨陳詞)‧ reclaim(要求收回)‧ disclaim(否認)‧ exclaim(驚叫)`},
+  {id:"w024",en:"accommodate",ipa:"/ə'kɑməˌdet/",pos:"vt",u:"HW1",zh:"容納；順應、適應",def:`to have enough space for; to adjust to changes or needs`,eg:`This hotel can accommodate 500 guests. ／ We must be flexible enough to accommodate changes in the market. ／ You should soon accommodate yourself to the new environment.`,syn:`= hold；= take account of；= adapt, adjust`},
+  {id:"w025",en:"accommodation",ipa:"/əˌkɑmə'deʃən/",pos:"n. (U)",u:"HW1",zh:"住宿",def:`a place to live or stay, especially when travelling`,eg:`The travel agent will fix up/arrange our accommodation.`},
+  {id:"w026",en:"accord",ipa:"/ə'kɔrd/",pos:"vi / vt / n.(C)",u:"HW1",zh:"（vi）一致、相符；（vt）給予；（n）協議",def:`(vi) to be consistent or in agreement with something; (vt) to give or grant; (n) a formal agreement`,eg:`What you have just said does not accord with what you told us last week. ／ On their return, the basketball players were accorded a hero's welcome. ／ Both Israel and Palestine balked at signing a peace accord.`,syn:`= correspond (with)，be consistent (with)；⇔ be contrary (to)；= give`,ex:`同尾字 cord(繩子)‧ record(記錄)‧ discord(不和)‧ concord(調和)｜相關字 pact/contract/treaty/compact/agreement/covenant/convention（皆表協定、條約）`},
+  {id:"w027",en:"accordance",ipa:"/ə'kɔrdns/",pos:"n. (U)",u:"HW1",zh:"依照、遵照",def:`used in the phrase "in accordance with" to mean following a rule or wish`,eg:`In accordance with your wishes, I dropped out of the race.`},
+  {id:"w028",en:"accordingly",ipa:"/ə'kɔrdɪŋlɪ/",pos:"adv",u:"HW1",zh:"因此；相應地",def:`as a result; in a way that is appropriate to the situation`,eg:`If you work extra hours, you will be paid accordingly. ／ She asked me to leave, and accordingly I did.`,syn:`= therefore`},
+  {id:"w029",en:"accountable",ipa:"/ə'kaʊntəbl/",pos:"adj",u:"HW1",zh:"負責的、有責任的",def:`required or expected to explain your actions or decisions`,eg:`You must be accountable for your decision.`,syn:`= responsible, answerable；* accountability (U)`},
+  {id:"w030",en:"accounting",ipa:"/ə'kaʊntɪŋ/",pos:"n. (U)",u:"HW1",zh:"會計、記帳",def:`the practice of recording and summarizing business/financial transactions`,eg:`Sherry is good at accounting.`},
+  {id:"w031",en:"accumulate",ipa:"/ə'kjumjəˌlet/",pos:"vt / vi",u:"HW1",zh:"積累、累積",def:`to gradually gather or increase in quantity over time`,eg:`Jack has accumulated a huge debt from gambling. ／ Dirt and dust have accumulated in the corners of the old house.`,syn:`= amass；= build up`},
+  {id:"w032",en:"accumulation",ipa:"/əˌkjumjə'leʃən/",pos:"n. (C)",u:"HW1",zh:"累積（物）",def:`a mass or quantity that has gathered over time`,eg:`Wisdom is an accumulation of experience and knowledge.`},
+  {id:"w033",en:"accusation",ipa:"/ˌækjə'zeʃən/",pos:"n. (C)",u:"HW1",zh:"指控、指責",def:`a claim that someone has done something wrong`,eg:`It is wrong to make wild accusations against your boss.`},
+  {id:"w034",en:"accuse",ipa:"/ə'kjuz/",pos:"vt",u:"HW1",zh:"指控、控告",def:`to say that someone has done something wrong or illegal`,eg:`Jane was accused of taking bribes.`,syn:`= charge (sb with sth)，indict (sb for sth)`,ex:`同尾字 excuse(原諒)`},
+  {id:"w035",en:"accustom",ipa:"/ə'kʌstəm/",pos:"vt",u:"HW1",zh:"使習慣",def:`to make (oneself or someone) familiar with something new, usually through experience`,eg:`You have to accustom yourself to your new job. ／ I am not accustomed to going to bed so early.`,syn:`= inure`},
+  {id:"w036",en:"ace",ipa:"/es/",pos:"n. (C)",u:"HW1",zh:"（撲克牌）A牌；（某領域的）高手",def:`the playing card with a single symbol, ranked highest or lowest; an expert at something`,eg:`Here is an ace of spades/hearts/diamonds/clubs. ／ Betty is an ace at tennis/chess.`},
+  {id:"w037",en:"acknowledge",ipa:"/ək'nɑlɪdʒ/",pos:"vt",u:"HW1",zh:"承認；公認",def:`to accept or admit that something is true; to recognize the achievements or status of someone`,eg:`Jill acknowledged her mistake. ／ Mr. Liang is widely acknowledged as an authority on Shakespeare.`,syn:`= admit, confess, concede`},
 
   // Crime & Safety（音標為 IPA）
   {id:"c01",en:"escape",ipa:"/ɪˈskeɪp/",pos:"v.",u:"Crime",zh:"逃跑；逃脫",def:`to get away from a place or situation`,eg:`The prisoner escaped through a window.`,syn:`搭配 escape from prison, narrow escape`},
@@ -544,7 +584,13 @@ const WORDS = [
   {id:"w601",en:"performance",ipa:"/pəˈfɔː.məns/",pos:"n.",u:"Day10",zh:"效能、表現",def:`how well a person, machine, or organization does a piece of work or an activity`,eg:`The laptop's performance hasn't declined at all after two years of use.`,syn:`辨析 performance(效能、表現) vs efficiency(效率，資源使用得好不好，如省電)`},
   {id:"w602",en:"phenomenon",ipa:"/fəˈnɒm.ɪ.nən/",pos:"n.",u:"Day10",zh:"現象",def:`a fact or event that can be observed, especially one that is unusual`,eg:`This rally may be a short-term phenomenon.`,syn:`複數 phenomena（不規則複數，注意拼法）`},
   {id:"w603",en:"postpone...until",ipa:"/pəˈspəʊn/",pos:"phr.",u:"Day10",zh:"把…延到（某時間點）",def:`postpone + 事情 + until + 時間，是最標準常見的搭配`,eg:`The project may have to be postponed until next month.`,syn:`辨析 postpone...to 也對，但語意較模糊，until 更清楚指出延到哪個時間點`},
-  {id:"w604",en:"stock rally",ipa:"/stɒk ˈræl.i/",pos:"phr.",u:"Day10",zh:"股市反彈",def:`a period of rising stock prices`,eg:`Analysts pointed out that the stock rally may be a short-term phenomenon.`,syn:`辨析 名詞+名詞語序是 stock rally，非 the rally of the stock`}
+  {id:"w604",en:"stock rally",ipa:"/stɒk ˈræl.i/",pos:"phr.",u:"Day10",zh:"股市反彈",def:`a period of rising stock prices`,eg:`Analysts pointed out that the stock rally may be a short-term phenomenon.`,syn:`辨析 名詞+名詞語序是 stock rally，非 the rally of the stock`},
+
+  // Day 11 單字
+  {id:"w701",en:"check out",ipa:"/tʃek aʊt/",pos:"phr. v.",u:"Day11",zh:"去看看、去瞧瞧",def:`to look at or visit something to see if you like it`,eg:`Let's check it out sometime.`,syn:`辨析 及物用法，通常要接受詞（check it out / check out the place），不能只說 check out 結尾`},
+  {id:"w702",en:"feel free to",ipa:"/fiːl friː tuː/",pos:"phr.",u:"Day11",zh:"歡迎、請隨意（做某事）",def:`used to tell someone they are allowed to do something`,eg:`Please feel free to contact us to discuss the details.`,syn:`辨析 ✗ it's welcome for you to... 此結構不存在；「歡迎你做…」= feel free to / you are welcome to`},
+  {id:"w703",en:"purchasing power",ipa:"/ˈpɜː.tʃə.sɪŋ ˌpaʊ.ər/",pos:"n.",u:"Day11",zh:"（實質）購買力",def:`a person's or currency's ability to buy goods and services`,eg:`Consumers' real purchasing power has not fully recovered.`,syn:`辨析 ≠ consumption ability（此講法不存在）`},
+  {id:"w704",en:"easing",ipa:"/ˈiː.zɪŋ/",pos:"n. (動名詞)",u:"Day11",zh:"（經濟數據）趨緩、降溫的過程",def:`the gerund form of "ease", describing the ongoing process of becoming less severe`,eg:`Despite the easing of inflation, real purchasing power has not fully recovered.`,syn:`辨析 ease(名詞)=輕鬆、容易，跟「降溫」意思完全不同；動態過程要用 easing`}
 ];
 for(const w of WORDS){
   const link = `<a href='${C}${(w.cam||w.en).replace(/ /g,'-')}' target='_blank'>Cambridge</a>`;
