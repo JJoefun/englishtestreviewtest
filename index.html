@@ -107,7 +107,7 @@
 <body>
 <div class="wrap">
   <header>
-    <h1>中翻英複習<small>Spaced Review · Day 1–12 ＋ 單字表</small></h1>
+    <h1>中翻英複習<small>Spaced Review · Day 1–14 ＋ 單字表</small></h1>
     <div class="counts">
       <span><span class="dot r"></span>複習 <b id="c-rev">0</b></span>
       <span><span class="dot n"></span>新卡 <b id="c-new">0</b></span>
@@ -498,7 +498,55 @@ const DECK = [
   { id:"g19", type:"grammar", tags:["易錯","D12"], qlabel:"易錯",
     front:"because 和 despite 差在哪？（今日重點：邏輯關係別搞反）",
     answer:`because＝<mark>因果</mark>（因為）；despite＝<mark>對比讓步</mark>（儘管）`,
-    analysis:[["because","表原因→結果：Because it rained, we stayed home."],["despite","表對比、儘管：Despite the rain, we went out."],["提醒","中文「儘管」千萬別跟「因為」搞混，兩者邏輯關係完全相反"]]}
+    analysis:[["because","表原因→結果：Because it rained, we stayed home."],["despite","表對比、儘管：Despite the rain, we went out."],["提醒","中文「儘管」千萬別跟「因為」搞混，兩者邏輯關係完全相反"]]},
+
+  // ---------- Day 13 ----------
+  { id:"s37", type:"sentence", tags:["句子","日常","D13"], qlabel:"中譯英",
+    front:"我上禮拜訂的包裹到現在還沒送到，我打算打電話去問問看。",
+    answer:`The package I ordered last week <mark>hasn't arrived</mark> yet, <mark>so</mark> I'm going to call to check.`,
+    analysis:[["hasn't arrived / hasn't been delivered","包裹是被動接受者，用 arrive(不及物) 或 be delivered(被動)；✗ hasn't delivered(主動,邏輯不對)"],["so","⚠️ comma splice 第三次：兩完整句要加連接詞 so"],["✅ 現在完成式","hasn't...yet 掌握正確"],["🔄 換句話說","The parcel I ordered last week still hasn't turned up, so I'll give them a call to chase it up.（parcel；turn up=出現；give them a call；chase up=追問）"]]},
+  { id:"s38", type:"sentence", tags:["句子","職場","D13"], qlabel:"中譯英",
+    front:"附件為修改後的合約草稿，如無其他問題，我們將於下週簽署。",
+    answer:`Attached is <mark>the revised draft of the contract</mark>. <mark>If there are no further questions</mark>, we will sign <mark>it</mark> next week.`,
+    analysis:[["the revised draft of the contract","修改後=revised(合約語境比 modified 貼)；草稿單數→Attached is"],["If there are no further questions","如無其他問題的正式講法；又一個 comma splice 要斷句"],["sign it","接受詞 it 讀起來更完整"],["✅ 第一條件句","if + 現在式, will 判斷正確"],["🔄 換句話說","Please find attached the updated contract draft. If everything looks good, we'll sign it next week.（Please find attached；updated；if everything looks good=如果都沒問題）"]]},
+  { id:"s39", type:"sentence", tags:["句子","財經","D13"], qlabel:"中譯英",
+    front:"由於出口數據優於預期，本地股市今天早盤大漲。",
+    answer:`<mark>Thanks to better-than-expected export figures</mark>, the local <mark>stock market</mark> <mark>surged in early trading</mark> this morning.`,
+    analysis:[["better than expected","優於預期(財經高頻)；✗ prior to(意思是「在…之前」，與「優於」無關)"],["Thanks to / Due to","正面因素用 thanks to；用 because 則要接完整子句"],["stock market","本地股市=stock market(整個市場)，非 stock(單一支股票)"],["surged","大漲=surged/jumped(比 rise sharply 有力)；今早已發生用過去式"],["in early trading","早盤固定講法"],["🔄 換句話說","The local market jumped at the open this morning after export data beat expectations.（jumped；at the open=開盤；beat expectations）"]]},
+  { id:"g20", type:"grammar", tags:["易錯","D13"], qlabel:"易錯",
+    front:"「包裹還沒送到」為什麼不能說 hasn't delivered？",
+    answer:`包裹是<mark>被動接受者</mark>，要用 hasn't been delivered 或 hasn't arrived`,
+    analysis:[["被動","The package hasn't been delivered.（包裹「被」送達）"],["不及物","The package hasn't arrived.（包裹自己到達）"],["錯","✗ The package hasn't delivered（主動=包裹沒去送別的東西，邏輯不對）"]]},
+  { id:"d4", type:"vocab", tags:["辨析","D13"], qlabel:"辨析",
+    front:"「優於預期」英文怎麼說？為什麼不是 prior to？",
+    answer:`<mark>better than expected</mark> / beat expectations`,
+    analysis:[["better than expected","優於預期；當形容詞加連字號：better-than-expected data"],["beat expectations","超出預期(同義)"],["✗ prior to","意思是「在…之前」(時間先後)，跟「優於(比較好)」完全無關"]]},
+  { id:"d5", type:"vocab", tags:["辨析","D13"], qlabel:"辨析",
+    front:"revised 和 modified 差在哪？（都是「修改後的」）",
+    answer:`revised＝<mark>文字內容/文件的修訂</mark>；modified＝<mark>功能/結構/行為的調整改造</mark>`,
+    analysis:[["revised 的主場","文件、草稿、報告、合約、版本、數據：the revised draft／a revised edition／revised figures"],["modified 的主場","機器、產品、基因、計畫、程式的改造調整：a modified engine／genetically modified food／modified plan"],["判斷法","改的是「文字內容」用 revised；改的是「功能結構/行為」用 modified"],["提醒","兩個都對、都常用，差別只在改的東西性質不同（合約草稿=文字→revised）"]]},
+
+  // ---------- Day 14 ----------
+  { id:"s40", type:"sentence", tags:["句子","日常","D14"], qlabel:"中譯英",
+    front:"我本來以為這部電影會很無聊，沒想到它比我預期的還要精彩。",
+    answer:`I thought the movie would be boring, but it <mark>turned out to be much better than I expected</mark>.`,
+    analysis:[["✅ I thought...would be...but","「本來以為」用 thought+would，時態正確"],["turned out to be","「沒想到、結果竟然」的語感用 turn out to be；more impressive than 也對，只是語感差異"],["better than I expected","比預期精彩=better than I expected（呼應 better than expected）"],["🔄 換句話說","I expected the film to be dull, but it was far more enjoyable than I'd imagined.（dull=無聊；far more enjoyable；than I'd imagined）"]]},
+  { id:"s41", type:"sentence", tags:["句子","職場","D14"], qlabel:"中譯英",
+    front:"感謝您的來信，關於您提到的問題，我需要與團隊確認後再回覆您。",
+    answer:`Thank you for your email. Regarding your question, I need to <mark>check with my team before getting back to you</mark>.`,
+    analysis:[["check with my team","與某人確認= check with(問一下) / confirm with(正式確認)，皆可；✗ confirm to；別跟 conform to(符合規範)搞混"],["before getting back to you","在回覆你之前先確認，語序自然，用上 get back to you"],["email（非 letter）","商務情境幾乎都是 email（潤飾）"],["🔄 換句話說","Thanks for reaching out. On the point you raised, let me confirm with my team and I'll get back to you shortly.（reach out；the point you raised；confirm with；get back to you shortly）"]]},
+  { id:"s42", type:"sentence", tags:["句子","財經","D14"], qlabel:"中譯英",
+    front:"央行決定維持利率不變，顯示他們對通膨走勢仍持謹慎態度。",
+    answer:`The central bank decided <mark>to keep interest rates unchanged</mark>, <mark>signaling that it remains cautious about the inflation outlook</mark>.`,
+    analysis:[["decided to keep","decide 後接不定詞加 to；維持利率不變=keep interest rates unchanged（單獨 maintain 不完整）"],["signaling that","分詞表「這顯示出…」，精簡且避開連句問題"],["cautious（非 modest）","⚠️ modest=謙虛的、適度的，不是謹慎；謹慎=cautious"],["cautious about the inflation outlook","對通膨走勢謹慎的財經固定講法"],["🔄 換句話說","The central bank held rates steady, a sign that it stays wary of the inflation outlook.（held rates steady；a sign that；wary of=謹慎提防）"]]},
+  { id:"g21", type:"grammar", tags:["易錯","D14"], qlabel:"易錯",
+    front:"「跟某人確認」英文怎麼說？confirm to / conform to 差在哪？",
+    answer:`<mark>check with sb</mark>（問一下）或 <mark>confirm with sb</mark>（正式確認），皆可`,
+    analysis:[["check with sb","向某人詢問、核對資訊或徵求許可：I'll check with my team.（偏「問一下」）"],["confirm with sb","跟某人確認、把細節敲定：I need to confirm with my supervisor.（偏「正式確認」）"],["✗ confirm to sb","此結構不自然、母語者很少用；要向某人證實某事，直接 confirm + 事情 或 confirm that + 子句"],["⚠️ conform to（別搞混）","conform(不是 confirm)+to = 符合規範/標準：The product must conform to safety regulations."]]},
+  { id:"g22", type:"grammar", tags:["易錯","D14"], qlabel:"易錯",
+    front:"cautious 和 modest 差在哪？（別搞混）",
+    answer:`cautious＝<mark>謹慎的</mark>；modest＝<mark>謙虛的、適度的</mark>`,
+    analysis:[["cautious","小心、謹慎以避免問題：remain cautious about the outlook"],["modest","謙虛的（態度）／適度的（程度）：a modest person／a modest increase"],["提醒","兩個字意思完全不同，「持謹慎態度」只能用 cautious"]]}
 ];
 
 // ---------- Bulk vocabulary (bidirectional 中↔英) ----------
@@ -615,7 +663,20 @@ const WORDS = [
   {id:"w802",en:"catch up (with)",ipa:"/kætʃ ʌp/",pos:"phr. v.",u:"Day12",zh:"追上（進度、某人）",def:`to reach the same level or position as someone/something after being behind`,eg:`I need to catch up with my work.`,syn:`辨析 catch(趕上交通工具、抓住) vs catch up(追上進度)；✗ caught up the bus`},
   {id:"w803",en:"assistance",ipa:"/əˈsɪs.təns/",pos:"n. (U)",u:"Day12",zh:"協助、幫助",def:`help given to someone`,eg:`If you need any assistance, please contact us.`,syn:`辨析 assistance(不可數,協助) vs assistant(可數,助理/一個人)`},
   {id:"w804",en:"geopolitical",ipa:"/ˌdʒiː.əʊ.pəˈlɪt.ɪ.kəl/",pos:"adj.",u:"Day12",zh:"地緣政治的",def:`connected with political activity as influenced by geography`,eg:`Despite rising geopolitical risk, oil prices fluctuated only slightly.`,syn:`搭配 geopolitical risk / tension = 地緣政治風險／緊張情勢`},
-  {id:"w805",en:"fluctuate",ipa:"/ˈflʌk.tʃu.eɪt/",pos:"v.",u:"Day12",zh:"波動（可上可下）",def:`to change or vary, especially continually and irregularly`,eg:`Oil prices fluctuated only slightly this week.`,syn:`辨析 fluctuate(中性,上下都算) ≠ rise(只表上升,方向明確)`}
+  {id:"w805",en:"fluctuate",ipa:"/ˈflʌk.tʃu.eɪt/",pos:"v.",u:"Day12",zh:"波動（可上可下）",def:`to change or vary, especially continually and irregularly`,eg:`Oil prices fluctuated only slightly this week.`,syn:`辨析 fluctuate(中性,上下都算) ≠ rise(只表上升,方向明確)`},
+
+  // Day 13 單字
+  {id:"w901",en:"better than expected",ipa:"/ˈbet.ər ðən ɪkˈspek.tɪd/",pos:"phr.",u:"Day13",zh:"優於預期",def:`better than what people predicted`,eg:`Thanks to better-than-expected export figures, the market surged.`,syn:`同義 beat expectations；形容詞用連字號 better-than-expected + 名詞；辨析 ✗ prior to(在…之前，與「優於」無關)`,cam:"better"},
+  {id:"w902",en:"surge",ipa:"/sɜːdʒ/",pos:"v./n.",u:"Day13",zh:"大漲、飆升",def:`to increase suddenly and strongly`,eg:`The market surged in early trading.`,syn:`辨析 surge=洶湧上漲、jump=跳漲、rally=跌後回升；rise sharply 也對但力道較弱`},
+  {id:"w903",en:"in early trading",ipa:"/ɪn ˈɜː.li ˈtreɪ.dɪŋ/",pos:"phr.",u:"Day13",zh:"早盤（開盤後不久）",def:`in the period soon after the market opens`,eg:`Stocks jumped in early trading this morning.`,cam:"trading"},
+  {id:"w904",en:"revised",ipa:"/rɪˈvaɪzd/",pos:"adj.",u:"Day13",zh:"修訂後的、修改過的",def:`changed in order to correct or improve it`,eg:`Attached is the revised draft of the contract.`,syn:`辨析 revised(正式,用於文件/合約) 比 modified 更貼合約、報告語境`,cam:"revised"},
+
+  // Day 14 單字
+  {id:"w1001",en:"turn out (to be)",ipa:"/tɜːn aʊt/",pos:"phr. v.",u:"Day14",zh:"結果（竟然）是、原來是",def:`to be discovered to be; to happen in a particular way, often unexpectedly`,eg:`I thought it would be boring, but it turned out to be great.`,syn:`辨析 帶「出乎意料」語感，對應中文「沒想到、結果竟然」`,cam:"turn-out"},
+  {id:"w1002",en:"check with",ipa:"/tʃek wɪð/",pos:"phr. v.",u:"Day14",zh:"與某人確認、跟某人核對",def:`to ask someone for information or permission`,eg:`I need to check with my team before getting back to you.`,syn:`「跟某人確認」= check with(問一下) / confirm with(正式確認)，皆可；✗ confirm to；別跟 conform to(符合規範)搞混`,cam:"check"},
+  {id:"w1003",en:"keep unchanged",ipa:"/kiːp ʌnˈtʃeɪndʒd/",pos:"phr.",u:"Day14",zh:"維持（利率等）不變",def:`to keep something at the same level`,eg:`The central bank decided to keep interest rates unchanged.`,syn:`同義 hold rates steady；皆央行標準用語`,cam:"unchanged"},
+  {id:"w1004",en:"cautious",ipa:"/ˈkɔː.ʃəs/",pos:"adj.",u:"Day14",zh:"謹慎的、小心的",def:`careful to avoid problems or danger`,eg:`The central bank remains cautious about the inflation outlook.`,syn:`辨析 ⚠️ cautious(謹慎) ≠ modest(謙虛的、適度的)，完全不同別搞混`,cam:"cautious"},
+  {id:"w1005",en:"inflation outlook",ipa:"/ɪnˈfleɪ.ʃən ˈaʊt.lʊk/",pos:"n.",u:"Day14",zh:"通膨走勢、通膨前景",def:`the expected future direction of inflation`,eg:`The Fed remains cautious about the inflation outlook.`,syn:`搭配 cautious about the inflation outlook = 對通膨走勢持謹慎態度`,cam:"outlook"}
 ];
 for(const w of WORDS){
   const link = `<a href='${C}${(w.cam||w.en).replace(/ /g,'-')}' target='_blank'>Cambridge</a>`;
