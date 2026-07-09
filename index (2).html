@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>中翻英複習　Spaced Review</title>
+<style>
+  :root{
+    --paper:#FBFAF7; --ink:#211D1A; --muted:#6B635A; --line:#E4DED4;
+    --panel:#F3EFE8; --pine:#1E5F57; --pine-d:#164b45;
+    --mark:#FFE08A;
+    --again:#C2453D; --hard:#B5791F; --good:#2F7A4F; --easy:#2D6CA6;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Microsoft JhengHei","Noto Sans TC",sans-serif;
+    line-height:1.6; min-height:100vh;
+    display:flex; flex-direction:column; align-items:center;
+    padding:24px 16px 64px;
+  }
+  .wrap{width:100%; max-width:640px;}
+  header{display:flex; align-items:baseline; justify-content:space-between; gap:12px; margin-bottom:18px;}
+  h1{font-size:18px; font-weight:650; letter-spacing:.01em; margin:0;}
+  h1 small{display:block; font-weight:450; color:var(--muted); font-size:12px; letter-spacing:.08em; text-transform:uppercase; margin-top:3px;}
+  .counts{display:flex; gap:14px; font-size:13px; color:var(--muted); white-space:nowrap;}
+  .counts b{color:var(--ink); font-variant-numeric:tabular-nums;}
+  .dot{display:inline-block; width:7px; height:7px; border-radius:50%; margin-right:5px; vertical-align:middle;}
+  .dot.r{background:var(--easy);} .dot.n{background:var(--pine);}
+  .modebar{display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:16px;}
+  .chip{background:#fff; border:1px solid var(--line); color:var(--muted); padding:6px 12px; font-size:12.5px; border-radius:999px; cursor:pointer; font-weight:600;}
+  .chip:hover{color:var(--ink);}
+  .chip.active{background:var(--pine); border-color:var(--pine); color:#fff;}
+  .sep{width:1px; height:18px; background:var(--line); margin:0 2px;}
+  .freebadge{display:inline-block; font-size:11px; color:var(--pine); border:1px solid var(--pine); border-radius:999px; padding:2px 9px; margin-bottom:10px;}
+  .daybar{display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:16px; font-size:12.5px; color:var(--muted);}
+  .daylabel{font-weight:600;}
+  .daybar input[type=number]{width:56px; padding:5px 7px; border:1px solid var(--line); border-radius:8px; font-size:12.5px; font-family:inherit;}
+  .filterbelt{margin-top:20px; padding-top:16px; border-top:1px dashed var(--line);}
+  select.dropdown{background:#fff; border:1px solid var(--line); color:var(--ink); padding:6px 10px; font-size:12.5px; border-radius:8px; font-family:inherit; cursor:pointer;}
+  .dayto{color:var(--muted);}
+  .wlcheck{display:inline-flex; align-items:center; gap:5px; margin-left:4px;}
+  .wlcheck input{cursor:pointer;}
+  .topicbar{display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:16px; font-size:12.5px; color:var(--muted);}
+  .topicchips{display:flex; gap:6px; flex-wrap:wrap;}
+  .chip.small{padding:4px 10px; font-size:11.5px;}
+  .chip.topic-off{background:#fff; color:var(--muted); opacity:.55; text-decoration:line-through;}
+  .chip.topic-on{background:var(--pine); border-color:var(--pine); color:#fff;}
+
+  .card{
+    background:#fff; border:1px solid var(--line); border-radius:14px;
+    box-shadow:0 1px 0 rgba(33,29,26,.03),0 12px 30px -22px rgba(33,29,26,.4);
+    overflow:hidden;
+  }
+  .tagbar{display:flex; gap:8px; padding:12px 18px 0; flex-wrap:wrap;}
+  .tag{font-size:11px; letter-spacing:.06em; color:var(--muted); border:1px solid var(--line); border-radius:999px; padding:2px 9px;}
+  .front{padding:26px 22px;}
+  .qlabel{font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--pine); font-weight:650; margin-bottom:10px;}
+  .prompt{
+    font-family:"Songti TC","Noto Serif TC",Georgia,"PingFang TC",serif;
+    font-size:21px; line-height:1.7; color:var(--ink);
+  }
+  .divider{height:1px; background:var(--line); margin:0;}
+  .back{padding:20px 22px 4px; background:var(--panel);}
+  .back .seg{margin-bottom:16px;}
+  .seg-h{font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin-bottom:6px;}
+  .answer{font-size:18px; line-height:1.7;}
+  mark{background:var(--mark); padding:0 2px; border-radius:3px;}
+  .analysis{font-size:14.5px; color:#3a342e;}
+  .analysis div{margin:4px 0; padding-left:2px;}
+  .analysis .ar{color:var(--pine); font-weight:650;}
+  .ipa{color:var(--muted); font-size:15px;}
+  .say{display:flex; flex-wrap:wrap; gap:12px; margin-top:8px;}
+  .sayword{display:inline-flex; align-items:center; gap:6px;}
+  .sayword em{font-style:normal; font-size:12.5px; color:var(--muted); margin-right:2px;}
+  .sayb{background:#fff; border:1px solid var(--line); color:var(--pine); padding:4px 10px; font-size:12px; border-radius:999px; font-weight:600; cursor:pointer;}
+  .sayb:hover{background:var(--panel);}
+  a{color:var(--pine);}
+
+  .controls{padding:16px 22px 22px; background:var(--panel);}
+  button{font-family:inherit; cursor:pointer; border:none; border-radius:10px; font-size:15px;}
+  .reveal{width:100%; padding:14px; background:var(--pine); color:#fff; font-weight:600; letter-spacing:.03em;}
+  .reveal:hover{background:var(--pine-d);}
+  .grades{display:grid; grid-template-columns:repeat(4,1fr); gap:8px;}
+  .grade{padding:12px 6px; color:#fff; font-weight:600; display:flex; flex-direction:column; gap:2px; align-items:center;}
+  .grade .iv{font-size:11px; font-weight:500; opacity:.9;}
+  .g-again{background:var(--again);} .g-hard{background:var(--hard);}
+  .g-good{background:var(--good);} .g-easy{background:var(--easy);}
+  .grade:hover{filter:brightness(1.06);}
+
+  .done{text-align:center; padding:48px 22px; background:#fff; border:1px solid var(--line); border-radius:14px;}
+  .done .big{font-size:30px; margin-bottom:10px;}
+  .done p{color:var(--muted); margin:6px 0;}
+
+  footer{margin-top:18px; display:flex; justify-content:space-between; align-items:center; font-size:12px; color:var(--muted);}
+  .ghost{background:none; color:var(--muted); border:1px solid var(--line); padding:6px 12px; font-size:12px; border-radius:8px; cursor:pointer;}
+  .gear{background:none; border:none; color:var(--line); font-size:15px; cursor:pointer; padding:4px 8px; opacity:.6;}
+  .gear:hover{opacity:1; color:var(--muted);}
+  #advPanel{margin-top:10px; text-align:right;}
+  .ghost.armed{background:var(--again); border-color:var(--again); color:#fff; font-weight:600;}
+  .ghost:hover{color:var(--ink);}
+  .hide{display:none;}
+  @media (max-width:430px){ .prompt{font-size:19px;} .answer{font-size:16.5px;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>中翻英複習<small>Spaced Review · Day 1–14 ＋ 單字表</small></h1>
+    <div class="counts">
+      <span><span class="dot r"></span>複習 <b id="c-rev">0</b></span>
+      <span><span class="dot n"></span>新卡 <b id="c-new">0</b></span>
+    </div>
+  </header>
+  <div id="stage"></div>
+  <div class="filterbelt" id="filterbelt">
+    <div class="modebar" id="modebar">
+      <button class="chip active" data-mode="srs">📅 正式複習</button>
+      <button class="chip" data-mode="free">🔁 自由練習</button>
+      <span class="sep"></span>
+      <button class="chip active" data-filter="all">全部</button>
+      <button class="chip" data-filter="單字">單字</button>
+      <button class="chip" data-filter="句子">句子</button>
+      <button class="chip" data-filter="grammar">文法／觀念</button>
+    </div>
+    <div class="daybar" id="daybar">
+      <span class="daylabel">Day 範圍（每日翻譯練習）：</span>
+      <input type="number" id="dayFrom" min="1" placeholder="從" class="daynum">
+      <span class="dayto">～</span>
+      <input type="number" id="dayTo" min="1" placeholder="到" class="daynum">
+      <button class="chip" id="applyDay">套用</button>
+      <button class="chip" id="clearDay">清除</button>
+    </div>
+    <div class="daybar" id="hwbar">
+      <span class="daylabel">英文課回家複習：</span>
+      <select id="hwModeSelect" class="dropdown">
+        <option value="latest" selected>只看最新一次</option>
+        <option value="all">全部作業</option>
+      </select>
+    </div>
+    <div class="topicbar" id="topicbarWrap" style="display:none;">
+      <span class="daylabel">主題（不分日期／週次）：</span>
+      <div class="topicchips" id="topicbar"></div>
+      <button class="chip small" id="topicAll">全選</button>
+      <button class="chip small" id="topicNone">全不選</button>
+    </div>
+  </div>
+  <footer>
+    <span id="foot">進度自動保存在這個瀏覽器</span>
+    <button class="gear" id="gearToggle" title="進階設定">⚙</button>
+  </footer>
+  <div id="advPanel" class="hide">
+    <button class="ghost" id="reset">重設進度</button>
+  </div>
+</div>
+
+<script>
+const C = "https://dictionary.cambridge.org/dictionary/english-chinese-traditional/";
+// Day → 真實日期對照表。只收錄「確認過」的日期，不用猜的。
+// Day1 的日期來自匯出檔檔名 anki_day1_2026-06-25.txt，可靠。
+// Day2~Day8 目前沒有可靠依據，先留空；之後每加一個新 Day，會補上當天的真實日期。
+const DAY_DATES = {
+  1: "2026-06-25"
+};
+const DECK = [
+  // ---------- Day 1 ----------
+  { id:"s1", type:"sentence", tags:["句子","日常","D1"], qlabel:"中譯英",
+    front:"昨天我熬夜到半夜兩點，結果今天一整天都昏昏欲睡、提不起勁。",
+    answer:`I stayed up <mark>until</mark> 2 a.m. <mark>last night, so I've felt drowsy and sluggish</mark> all day.`,
+    analysis:[["until","stay up until 2 a.m.（用 until，非 to）"],["so","「結果」接整句用 so / as a result（非 it results）"],["I've felt","延續到現在 → 現在完成式"],["sluggish","「提不起勁」用 sluggish，sleepy 只到「睏」"],["🔄 換句話說","I was up until 2 a.m. last night, so I've been drowsy and lethargic all day.（lethargic ≈ sluggish）"]]},
+  { id:"s2", type:"sentence", tags:["句子","職場","D1"], qlabel:"中譯英",
+    front:"這份報告必須在週五截止前完成，否則我們就趕不上這次招標了。",
+    answer:`The report must be finished before <mark>Friday's deadline; otherwise, we'll miss this tender.</mark>`,
+    analysis:[["miss","「趕不上」= miss（非 catch up）"],["tender","招標 = tender（美式 bid）"],["otherwise","「否則」正式用 otherwise，前用分號/句號"],["🔄 換句話說","This report has to be done by Friday, or we'll miss the deadline for this bid.（bid=美式招標；by Friday；miss the deadline）"]]},
+  { id:"s3", type:"sentence", tags:["句子","時事","D1"], qlabel:"中譯英",
+    front:"隨著利率持續上升，許多家庭正在重新評估自己的消費習慣。",
+    answer:`<mark>As interest rates keep</mark> rising, many <mark>households are reassessing</mark> their <mark>spending</mark> habits.`,
+    analysis:[["As","「隨著」= As（非 By）；利率 interest rates"],["households","「家庭」複數 households / families"],["are reassessing","現在進行式；reassess（evaluate 拼字）"],["spending","消費 = spending / consumption（非 custom）"],["🔄 換句話說","With interest rates rising, many households are rethinking their spending.（with...rising；rethinking）"]]},
+  { id:"v1", type:"vocab", tags:["單字","D1"], qlabel:"中 → 英", speak:"drowsy",
+    front:"「睡意朦朧的、昏昏欲睡的」(adj.) — 英文？",
+    answer:`drowsy <span class="ipa">/ˈdraʊzi/</span>`,
+    analysis:[["中文","睡意朦朧的、昏昏欲睡的（A1）"],["EN","feeling tired and wanting to sleep"],["例","The long meeting after lunch made everyone drowsy."],["🔊",`<a href='${C}drowsy' target='_blank'>Cambridge 真人發音</a>`]]},
+  { id:"v2", type:"vocab", tags:["單字","D1"], qlabel:"中 → 英", speak:"sluggish",
+    front:"「行動緩慢的、遲緩的、提不起勁的」(adj.) — 英文？",
+    answer:`sluggish <span class="ipa">/ˈslʌɡ.ɪʃ/</span>`,
+    analysis:[["中文","行動緩慢的、遲緩的、提不起勁的（B1）"],["EN","moving or operating more slowly than usual, with less energy"],["例","I felt sluggish after staying up late."],["🔊",`<a href='${C}sluggish' target='_blank'>Cambridge 真人發音</a>`]]},
+  { id:"v3", type:"vocab", tags:["單字","D1"], qlabel:"中 → 英", speak:"tender",
+    front:"「招標／投標（書）」(n.) — 英文？",
+    answer:`tender <span class="ipa">/ˈten.dər/ (UK) /ˈten.dɚ/ (US)</span>`,
+    analysis:[["中文","招標／投標（書）；主要英式，美式常用 bid"],["EN","a written or formal offer to supply goods or do a job for an agreed price"],["片語","put something out to tender = 對…招標"],["片語例","The city government put the bridge maintenance contract out to tender."],["🔊",`<a href='${C}tender' target='_blank'>Cambridge 真人發音</a>`]]},
+  { id:"v4", type:"vocab", tags:["單字","D1"], qlabel:"中 → 英", speak:"reassess",
+    front:"「重新評估、重新考慮」(v.) — 英文？",
+    answer:`reassess <span class="ipa">/ˌriː.əˈses/</span>`,
+    analysis:[["中文","重新評估、重新考慮（C1）"],["EN","to think about something again in order to decide whether to change your plan or opinion"],["例","After the market dropped, she decided to reassess her investment plan."],["🔊",`<a href='${C}reassess' target='_blank'>Cambridge 真人發音</a>`]]},
+  { id:"g1", type:"grammar", tags:["文法","D1"], qlabel:"文法",
+    front:"as a result 的標點怎麼放？（前後）",
+    answer:`後面幾乎一定接逗號：<mark>As a result,</mark> ...`,
+    analysis:[["句首","前面不用標點 → As a result, sales fell."],["連兩句","前面用句號或分號（只用逗號是 comma splice）→ Sales fell. As a result, we cut costs."],["對比 so","so 是對等連接詞：前逗號、後不加 → Sales fell, so we cut costs."]]},
+  { id:"d1", type:"vocab", tags:["辨析","D1"], qlabel:"辨析",
+    front:"spending habits 與 consumption habits 差在哪？",
+    answer:`兩個都對，差在<mark>語感</mark>`,
+    analysis:[["spending habits","日常／理財語感，指「怎麼花錢」，最自然常用"],["consumption habits","Cambridge 收錄的搭配，較正式／學術，指「消費什麼、多少」"],["這句","家庭因升息調整 → spending 較貼；學術語境用 consumption 也對"]]},
+
+  // ---------- Day 2 ----------
+  { id:"s4", type:"sentence", tags:["句子","日常","D2"], qlabel:"中譯英",
+    front:"如果我早點知道會塞車，就會改搭捷運了。",
+    answer:`If I <mark>had known earlier</mark> there <mark>would be a traffic jam</mark>, I <mark>would have taken</mark> the MRT instead.`,
+    analysis:[["had known","if 子句不用 would；與過去相反 → 過去完成式"],["earlier","「早點」要補 earlier"],["traffic jam","塞車是 jam（gym 是健身房）"],["would have taken","與過去相反的結果 → would have + p.p."],["🔄 換句話說","Had I known there would be traffic, I would have taken the MRT.（倒裝條件句 Had I known）"]]},
+  { id:"s5", type:"sentence", tags:["句子","職場","D2"], qlabel:"中譯英",
+    front:"感謝您的耐心，我們會在三個工作天內回覆您的申請。",
+    answer:`<mark>Thank you for your patience.</mark> We will <mark>respond to</mark> your application <mark>within three business days</mark>.`,
+    analysis:[["patience","名詞「耐心」是 patience（patient 是形容詞）"],["respond to","回覆要 respond to / reply to，不能直接接受詞"],["within … business days","內 = within；工作天 = business / working days"],["🔄 換句話說","Thank you for your patience. We'll get back to you about your application within three working days.（get back to you；working days）"]]},
+  { id:"s6", type:"sentence", tags:["句子","財經","D2"], qlabel:"中譯英",
+    front:"這家公司上一季營收成長了百分之十二，主要受惠於海外需求強勁。",
+    answer:`The company's <mark>revenue</mark> <mark>grew 12%</mark> <mark>last quarter</mark>, <mark>mainly driven by strong overseas demand</mark>.`,
+    analysis:[["revenue","營收 = revenue；earnings 是獲利"],["last quarter","財報的季 = quarter（非 season）"],["grew 12%","過去式 grew；數字是 12%"],["driven by","受惠於 = driven by / benefit from（非 profit from）；overseas demand；補 strong"],["🔄 換句話說","The company's revenue rose 12% last quarter, largely thanks to strong overseas demand.（rose；largely thanks to）"]]},
+  { id:"v5", type:"vocab", tags:["單字","D2"], qlabel:"中 → 英", speak:"revenue",
+    front:"「（公司）營收、收益」(n.) — 英文？",
+    answer:`revenue <span class="ipa">/ˈrev.ən.juː/ (UK) /ˈrev.ə.nuː/ (US)</span>`,
+    analysis:[["中文","（公司的）營收、收益；（政府的）稅收、歲入（C1）"],["EN","money that a company, organization, or government receives regularly"],["例","The company's revenue rose sharply last quarter."],["辨析","revenue（總收入）≠ earnings / profit（扣成本後的獲利）"],["🔊",`<a href='${C}revenue' target='_blank'>Cambridge 真人發音</a>`]]},
+  { id:"v6", type:"vocab", tags:["單字","D2"], qlabel:"中 → 英", speak:"patience",
+    front:"「耐心、忍耐」(n.) — 英文？",
+    answer:`patience <span class="ipa">/ˈpeɪ.ʃəns/</span>`,
+    analysis:[["中文","耐心、忍耐（B1）"],["EN","the ability to wait or stay calm without getting angry"],["例","Learning a language takes a lot of patience."],["片語","thank you for your patience = 感謝您的耐心／久候"],["片語例","Thank you for your patience while we process your request."],["🔊",`<a href='${C}patience' target='_blank'>Cambridge 真人發音</a>`]]},
+  { id:"v7", type:"vocab", tags:["單字","D2"], qlabel:"中 → 英", speak:"overseas",
+    front:"「海外的、國外的」(adj.) — 英文？",
+    answer:`overseas <span class="ipa">/ˌəʊ.vəˈsiːz/ (UK) /ˌoʊ.vɚˈsiːz/ (US)</span>`,
+    analysis:[["中文","海外的、國外的；到海外（B1）"],["EN","in, to, or from a foreign country, especially across the sea"],["例","The firm relies heavily on overseas demand."],["🔊",`<a href='${C}overseas' target='_blank'>Cambridge 真人發音</a>`]]},
+  { id:"v8", type:"vocab", tags:["單字","D2"], qlabel:"中 → 英", speak:"quarter",
+    front:"「（財報的）季、一季」(n.) — 英文？",
+    answer:`quarter <span class="ipa">/ˈkwɔː.tər/ (UK) /ˈkwɔːr.t̬ɚ/ (US)</span>`,
+    analysis:[["中文","（財報的）季，三個月；也指四分之一"],["EN","a period of three months, especially for financial reporting"],["例","Sales improved in the second quarter."],["片語","quarter-on-quarter (QoQ) = 較前一季；year-on-year (YoY) = 較去年同期"],["片語例","Profit grew 5% quarter-on-quarter."],["🔊",`<a href='${C}quarter' target='_blank'>Cambridge 真人發音</a>`]]},
+  { id:"v9", type:"vocab", tags:["單字","D2"], qlabel:"中 → 英", speak:"traffic jam",
+    front:"「塞車、交通堵塞」(n.) — 英文？",
+    answer:`traffic jam <span class="ipa">/ˈtræf.ɪk ˌdʒæm/</span>`,
+    analysis:[["中文","塞車、交通堵塞（B1）"],["EN","a line of vehicles that can move only very slowly or not at all"],["例","We were stuck in a traffic jam for an hour."],["片語","be stuck in traffic = 困在車陣中"],["片語例","Sorry I'm late — I got stuck in traffic."],["🔊",`<a href='${C}traffic-jam' target='_blank'>Cambridge 真人發音</a>`]]},
+  { id:"g2", type:"grammar", tags:["文法","D2"], qlabel:"文法",
+    front:"「與過去事實相反」的假設句怎麼造？（第三條件句）",
+    answer:`If + <mark>過去完成式 (had + p.p.)</mark>，主句 <mark>would have + p.p.</mark>`,
+    analysis:[["例","If I had known there would be a traffic jam, I would have taken the MRT."],["重點","if 子句不可用 would"],["對比","第二條件句（與現在相反）：If + 過去式, would + 原形動詞"]]},
+
+  // ---------- Day 3 ----------
+  { id:"s7", type:"sentence", tags:["句子","日常","D3"], qlabel:"中譯英",
+    front:"要是我昨天有把雨傘帶出門，就不會淋成落湯雞了。",
+    answer:`If I <mark>had brought an umbrella with me yesterday</mark>, I <mark>wouldn't have got soaked</mark>.`,
+    analysis:[["wouldn't have","would have 的否定是 wouldn't have + p.p.（無「would haven't」）"],["an umbrella","可數名詞加冠詞"],["with me yesterday","「帶出門」用 brought…with me；補回 yesterday"],["got soaked","淋濕 = got soaked / drenched"],["🔄 換句話說","If I'd taken an umbrella with me yesterday, I wouldn't have got drenched.（I'd=I had；drenched）"]]},
+  { id:"s8", type:"sentence", tags:["句子","職場","D3"], qlabel:"中譯英",
+    front:"由於部分零件延遲到貨，產品上市時間恐怕得往後延兩週。",
+    answer:`<mark>Due to the delayed delivery of some parts</mark>, the product launch <mark>may have to be postponed by two weeks</mark>.`,
+    analysis:[["Due to + 名詞","due to 後接名詞，不接子句（要子句用 because）"],["may have to be postponed","may/might 接原形；被動 be postponed；恐怕得 = have to"],["by two weeks","往後延兩週 = postponed by two weeks"],["launch","上市 = launch"],["🔄 換句話說","Because some parts arrived late, the launch may have to be pushed back by two weeks.（because+子句；pushed back）"]]},
+  { id:"s9", type:"sentence", tags:["句子","財經","D3"], qlabel:"中譯英",
+    front:"央行升息後，新台幣兌美元升值，壓縮了出口商的獲利。",
+    answer:`After <mark>the central bank raised interest rates</mark>, the New Taiwan dollar <mark>appreciated against the US dollar</mark>, <mark>squeezing exporters' profits</mark>.`,
+    analysis:[["raised","rise（自升,不接受詞）vs raise（提高,接受詞）；升息 = raised interest rates"],["the central bank","加 the"],["appreciated against","兌…升值 = appreciate / strengthen against"],["squeezing exporters' profits","壓縮獲利 = squeeze profits；出口商 = exporters（非 export business）"],["🔄 換句話說","After the central bank hiked rates, the NT dollar strengthened against the US dollar, eroding exporters' margins.（hiked；strengthened；erode margins）"]]},
+  { id:"d2", type:"vocab", tags:["辨析","D3"], qlabel:"辨析",
+    front:"rise 與 raise 差在哪？「升息」用哪個？",
+    answer:`<mark>raise</mark> interest rates（rise 不能接受詞）`,
+    analysis:[["rise","自己上升，不及物、不接受詞；rise–rose–risen（Prices rose.）"],["raise","把…提高，及物、要接受詞；raise–raised–raised（raised rates）"],["升息","raise interest rates ✓（rise interest rates ✗）"]]},
+  { id:"v10", type:"vocab", tags:["單字","D3"], qlabel:"中 → 英", speak:"appreciate",
+    front:"「（貨幣、資產）升值、增值」(v.) — 英文？",
+    answer:`appreciate <span class="ipa">/əˈpriː.ʃi.eɪt/</span>`,
+    analysis:[["中文","（貨幣、資產）升值、增值（也有欣賞、感謝、理解之意）"],["EN","(of money or property) to increase in value over time"],["例","The New Taiwan dollar appreciated against the US dollar."],["片語","appreciate against / by + 幅度 = 兌…升值／升值多少"],["片語例","The yen has appreciated by 5% against the dollar this year."],["反義","depreciate（貶值）"],["🔊",`<a href='${C}appreciate' target='_blank'>Cambridge 真人發音</a>`]]},
+  { id:"v11", type:"vocab", tags:["單字","D3"], qlabel:"中 → 英", speak:"postpone",
+    front:"「延期、延後」(v.) — 英文？",
+    answer:`postpone <span class="ipa">/pəˈspəʊn/ (UK) /poʊˈspoʊn/ (US)</span>`,
+    analysis:[["中文","延期、延後"],["EN","to arrange for an event to happen at a later time than planned"],["例","The product launch was postponed by two weeks."],["片語","push back / put off = 往後延（較口語）"],["片語例","They pushed back the meeting to next Monday."],["🔊",`<a href='${C}postpone' target='_blank'>Cambridge 真人發音</a>`]]},
+  { id:"v12", type:"vocab", tags:["單字","D3"], qlabel:"中 → 英", speak:"exporter",
+    front:"「出口商、出口國」(n.) — 英文？",
+    answer:`exporter <span class="ipa">/ɪkˈspɔː.tər/ (UK) /ɪkˈspɔːr.t̬ɚ/ (US)</span>`,
+    analysis:[["中文","出口商、出口國"],["EN","a person, company, or country that sells goods to another country"],["例","A strong currency hurts exporters."],["反義","importer（進口商）"],["🔊",`<a href='${C}exporter' target='_blank'>Cambridge 真人發音</a>`]]},
+  { id:"v13", type:"vocab", tags:["單字","D3"], qlabel:"中 → 英", speak:"squeeze",
+    front:"「擠壓；（財經）壓縮獲利」(v.) — 英文？",
+    answer:`squeeze <span class="ipa">/skwiːz/</span>`,
+    analysis:[["中文","擠壓；（財經）壓縮、緊縮（獲利、利潤空間）"],["EN","to press firmly; (finance) to reduce profit or margins"],["例","Rising costs squeezed the company's profits."],["片語","a profit / margin squeeze = 獲利／利潤緊縮"],["片語例","Exporters face a margin squeeze from the stronger currency."],["🔊",`<a href='${C}squeeze' target='_blank'>Cambridge 真人發音</a>`]]},
+  { id:"p1", type:"vocab", tags:["片語","D3"], qlabel:"中 → 英", speak:["get soaked","get drenched"],
+    front:"「淋濕、濕透（落湯雞）」— 英文？",
+    answer:`get soaked / get drenched`,
+    analysis:[["中文","淋濕、濕透"],["EN","to become completely wet"],["例","I forgot my umbrella and got soaked on the way home."],["近義","be drenched / be soaking wet"]]},
+  { id:"g3", type:"grammar", tags:["文法","D3"], qlabel:"文法",
+    front:"due to 和 because 用法差在哪？",
+    answer:`due to + <mark>名詞</mark>；because + <mark>子句</mark>`,
+    analysis:[["due to","後接名詞片語：Due to the delay, ..."],["because","後接子句（主詞+動詞）：Because it was delayed, ..."],["錯","Due to it was delayed ✗（due to 不接子句）"],["替代","owing to / because of + 名詞"]]},
+
+  // ---------- Day 4 ----------
+  { id:"s10", type:"sentence", tags:["句子","日常","D4"], qlabel:"中譯英",
+    front:"我昨天買了一支新手機，但那支手機的電池續航力很差。",
+    answer:`I bought a new cell phone yesterday, but <mark>the phone's battery life is poor</mark>.`,
+    analysis:[["a → the","第一次提到 a new cell phone；第二次 the phone's（✅ 你寫對了）"],["battery life","電池續航力 = battery life（非 power）"],["is poor","續航差 = is poor / short"],["🔄 換句話說","I bought a new phone yesterday, but its battery life is terrible.（its battery life；terrible）"]]},
+  { id:"s11", type:"sentence", tags:["句子","職場","D4"], qlabel:"中譯英",
+    front:"請確認您下週一是否能出席會議，並於今天下班前回覆我。",
+    answer:`Please <mark>confirm whether you can attend</mark> the meeting next Monday, and <mark>reply to me</mark> before the end of the day.`,
+    analysis:[["confirm whether","確認是否 = confirm whether（不用 confirm that if）"],["can","問是否能出席用 can（could 偏假設）"],["reply to me","reply 接人要加 to（⚠️ 第二次：reply me ✗）"],["🔄 換句話說","Please let me know whether you can attend the meeting next Monday, and get back to me before you leave today.（let me know whether；get back to me）"]]},
+  { id:"s12", type:"sentence", tags:["句子","財經","D4"], qlabel:"中譯英",
+    front:"儘管全球需求放緩，這家晶片廠上一季仍繳出創紀錄的獲利。",
+    answer:`<mark>Despite slowing global demand</mark>, the <mark>chipmaker</mark> still <mark>posted record profits last quarter</mark>.`,
+    analysis:[["Despite + 名詞","儘管 = despite + 名詞 / although + 子句（✅ 你選 despite 方向對）"],["slowing","放緩 = slowing / slowdown（非 rise）"],["chipmaker","晶片廠 = chipmaker / chip manufacturer"],["posted record profits","繳出創紀錄獲利 = posted record profits；過去式"],["🔄 換句話說","Although global demand has slowed, the chipmaker still reported record profits last quarter.（although+子句；reported）"]]},
+  { id:"g4", type:"grammar", tags:["文法","D4"], qlabel:"文法",
+    front:"despite 和 although 用法差在哪？",
+    answer:`despite + <mark>名詞</mark>；although + <mark>子句</mark>`,
+    analysis:[["despite","後接名詞：Despite slowing demand, ..."],["although","後接子句（主詞+動詞）：Although demand slowed, ..."],["錯","Despite demand slowed ✗"],["近義","in spite of + 名詞 = despite；though = although（口語）"],["連結","跟 due to / because 同一個邏輯！"]]},
+  { id:"v14", type:"vocab", tags:["單字","D4"], qlabel:"中 → 英", speak:"slowdown",
+    front:"「放緩、趨緩（經濟）」(n.) — 英文？",
+    answer:`slowdown <span class="ipa">/ˈsləʊ.daʊn/ (UK) /ˈsloʊ.daʊn/ (US)</span>`,
+    analysis:[["中文","放緩、減速；（經濟）趨緩"],["EN","a reduction in speed or activity"],["動詞","slow down = 放慢（Global demand is slowing down.）"],["片語","a slowdown in demand / growth = 需求／成長放緩"],["片語例","There has been a slowdown in the global economy."],["🔊",`<a href='${C}slowdown' target='_blank'>Cambridge 真人發音</a>`]]},
+  { id:"v15", type:"vocab", tags:["單字","D4"], qlabel:"中 → 英", speak:"post",
+    front:"「（公司）公佈、繳出（財報、獲利）」(v.) — 英文？",
+    answer:`post <span class="ipa">/pəʊst/ (UK) /poʊst/ (US)</span>`,
+    analysis:[["中文","（公司）公佈、繳出（財報、獲利、業績）；也指張貼、發文"],["EN","(of a company) to announce financial results such as profits"],["例","The chipmaker posted record profits last quarter."],["近義","report / announce (results)"],["🔊",`<a href='${C}post' target='_blank'>Cambridge 真人發音</a>`]]},
+  { id:"v16", type:"vocab", tags:["單字","D4"], qlabel:"中 → 英", speak:["chipmaker","chip manufacturer"],
+    front:"「晶片廠、晶片製造商」(n.) — 英文？",
+    answer:`chipmaker / chip manufacturer`,
+    analysis:[["中文","晶片廠、晶片製造商（半導體公司）"],["EN","a company that makes computer chips (semiconductors)"],["例","Taiwan is home to the world's largest chipmaker."],["註","常見產業用語，由 chip + maker 組成"]]},
+  { id:"v17", type:"vocab", tags:["片語","D4"], qlabel:"中 → 英", speak:"battery life",
+    front:"「電池續航力」— 英文？",
+    answer:`battery life`,
+    analysis:[["中文","電池續航力、電池使用時間"],["EN","how long a battery can provide power before needing recharging"],["例","This phone has poor battery life."],["搭配","long / short / poor battery life"]]},
+  { id:"e1", type:"vocab", tags:["易錯","D4"], qlabel:"易錯",
+    front:"「回覆我」英文怎麼說？（reply ＿ me）",
+    answer:`reply <mark>to</mark> me`,
+    analysis:[["重點","reply 後接人／事要加 to：reply to me / reply to the email"],["錯","reply me ✗（你已錯兩次，記牢！）"],["近義","respond to / get back to someone"]]},
+  { id:"u1", type:"vocab", tags:["用法","D4"], qlabel:"用法",
+    front:"「確認是否能出席」怎麼說？",
+    answer:`confirm <mark>whether</mark> you can attend`,
+    analysis:[["重點","確認是否 = confirm whether（不用 confirm that if）"],["that/if","that 和 if 不能疊用"],["例","Please confirm whether you can join."]]},
+
+  // ---------- Day 5 ----------
+  { id:"s13", type:"sentence", tags:["句子","日常","D5"], qlabel:"中譯英",
+    front:"我答應她這週末會幫她搬家，所以不能跟你們去爬山了。",
+    answer:`I <mark>promised her I would help her move</mark> this weekend, so I can't go <mark>hiking</mark> with you.`,
+    analysis:[["promised her … would","答應某人 = promise sb；間接引述 will→would（時態後移）"],["move","幫她搬家 = help her move"],["hiking","爬山(休閒) = go hiking（mountain climbing 偏攀登）"],["✅ so","so 用得好"],["🔄 換句話說","I'd promised to help her move this weekend, so I can't join you for the hike.（promised to；join you for the hike）"]]},
+  { id:"s14", type:"sentence", tags:["句子","職場","D5"], qlabel:"中譯英",
+    front:"附件是上週會議的紀錄，若有任何問題，請直接回覆這封信。",
+    answer:`<mark>Attached are the minutes of last week's meeting</mark>. If you have any <mark>questions</mark>, please reply to this email directly.`,
+    analysis:[["Attached are / attachment","attach 是動詞，名詞 attachment；email 慣用 Attached is/are… / Please find attached…"],["minutes","會議紀錄 = minutes（恆複數）；語序 of last week's meeting"],["any questions","慣用複數"],["✅ reply to this email","這次正確！🎯"],["🔄 換句話說","Please find attached the minutes of last week's meeting. If you have any questions, just reply to this email.（Please find attached；just reply to）"]]},
+  { id:"s15", type:"sentence", tags:["句子","財經","D5"], qlabel:"中譯英",
+    front:"受到美元走強影響，這家公司第三季的毛利率較去年同期下滑。",
+    answer:`<mark>Due to a stronger US dollar</mark>, the company's <mark>third-quarter gross margin</mark> <mark>declined</mark> year-on-year.`,
+    analysis:[["✅ Due to + 名詞 / year-on-year","結構與財經用語都對"],["a stronger US dollar","美元走強 = a stronger US dollar / the strength of the US dollar（strength of，非 on；the + 單數）"],["gross margin","毛利率 = gross margin（非 profit rate）"],["declined","已完成結果 → 過去式"],["🔄 換句話說","As the US dollar strengthened, the company's Q3 gross margin fell from a year earlier.（as...strengthened；fell from a year earlier）"]]},
+  { id:"g5", type:"grammar", tags:["文法","D5"], qlabel:"文法",
+    front:"間接引述時，時態要怎麼變？（reported speech）",
+    answer:`過去動詞（said / promised / told）後，引述內容時態<mark>後移一級</mark>`,
+    analysis:[["will → would","I promised I would help.（直接：I will help.）"],["其他","can → could；現在式 → 過去式；過去式 → 過去完成式"],["重點","主要動詞是過去式時，後面子句跟著往過去退一步"]]},
+
+  // ---------- Day 6 ----------
+  { id:"s16", type:"sentence", tags:["句子","日常","D6"], qlabel:"中譯英",
+    front:"她明明知道我在忙，卻還一直傳訊息問我什麼時候要回她。",
+    answer:`<mark>Even though</mark> she knows I'm busy, she keeps messaging me, <mark>asking when I'll reply</mark>.`,
+    analysis:[["Even though","「明明…卻」= 對比讓步語氣，比 but 更貼切"],["asking when I'll reply","間接問句語序：疑問詞後接直述句語序（非 when do I reply）"],["🔄 換句話說","Even though she knows I'm busy, she keeps texting to ask when I'll get back to her.（keeps texting；get back to her）"]]},
+  { id:"s17", type:"sentence", tags:["句子","職場","D6"], qlabel:"中譯英",
+    front:"如果預算沒有增加，我們就必須重新考慮這個計畫的時程。",
+    answer:`If the budget <mark>doesn't increase</mark>, we <mark>will have to</mark> reconsider the <mark>project's timeline</mark>.`,
+    analysis:[["doesn't increase","⚠️ 還沒發生、有可能的事 → 第一條件句：If + 現在式（非過去式 didn't）"],["will have to","主句配合第一條件句用 will"],["project's timeline","project 較準；timeline 財經／專案語境常用"],["🔄 換句話說","Unless the budget increases, we'll have to rethink the project's timeline.（unless=if...not；rethink）"]]},
+  { id:"s18", type:"sentence", tags:["句子","財經","D6"], qlabel:"中譯英",
+    front:"台積電宣布將在美國新建一座晶圓廠，這項投資預計耗資超過兩百億美元。",
+    answer:`TSMC announced that it <mark>will build</mark> a new <mark>fab</mark> in <mark>the US</mark>, and the investment <mark>is expected to cost</mark> more than $20 billion.`,
+    analysis:[["will build","will 後接原形（非 built）"],["fab","晶圓廠業界標準說法 = fab（非 chip factory）"],["the US","國家名用 the US / the United States（American 是形容詞）"],["is expected to cost","投資本身耗資用 cost（非 spend）；官方語氣用 is expected to"],["🔄 換句話說","TSMC said it will build a new fab in the US, an investment expected to exceed $20 billion.（said；expected to exceed）"]]},
+  { id:"d3", type:"vocab", tags:["辨析","D6"], qlabel:"辨析",
+    front:"cost 與 spend 差在哪？",
+    answer:`cost：<mark>事／物</mark>當主詞；spend：<mark>人／公司</mark>當主詞`,
+    analysis:[["cost","這件事本身要花多少錢：The investment costs $20 billion."],["spend","人／公司主動花錢：TSMC will spend $20 billion."],["搭配","be expected to cost = 預計耗資"]]},
+  { id:"g6", type:"grammar", tags:["文法","D6"], qlabel:"文法",
+    front:"間接問句的語序規則？",
+    answer:`疑問詞後接<mark>直述句語序</mark>（主詞+動詞），不用 do/does/did`,
+    analysis:[["例","She asked when I would reply.（✗ when did I reply）"],["對照","直接問句：When do I reply? → 間接問句：…asking when I reply / I'll reply"]]},
+  { id:"g7", type:"grammar", tags:["文法","D6"], qlabel:"文法",
+    front:"第一條件句和第二／第三條件句怎麼判斷該用哪個？",
+    answer:`問自己：這件事<mark>還有沒有可能發生</mark>？`,
+    analysis:[["第一條件句","未來真實可能，還沒發生：If + 現在式, will + 原形"],["第二條件句","與現在事實相反：If + 過去式, would + 原形"],["第三條件句","與過去事實相反：If + had + p.p., would have + p.p."],["提醒","還沒發生、有可能 → 用第一條件句，別套過去式！"]]},
+
+  // ---------- Day 7 ----------
+  { id:"s19", type:"sentence", tags:["句子","日常","D7"], qlabel:"中譯英",
+    front:"早知道會下雨，我就不會約你們去野餐了。",
+    answer:`If I had known it would rain, I wouldn't have invited you <mark>to a picnic</mark>.`,
+    analysis:[["✅ 整句結構","第三條件句 + 子句內過去看未來(would rain)，全對！"],["a picnic","野餐 = picnic（非 camping，那是露營過夜）"],["🔄 換句話說","If I'd known it would rain, I wouldn't have arranged the picnic.（I'd known；arranged the picnic）"]]},
+  { id:"s20", type:"sentence", tags:["句子","職場","D7"], qlabel:"中譯英",
+    front:"很抱歉造成不便，我們正在盡快處理您回報的問題。",
+    answer:`Sorry for <mark>the inconvenience</mark>. We are <mark>resolving the issue you reported</mark> as soon as possible.`,
+    analysis:[["the inconvenience","固定講法 sorry for the inconvenience（用 the，非 your）"],["the issue you reported","report 當動詞：the issue you reported；issue(問題)非 question(疑問句)"],["resolving","解決 = resolving，比 processing 更貼語感"],["🔄 換句話說","Sorry for the inconvenience. We're working on the issue you reported and will fix it as soon as we can.（working on；fix it asap）"]]},
+  { id:"s21", type:"sentence", tags:["句子","財經","D7"], qlabel:"中譯英",
+    front:"分析師預期，若通膨持續降溫，央行可能在下半年開始降息。",
+    answer:`<mark>Analysts anticipate</mark> that <mark>if inflation continues to ease</mark>, the central bank may <mark>cut interest rates</mark> <mark>in the second half of the year</mark>.`,
+    analysis:[["Analysts","泛指分析師們，用複數 analysts 避開單複數問題"],["if（非 when）","⚠️「若」= 不確定，用 if；when 表示確定會發生"],["continues to ease","降溫財經用 ease，較 slowing 專業"],["cut interest rates","降息（跟 raise 相反）；interest rate 拼法：interest 不加 s"],["in the second half of the year","下半年固定講法（非 next half year）"],["🔄 換句話說","If inflation keeps easing, the central bank could start cutting rates in the second half.（keeps easing；could；in the second half）"]]},
+  { id:"g8", type:"grammar", tags:["文法","D7"], qlabel:"文法",
+    front:"if 和 when 的語氣差在哪？",
+    answer:`if：<mark>不確定</mark>會不會發生；when：<mark>確定</mark>會發生`,
+    analysis:[["if","條件、不確定：If inflation eases, rates may fall."],["when","時間、確定會發生：When the meeting ends, we'll eat."],["提醒","中文「若／如果」通常對應 if，不要跟「當…時」when 搞混"]]},
+
+  // ---------- Day 8 ----------
+  { id:"s22", type:"sentence", tags:["句子","日常","D8"], qlabel:"中譯英",
+    front:"這間餐廳每次都要排隊排很久，但食物真的值得等待。",
+    answer:`<mark>You always have to wait in a long line at this restaurant</mark>, but the food is really <mark>worth the wait</mark>.`,
+    analysis:[["主詞邏輯","餐廳本身不會排隊，是「人」在排隊；主詞應為 you/people"],["worth the wait","worth 接名詞/動名詞，非 to V（✗ worth to wait）"],["its → 提醒","its(所有格) vs it's(=it is)，這句用 the food 就避開了"],["🔄 換句話說","You always have to queue for a long time at this restaurant, but the food is worth waiting for.（queue；worth waiting for）"]]},
+  { id:"s23", type:"sentence", tags:["句子","職場","D8"], qlabel:"中譯英",
+    front:"若貴公司能提供更優惠的價格，我們願意簽訂長期合約。",
+    answer:`If your company can <mark>offer a more competitive price</mark>, we will <mark>be willing to</mark> sign a long-term contract.`,
+    analysis:[["✅ If + can, will","第一條件句判斷正確！還沒發生、有可能成立的商業提議"],["a more competitive price","商業書信用 competitive 較 cheaper 正式"],["be willing to","「願意」= be willing to，比 agree to（同意）更貼語氣"],["🔄 換句話說","If you can offer us a better price, we'd be happy to sign a long-term contract.（offer a better price；we'd be happy to）"]]},
+  { id:"s24", type:"sentence", tags:["句子","財經","D8"], qlabel:"中譯英",
+    front:"由於缺工問題嚴重，這個產業的人力成本近年來持續攀升。",
+    answer:`Due to the severe <mark>labor shortage</mark>, <mark>labor costs</mark> in this industry <mark>have been rising</mark> in <mark>recent years</mark>.`,
+    analysis:[["labor shortage","缺工固定講法（非 lack of human resource）"],["labor costs","人力成本固定講法（非 cost of human resource）"],["have been rising","近年持續攀升 → 現在完成進行式，非單純 keeps"],["recent years","近年來固定講法（非 these years）"],["🔄 換句話說","Because of a severe staff shortage, labour costs in this industry have kept climbing in recent years.（staff shortage；kept climbing）"]]},
+  { id:"g9", type:"grammar", tags:["用法","D8"], qlabel:"用法",
+    front:"worth 後面可以接 to V 嗎？該接什麼？",
+    answer:`worth + <mark>名詞</mark> 或 <mark>動名詞(V-ing)</mark>，✗ 不接 to V`,
+    analysis:[["例","It's worth the wait. ／ It's worth waiting for.（皆正確）"],["錯","✗ worth to wait（此結構不存在）"]]},
+  { id:"g10", type:"grammar", tags:["易錯","D8"], qlabel:"易錯",
+    front:"its 和 it's 差在哪？",
+    answer:`its＝<mark>它的</mark>（所有格，無撇號）；it's＝<mark>it is</mark>（縮寫，有撇號）`,
+    analysis:[["its","所有格：Its food is great.（它的食物）"],["it's","it is 的縮寫：It's great food.（這是很棒的食物）"],["提醒","拼字很像，意思完全不同，寫作時務必檢查"]]},
+
+  // ---------- Day 9 ----------
+  { id:"s25", type:"sentence", tags:["句子","日常","D9"], qlabel:"中譯英",
+    front:"我原本打算今天整理房間，結果一整天都在滑手機。",
+    answer:`I <mark>was going to</mark> clean my room today, but I <mark>ended up scrolling through my phone</mark> all day.`,
+    analysis:[["was going to","「原本打算…結果」專門表達落空的計畫，比中性的 planned to 更貼切（來源：權威文法網站 frustrated plan 用法）"],["scrolling through my phone","滑手機 = scroll through my phone（✗ play the phone 不存在，中式直譯）"],["ended up","「結果卻」語感，比單純 but 更貼近計畫落空"],["同義","had planned to 也可以，稍正式"],["🔄 換句話說","I had planned to tidy my room today, but I spent the whole day on my phone.（had planned to；tidy；spent the day on my phone）"]]},
+  { id:"s26", type:"sentence", tags:["句子","職場","D9"], qlabel:"中譯英",
+    front:"附上本季的銷售報告，麻煩您於本週五前提供意見。",
+    answer:`Attached is <mark>this quarter's sales report</mark>. Please provide your <mark>feedback</mark> <mark>by Friday</mark>.`,
+    analysis:[["this quarter's sales report","語序：所有格+名詞；單數報告配 Attached is"],["feedback","商務「提供意見」= feedback（非 opinions，較個人籠統）"],["by Friday","截止日常用 by（含當天）；before 則不含當天"],["🔄 換句話說","Please find attached this quarter's sales report. I'd appreciate your comments by Friday.（Please find attached；I'd appreciate your comments）"]]},
+  { id:"s27", type:"sentence", tags:["句子","財經","D9"], qlabel:"中譯英",
+    front:"若聯準會如市場預期般降息，科技股可能會迎來一波反彈。",
+    answer:`If <mark>the Fed cuts</mark> interest rates <mark>as the market expects</mark>, tech stocks may <mark>see a rally</mark>.`,
+    analysis:[["the Fed","⚠️ 聯準會 = the Fed（美國央行，管利率），非 IMF（國際貨幣基金組織，管跨國金融穩定）"],["cuts","第一條件句 If+現在式，第三人稱單數加 s"],["as the market expects","如市場預期 = as the market expects / in line with market expectations"],["see a rally","反彈財經標準用字 = rally（非籠統的 rise）"],["🔄 換句話說","If the Fed cuts rates as expected, tech stocks could rebound.（as expected；rebound）"]]},
+  { id:"g11", type:"grammar", tags:["辨析","D9"], qlabel:"辨析",
+    front:"the Fed 和 IMF 差在哪？",
+    answer:`the Fed：<mark>美國央行</mark>，管美國利率；IMF：<mark>國際貨幣基金組織</mark>，管跨國金融穩定`,
+    analysis:[["the Fed","the Federal Reserve，決定美國升降息、貨幣政策"],["IMF","International Monetary Fund，對陷入危機的國家放款、監督全球金融穩定"],["提醒","講「聯準會升降息」只能用 the Fed，不是 IMF"]]},
+  { id:"g12", type:"grammar", tags:["易錯","D9"], qlabel:"易錯",
+    front:"by 和 before 表示截止日期時差在哪？",
+    answer:`by：<mark>含當天</mark>的最晚期限；before：<mark>不含當天</mark>`,
+    analysis:[["by Friday","最晚週五（週五當天仍算數）"],["before Friday","週五之前，嚴格說不含週五本身"],["提醒","中文「本週五前」通常指 by Friday"]]},
+  { id:"g13", type:"grammar", tags:["文法","D9"], qlabel:"文法",
+    front:"第一條件句的主要子句一定要用 will 嗎？",
+    answer:`不一定，可換成 <mark>may / might / can / could / should，甚至直接用祈使句</mark>`,
+    analysis:[["規則","判斷第幾類條件句看 if 子句的動詞形式（現在式=第一類），不是看主要子句用哪個助動詞"],["will","確定會發生：If it rains, I will stay home."],["may/might","有可能發生（may 較肯定、might 較保守）：If it rains, I may/might stay home."],["can/could/should","can=能夠、could=較委婉的可能、should=建議：If he trains harder, he could win."],["祈使句(imperative)","用在請求、建議、指示，商業書信常見：If your company is interested, please feel free to contact us."],["來源","Collins Grammar、Cambridge Grammar、Test-English、Grammaring 等文法資料一致確認"]]},
+
+  // ---------- Day 10 ----------
+  { id:"s28", type:"sentence", tags:["句子","日常","D10"], qlabel:"中譯英",
+    front:"這款筆電雖然比較貴，但用了兩年多，效能完全沒有變差。",
+    answer:`Although this laptop is more expensive, its <mark>performance hasn't declined at all</mark> <mark>after two years of use</mark>.`,
+    analysis:[["this laptop(非this kind of)","中文「這款」+個人使用經驗會自動窄化成「我這一台」；英文 this kind of 不會自動窄化，會被讀成「這整個型號普遍來說」，跟後面個人經驗對不起來"],["laptop/notebook","兩個都對，非修正！laptop 是日常口語最常見、無歧義；notebook 較常見於業界規格語境（且可能跟紙本筆記本混淆）"],["Although(不加but)","although/but 都表轉折，只能選一個，不可疊用"],["performance","效能=performance，非 efficiency（效率，資源使用得好不好）"],["hasn't declined","從過去持續到現在的狀態用現在完成式；變差=decline"],["after two years of use","「用了兩年」= after + 時間 + of use"],["🔄 換句話說","Although this laptop is pricier, it has performed just as well after two years.（pricier；performed just as well）"]]},
+  { id:"s29", type:"sentence", tags:["句子","職場","D10"], qlabel:"中譯英",
+    front:"由於人手不足，這個專案恐怕得延到下個月才能啟動。",
+    answer:`Due to the labor shortage, this project may have to be <mark>postponed until next month</mark>.`,
+    analysis:[["✅ Due to the labor shortage / may have to be","Day8 shortage 和 have to 都用對了"],["postponed until","延到某時間點標準搭配是 postpone...until（非 to start by）"],["🔄 換句話說","Because of a staff shortage, the project may not be able to start until next month.（may not start until）"]]},
+  { id:"s30", type:"sentence", tags:["句子","財經","D10"], qlabel:"中譯英",
+    front:"分析師指出，這波股市反彈可能只是短期現象，投資人仍應保持謹慎。",
+    answer:`Analysts pointed out that <mark>the stock rally</mark> may be <mark>a short-term phenomenon</mark>, <mark>and</mark> investors should <mark>remain cautious</mark>.`,
+    analysis:[["the stock rally","股市反彈語序=stock rally（非 the rally of the stock）；rally 拼字"],["a short-term phenomenon","現象=phenomenon，非 performance（表現、績效，不同概念）"],["and","逗號連接兩個完整句子需加連接詞，否則是 comma splice"],["should remain cautious","「應」是建議語氣，用 should 較 have to 貼切"],["🔄 換句話說","Analysts noted that the rally could be short-lived, so investors should stay cautious.（noted；short-lived；stay cautious）"]]},
+  { id:"g14", type:"grammar", tags:["易錯","D10"], qlabel:"易錯",
+    front:"although 和 but 可以一起用嗎？（雖然…但）",
+    answer:`不行，<mark>只能選一個</mark>`,
+    analysis:[["規則","although 和 but 都表轉折，中文「雖然…但」兩個都要，但英文只能擇一"],["對","Although it's expensive, it's worth it. ／ It's expensive, but it's worth it."],["錯","✗ Although it's expensive, but it's worth it."]]},
+  { id:"g15", type:"grammar", tags:["文法","D10"], qlabel:"文法",
+    front:"什麼是 comma splice（逗號連句）？該怎麼修？",
+    answer:`兩個完整句子只用<mark>逗號</mark>連接，是錯誤用法`,
+    analysis:[["錯","✗ It's late, we should go."],["修法1","加連接詞：It's late, so we should go."],["修法2","改句號或分號：It's late. We should go. ／ It's late; we should go."]]},
+  { id:"g16", type:"grammar", tags:["辨析","D10"], qlabel:"辨析",
+    front:"中文「這款/這類＋個人使用經驗」翻成英文 this kind of 會有什麼問題？",
+    answer:`英文 <mark>this kind of 不會自動窄化</mark>成「我這一台」，仍讀作「這整個型號」`,
+    analysis:[["中文","「這款筆電...我用了兩年」→ 中文母語者自動理解成「我這一台」，款不構成問題"],["英文","「this kind of laptop...I've used it for two years」→ 仍讀作在講一整個型號的普遍狀況，跟後面個人使用經驗對不起來"],["修法","講自己這一台特定的東西，直接用 this + 名詞（this laptop），不要加 kind of / type of"],["提醒","這是中翻英陷阱：中文某些字會因上下文自動調整意思，英文逐字對應詞不一定有同樣彈性"]]},
+
+  // ---------- Day 11 ----------
+  { id:"s31", type:"sentence", tags:["句子","日常","D11"], qlabel:"中譯英",
+    front:"這附近新開了一家咖啡廳，聽說咖啡很棒，改天我們去看看。",
+    answer:`There's a new café nearby, and I heard the coffee is great. Let's <mark>check it out</mark> sometime.`,
+    analysis:[["check it out","check out 需接受詞，補上 it 才完整（✅ 你其他部分都對）"],["café","無撇號（✗ cafe'）"],["is（潤飾非必修）","評價目前應仍成立，用 is 較自然；was 也不算錯"],["🔄 換句話說","A new café has just opened nearby, and apparently the coffee's great. Let's go check it out sometime.（has just opened；apparently；go check it out）"]]},
+  { id:"s32", type:"sentence", tags:["句子","職場","D11"], qlabel:"中譯英",
+    front:"若貴公司有興趣合作，歡迎隨時與我們聯繫，討論細節。",
+    answer:`If your company is <mark>interested in cooperating</mark>, please <mark>feel free to contact us</mark> to discuss the details.`,
+    analysis:[["interested in cooperating","有興趣＝interested in（非 willing to，語感是「願意」不是「有興趣」）"],["please feel free to contact us","⚠️ it's welcome for you to... 結構不成立；歡迎做某事的固定講法是 feel free to"],["✅ If...is","第一條件句結構正確"],["🔄 換句話說","If you're interested in working with us, don't hesitate to get in touch to discuss the details.（working with us；don't hesitate to get in touch）"]]},
+  { id:"s33", type:"sentence", tags:["句子","財經","D11"], qlabel:"中譯英",
+    front:"儘管通膨降溫，消費者的實質購買力仍未完全恢復。",
+    answer:`Despite <mark>the easing of inflation</mark>, consumers' <mark>real purchasing power</mark> <mark>has not fully recovered</mark>.`,
+    analysis:[["the easing of inflation","降溫是動態過程用動名詞 easing（非名詞 ease=輕鬆）；inflation 不可數不加 s"],["real purchasing power","實質購買力固定財經用字（非 consumption ability，此講法不存在）"],["has not fully recovered","現在完成式表從過去持續到現在；完全=fully（非 at all，意思不同）"],["🔄 換句話說","Even though inflation has eased, consumers' real purchasing power still hasn't fully bounced back.（even though；bounced back）"]]},
+  { id:"g17", type:"grammar", tags:["易錯","D11"], qlabel:"易錯",
+    front:"「歡迎你做…」英文怎麼說？",
+    answer:`<mark>feel free to</mark> / you are welcome to`,
+    analysis:[["對","Please feel free to contact us. ／ You are welcome to contact us."],["錯","✗ It's welcome for you to contact us.（welcome 當形容詞不能這樣接用）"]]},
+  { id:"g18", type:"grammar", tags:["辨析","D11"], qlabel:"辨析",
+    front:"ease（名詞）和 easing（動名詞）在講「降溫」時差在哪？",
+    answer:`ease(n.)＝<mark>輕鬆、容易</mark>；easing(動名詞)＝<mark>正在趨緩的過程</mark>`,
+    analysis:[["ease(名詞)","輕鬆、容易，跟「降溫」意思完全不同"],["easing","「降溫」的動態過程要用動名詞：the easing of inflation"],["提醒","inflation 是不可數名詞，不加 s（呼應 Day7 的 inflation 用法）"]]},
+
+  // ---------- Day 12 ----------
+  { id:"s34", type:"sentence", tags:["句子","日常","D12"], qlabel:"中譯英",
+    front:"我昨天熬夜趕報告，早上差點遲到，還好最後一刻趕上公車。",
+    answer:`I stayed up <mark>late last night</mark> working on the report, so I was almost late this morning. <mark>Thank God</mark> I <mark>caught the bus</mark> at <mark>the last minute</mark>.`,
+    analysis:[["late last night","語序：late 修飾 stayed up，last night 是時間點，要合起來"],["✅ was almost late","「差點遲到」時態掌握正確"],["Thank God","固定講法，大寫 G，Thank 不加 s"],["caught the bus","catch=趕上交通工具；catch up=追上進度，兩者不同（✗ caught up the bus）"],["at the last minute","最後一刻固定講法（非 at the last time）"],["🔄 換句話說","I was up late finishing the report, so I nearly missed my ride this morning — luckily I just made the bus in time.（up late；nearly；just made the bus in time）"]]},
+  { id:"s35", type:"sentence", tags:["句子","職場","D12"], qlabel:"中譯英",
+    front:"若您需要任何協助，請不吝與我們聯繫，我們將盡快回覆。",
+    answer:`If you need any <mark>assistance</mark>, please feel free to contact us, <mark>and</mark> we will reply as soon as possible.`,
+    analysis:[["assistance","協助(不可數概念)=assistance，非 assistant(可數,指一個人)"],["✅ please feel free to contact us","昨天學的片語用對了！"],["and","⚠️ comma splice 又出現：兩個完整句子要加 and（Day10 學過的錯誤重複了）"],["🔄 換句話說","If you need any help, don't hesitate to reach out, and we'll respond as quickly as possible.（help；don't hesitate to reach out；respond）"]]},
+  { id:"s36", type:"sentence", tags:["句子","財經","D12"], qlabel:"中譯英",
+    front:"儘管地緣政治風險升高，油價本週僅小幅波動。",
+    answer:`<mark>Despite rising geopolitical risk</mark>, oil prices <mark>fluctuated only slightly</mark> this week.`,
+    analysis:[["Despite(非Because)","⚠️ 邏輯錯誤：原文「儘管」是對比讓步，Because 是因果，意思完全相反"],["geopolitical","地緣政治的固定用字（非 regional politic，此講法不存在）"],["fluctuated only slightly","波動(可上可下)=fluctuate；oil prices 複數；本週已發生用過去式"],["🔄 換句話說","Even though geopolitical risk has risen, oil prices barely moved this week.（even though；barely moved）"]]},
+  { id:"g19", type:"grammar", tags:["易錯","D12"], qlabel:"易錯",
+    front:"because 和 despite 差在哪？（今日重點：邏輯關係別搞反）",
+    answer:`because＝<mark>因果</mark>（因為）；despite＝<mark>對比讓步</mark>（儘管）`,
+    analysis:[["because","表原因→結果：Because it rained, we stayed home."],["despite","表對比、儘管：Despite the rain, we went out."],["提醒","中文「儘管」千萬別跟「因為」搞混，兩者邏輯關係完全相反"]]},
+
+  // ---------- Day 13 ----------
+  { id:"s37", type:"sentence", tags:["句子","日常","D13"], qlabel:"中譯英",
+    front:"我上禮拜訂的包裹到現在還沒送到，我打算打電話去問問看。",
+    answer:`The package I ordered last week <mark>hasn't arrived</mark> yet, <mark>so</mark> I'm going to call to check.`,
+    analysis:[["hasn't arrived / hasn't been delivered","包裹是被動接受者，用 arrive(不及物) 或 be delivered(被動)；✗ hasn't delivered(主動,邏輯不對)"],["so","⚠️ comma splice 第三次：兩完整句要加連接詞 so"],["✅ 現在完成式","hasn't...yet 掌握正確"],["🔄 換句話說","The parcel I ordered last week still hasn't turned up, so I'll give them a call to chase it up.（parcel；turn up=出現；give them a call；chase up=追問）"]]},
+  { id:"s38", type:"sentence", tags:["句子","職場","D13"], qlabel:"中譯英",
+    front:"附件為修改後的合約草稿，如無其他問題，我們將於下週簽署。",
+    answer:`Attached is <mark>the revised draft of the contract</mark>. <mark>If there are no further questions</mark>, we will sign <mark>it</mark> next week.`,
+    analysis:[["the revised draft of the contract","修改後=revised(合約語境比 modified 貼)；草稿單數→Attached is"],["If there are no further questions","如無其他問題的正式講法；又一個 comma splice 要斷句"],["sign it","接受詞 it 讀起來更完整"],["✅ 第一條件句","if + 現在式, will 判斷正確"],["🔄 換句話說","Please find attached the updated contract draft. If everything looks good, we'll sign it next week.（Please find attached；updated；if everything looks good=如果都沒問題）"]]},
+  { id:"s39", type:"sentence", tags:["句子","財經","D13"], qlabel:"中譯英",
+    front:"由於出口數據優於預期，本地股市今天早盤大漲。",
+    answer:`<mark>Thanks to better-than-expected export figures</mark>, the local <mark>stock market</mark> <mark>surged in early trading</mark> this morning.`,
+    analysis:[["better than expected","優於預期(財經高頻)；✗ prior to(意思是「在…之前」，與「優於」無關)"],["Thanks to / Due to","正面因素用 thanks to；用 because 則要接完整子句"],["stock market","本地股市=stock market(整個市場)，非 stock(單一支股票)"],["surged","大漲=surged/jumped(比 rise sharply 有力)；今早已發生用過去式"],["in early trading","早盤固定講法"],["🔄 換句話說","The local market jumped at the open this morning after export data beat expectations.（jumped；at the open=開盤；beat expectations）"]]},
+  { id:"g20", type:"grammar", tags:["易錯","D13"], qlabel:"易錯",
+    front:"「包裹還沒送到」為什麼不能說 hasn't delivered？",
+    answer:`包裹是<mark>被動接受者</mark>，要用 hasn't been delivered 或 hasn't arrived`,
+    analysis:[["被動","The package hasn't been delivered.（包裹「被」送達）"],["不及物","The package hasn't arrived.（包裹自己到達）"],["錯","✗ The package hasn't delivered（主動=包裹沒去送別的東西，邏輯不對）"]]},
+  { id:"d4", type:"vocab", tags:["辨析","D13"], qlabel:"辨析",
+    front:"「優於預期」英文怎麼說？為什麼不是 prior to？",
+    answer:`<mark>better than expected</mark> / beat expectations`,
+    analysis:[["better than expected","優於預期；當形容詞加連字號：better-than-expected data"],["beat expectations","超出預期(同義)"],["✗ prior to","意思是「在…之前」(時間先後)，跟「優於(比較好)」完全無關"]]},
+  { id:"d5", type:"vocab", tags:["辨析","D13"], qlabel:"辨析",
+    front:"revised 和 modified 差在哪？（都是「修改後的」）",
+    answer:`revised＝<mark>文字內容/文件的修訂</mark>；modified＝<mark>功能/結構/行為的調整改造</mark>`,
+    analysis:[["revised 的主場","文件、草稿、報告、合約、版本、數據：the revised draft／a revised edition／revised figures"],["modified 的主場","機器、產品、基因、計畫、程式的改造調整：a modified engine／genetically modified food／modified plan"],["判斷法","改的是「文字內容」用 revised；改的是「功能結構/行為」用 modified"],["提醒","兩個都對、都常用，差別只在改的東西性質不同（合約草稿=文字→revised）"]]},
+
+  // ---------- Day 14 ----------
+  { id:"s40", type:"sentence", tags:["句子","日常","D14"], qlabel:"中譯英",
+    front:"我本來以為這部電影會很無聊，沒想到它比我預期的還要精彩。",
+    answer:`I thought the movie would be boring, but it <mark>turned out to be much better than I expected</mark>.`,
+    analysis:[["✅ I thought...would be...but","「本來以為」用 thought+would，時態正確"],["turned out to be","「沒想到、結果竟然」的語感用 turn out to be；more impressive than 也對，只是語感差異"],["better than I expected","比預期精彩=better than I expected（呼應 better than expected）"],["🔄 換句話說","I expected the film to be dull, but it was far more enjoyable than I'd imagined.（dull=無聊；far more enjoyable；than I'd imagined）"]]},
+  { id:"s41", type:"sentence", tags:["句子","職場","D14"], qlabel:"中譯英",
+    front:"感謝您的來信，關於您提到的問題，我需要與團隊確認後再回覆您。",
+    answer:`Thank you for your email. Regarding your question, I need to <mark>check with my team before getting back to you</mark>.`,
+    analysis:[["check with my team","與某人確認= check with(問一下) / confirm with(正式確認)，皆可；✗ confirm to；別跟 conform to(符合規範)搞混"],["before getting back to you","在回覆你之前先確認，語序自然，用上 get back to you"],["email（非 letter）","商務情境幾乎都是 email（潤飾）"],["🔄 換句話說","Thanks for reaching out. On the point you raised, let me confirm with my team and I'll get back to you shortly.（reach out；the point you raised；confirm with；get back to you shortly）"]]},
+  { id:"s42", type:"sentence", tags:["句子","財經","D14"], qlabel:"中譯英",
+    front:"央行決定維持利率不變，顯示他們對通膨走勢仍持謹慎態度。",
+    answer:`The central bank decided <mark>to keep interest rates unchanged</mark>, <mark>signaling that it remains cautious about the inflation outlook</mark>.`,
+    analysis:[["decided to keep","decide 後接不定詞加 to；維持利率不變=keep interest rates unchanged（單獨 maintain 不完整）"],["signaling that","分詞表「這顯示出…」，精簡且避開連句問題"],["cautious（非 modest）","⚠️ modest=謙虛的、適度的，不是謹慎；謹慎=cautious"],["cautious about the inflation outlook","對通膨走勢謹慎的財經固定講法"],["🔄 換句話說","The central bank held rates steady, a sign that it stays wary of the inflation outlook.（held rates steady；a sign that；wary of=謹慎提防）"]]},
+  { id:"g21", type:"grammar", tags:["易錯","D14"], qlabel:"易錯",
+    front:"「跟某人確認」英文怎麼說？confirm to / conform to 差在哪？",
+    answer:`<mark>check with sb</mark>（問一下）或 <mark>confirm with sb</mark>（正式確認），皆可`,
+    analysis:[["check with sb","向某人詢問、核對資訊或徵求許可：I'll check with my team.（偏「問一下」）"],["confirm with sb","跟某人確認、把細節敲定：I need to confirm with my supervisor.（偏「正式確認」）"],["✗ confirm to sb","此結構不自然、母語者很少用；要向某人證實某事，直接 confirm + 事情 或 confirm that + 子句"],["⚠️ conform to（別搞混）","conform(不是 confirm)+to = 符合規範/標準：The product must conform to safety regulations."]]},
+  { id:"g22", type:"grammar", tags:["易錯","D14"], qlabel:"易錯",
+    front:"cautious 和 modest 差在哪？（別搞混）",
+    answer:`cautious＝<mark>謹慎的</mark>；modest＝<mark>謙虛的、適度的</mark>`,
+    analysis:[["cautious","小心、謹慎以避免問題：remain cautious about the outlook"],["modest","謙虛的（態度）／適度的（程度）：a modest person／a modest increase"],["提醒","兩個字意思完全不同，「持謹慎態度」只能用 cautious"]]}
+];
+
+// ---------- Bulk vocabulary (bidirectional 中↔英) ----------
+const WORDS = [
+  // 7000-字表（音標沿用課本 KK 式）
+  {id:"w001",en:"abbreviate",ipa:"/ə'briviˌet/",pos:"vt",u:"字表",zh:"縮寫、縮略",def:`to make a word or phrase shorter`,eg:`"Acquired Immune Deficiency Syndrome" is usually abbreviated to 'AIDS'.（…通常縮略為 AIDS）`},
+  {id:"w002",en:"abbreviation",ipa:"/əˌbrivi'eʃən/",pos:"n. (C)",u:"字表",zh:"縮寫、縮略語",def:`a short form of a word or phrase`,eg:`"IT" is the written abbreviation of "information technology".`},
+  {id:"w003",en:"abdomen",ipa:"/ˈæbdəmən/",pos:"n. (C)",u:"字表",zh:"腹部",def:`the part of the body below the chest, containing the stomach`,eg:`Tina is complaining of pain in the abdomen.（蒂娜訴說腹痛）`,syn:`= belly`},
+  {id:"w004",en:"abide",ipa:"/ə'baɪd/",pos:"vt/vi",u:"字表",zh:"容忍；遵守(by)",def:`to tolerate; (abide by) to obey or comply with`,eg:`I can't abide such rudeness. ／ You should abide by traffic rules.`,syn:`= endure, tolerate, bear；comply with`},
+  {id:"w005",en:"abnormal",ipa:"/æb'nɔrml/",pos:"adj",u:"字表",zh:"反常的、不正常的",def:`different from what is normal or usual`,eg:`It is abnormal for a boy to be interested in dolls.`,syn:`⇔ normal；* norm (C)`},
+  {id:"w006",en:"abolish",ipa:"/ə'bɑlɪʃ/",pos:"vt",u:"字表",zh:"廢除",def:`to officially end a law, system, or practice`,eg:`The president planned to abolish the death penalty.（廢除死刑）`,syn:`= put an end to；* abolition (U)`},
+  {id:"w007",en:"aboriginal",ipa:"/ˌæbə'rɪdʒənl/",pos:"adj",u:"字表",zh:"原住民的、土著的",def:`relating to the original people of a place`,eg:`Aboriginal culture should be preserved.`,syn:`= indigenous；* aborigine (C)`},
+  {id:"w008",en:"abortion",ipa:"/ə'bɔrʃən/",pos:"n. (C)",u:"字表",zh:"墮胎、流產手術",def:`the deliberate ending of a pregnancy`,eg:`A doctor is not allowed to perform an abortion on a teenager without her parents' approval.`,syn:`* abort (vt)；* abortive (adj)`},
+  {id:"w009",en:"abound",ipa:"/ə'baʊnd/",pos:"vi",u:"字表",zh:"大量存在、很多",def:`to exist in large numbers`,eg:`Rumors abound about her affair with her boss.（傳聞很多）`},
+  {id:"w010",en:"abrupt",ipa:"/ə'brʌpt/",pos:"adj",u:"字表",zh:"突然的",def:`sudden and unexpected`,eg:`The peace talks came to an abrupt end.`,syn:`= sudden, unexpected；* abruptly (adv)`,ex:`同尾字 disrupt（使混亂）‧ interrupt（打斷）‧ erupt（噴發）‧ bankrupt（破產）‧ corrupt（腐敗）`},
+  {id:"w011",en:"absent-minded",ipa:"/ˈæbsənt ˈmaɪndɪd/",pos:"adj",u:"字表",zh:"心不在焉的",def:`forgetful; not paying attention to what is around you`,eg:`I am getting more absent-minded as I get older.`,syn:`* absent-mindedness (U)`},
+  {id:"w012",en:"abstract",ipa:"/æb'strækt/",pos:"adj / n.(C)",u:"字表",zh:"抽象的；摘要",def:`existing as an idea, not concrete (adj); a summary (n)`,eg:`Beauty is abstract but a woman is not. ／ An abstract of my speech will be handed out.`,syn:`⇔ concrete；= summary；* abstraction (U)`},
+  {id:"w013",en:"absurd",ipa:"/əb'sɝd/",pos:"adj",u:"字表",zh:"荒謬的、可笑的",def:`ridiculous; clearly unreasonable`,eg:`Tim looks absurd in that coat!`,syn:`= foolish, ridiculous；* absurdity (C,U)`},
+  {id:"w014",en:"abundance",ipa:"/ə'bʌndəns/",pos:"n. (U)",u:"字表",zh:"大量、充足",def:`a very large quantity of something`,eg:`Make sure that at the party there is food and drink in abundance.`},
+  {id:"w015",en:"abundant",ipa:"/ə'bʌndənt/",pos:"adj",u:"字表",zh:"豐富的、充足的",def:`existing in large quantities; plentiful`,eg:`Taiwan is abundant in fruits. ／ Iraq has an abundant supply of oil.`,syn:`= rich, plentiful`,ex:`同尾字 redundant（多餘的）`},
+  {id:"w016",en:"abuse",ipa:"/ə'bjuz/",pos:"vt",u:"字表",zh:"濫用；虐待、辱罵",def:`to use something wrongly; to treat someone cruelly`,eg:`Once a person gains power, he tends to abuse it.`,syn:`* abuse (U)`,ex:`同尾字 use（使用）‧ misuse（誤用）‧ disuse（廢止）`},
+  {id:"w017",en:"academy",ipa:"/ə'kædəmɪ/",pos:"n. (C)",u:"字表",zh:"學院",def:`a school or college for special training`,eg:`Mark taught at a military academy.`,syn:`* academic (adj)`},
+  {id:"w018",en:"accelerate",ipa:"/æk'sɛləˌret/",pos:"vi/vt",u:"字表",zh:"加速",def:`to (cause to) move faster or happen sooner`,eg:`The car accelerated. ／ This medicine can accelerate heartbeat.`,syn:`⇔ decelerate；= hasten, speed up`},
+  {id:"w019",en:"acceleration",ipa:"/ækˌsɛlə'reʃən/",pos:"n.",u:"字表",zh:"加速、加快",def:`an increase in speed or rate`,eg:`There is an acceleration in the decline of the coal industry.`},
+  {id:"w020",en:"access",ipa:"/ˈæksɛs/",pos:"n. (U)",u:"字表",zh:"進入、取得（權）",def:`the right or ability to enter, reach, or use something`,eg:`The police managed to gain access to the building through an upstairs window.`,ex:`同尾字 recess（休息）‧ process（過程）‧ excess（過量）`},
+  {id:"w021",en:"accessible",ipa:"/æk'sɛsəbl/",pos:"adj",u:"字表",zh:"易接近的、可取得的",def:`able to be reached, obtained, or approached`,eg:`A boss should be accessible to his staff.`,syn:`= approachable；⇔ inaccessible`},
+
+  // 英文課回家複習 HW1（3000 More Essential Words in English, accessory~acknowledge）
+  {id:"w022",en:"accessory",ipa:"/æk'sɛsərɪ/",pos:"n. (C)",u:"HW1",zh:"附件、配件",def:`an extra item added to something for decoration or usefulness`,eg:`The roof rack and radio are examples of car accessories.`},
+  {id:"w023",en:"acclaim",ipa:"/ə'klem/",pos:"vt / n.(U)",u:"HW1",zh:"讚揚、稱讚；讚譽",def:`to praise publicly (vt); public praise and approval (n)`,eg:`The herbal medicine was a much-acclaimed panacea. ／ His paper received great acclaim in the symposium.`,syn:`= praise；= approval`,ex:`同尾字 claim(聲稱)‧ proclaim(宣告)‧ declaim(慷慨陳詞)‧ reclaim(要求收回)‧ disclaim(否認)‧ exclaim(驚叫)`},
+  {id:"w024",en:"accommodate",ipa:"/ə'kɑməˌdet/",pos:"vt",u:"HW1",zh:"容納；順應、適應",def:`to have enough space for; to adjust to changes or needs`,eg:`This hotel can accommodate 500 guests. ／ We must be flexible enough to accommodate changes in the market. ／ You should soon accommodate yourself to the new environment.`,syn:`= hold；= take account of；= adapt, adjust`},
+  {id:"w025",en:"accommodation",ipa:"/əˌkɑmə'deʃən/",pos:"n. (U)",u:"HW1",zh:"住宿",def:`a place to live or stay, especially when travelling`,eg:`The travel agent will fix up/arrange our accommodation.`},
+  {id:"w026",en:"accord",ipa:"/ə'kɔrd/",pos:"vi / vt / n.(C)",u:"HW1",zh:"（vi）一致、相符；（vt）給予；（n）協議",def:`(vi) to be consistent or in agreement with something; (vt) to give or grant; (n) a formal agreement`,eg:`What you have just said does not accord with what you told us last week. ／ On their return, the basketball players were accorded a hero's welcome. ／ Both Israel and Palestine balked at signing a peace accord.`,syn:`= correspond (with)，be consistent (with)；⇔ be contrary (to)；= give`,ex:`同尾字 cord(繩子)‧ record(記錄)‧ discord(不和)‧ concord(調和)｜相關字 pact/contract/treaty/compact/agreement/covenant/convention（皆表協定、條約）`},
+  {id:"w027",en:"accordance",ipa:"/ə'kɔrdns/",pos:"n. (U)",u:"HW1",zh:"依照、遵照",def:`used in the phrase "in accordance with" to mean following a rule or wish`,eg:`In accordance with your wishes, I dropped out of the race.`},
+  {id:"w028",en:"accordingly",ipa:"/ə'kɔrdɪŋlɪ/",pos:"adv",u:"HW1",zh:"因此；相應地",def:`as a result; in a way that is appropriate to the situation`,eg:`If you work extra hours, you will be paid accordingly. ／ She asked me to leave, and accordingly I did.`,syn:`= therefore`},
+  {id:"w029",en:"accountable",ipa:"/ə'kaʊntəbl/",pos:"adj",u:"HW1",zh:"負責的、有責任的",def:`required or expected to explain your actions or decisions`,eg:`You must be accountable for your decision.`,syn:`= responsible, answerable；* accountability (U)`},
+  {id:"w030",en:"accounting",ipa:"/ə'kaʊntɪŋ/",pos:"n. (U)",u:"HW1",zh:"會計、記帳",def:`the practice of recording and summarizing business/financial transactions`,eg:`Sherry is good at accounting.`},
+  {id:"w031",en:"accumulate",ipa:"/ə'kjumjəˌlet/",pos:"vt / vi",u:"HW1",zh:"積累、累積",def:`to gradually gather or increase in quantity over time`,eg:`Jack has accumulated a huge debt from gambling. ／ Dirt and dust have accumulated in the corners of the old house.`,syn:`= amass；= build up`},
+  {id:"w032",en:"accumulation",ipa:"/əˌkjumjə'leʃən/",pos:"n. (C)",u:"HW1",zh:"累積（物）",def:`a mass or quantity that has gathered over time`,eg:`Wisdom is an accumulation of experience and knowledge.`},
+  {id:"w033",en:"accusation",ipa:"/ˌækjə'zeʃən/",pos:"n. (C)",u:"HW1",zh:"指控、指責",def:`a claim that someone has done something wrong`,eg:`It is wrong to make wild accusations against your boss.`},
+  {id:"w034",en:"accuse",ipa:"/ə'kjuz/",pos:"vt",u:"HW1",zh:"指控、控告",def:`to say that someone has done something wrong or illegal`,eg:`Jane was accused of taking bribes.`,syn:`= charge (sb with sth)，indict (sb for sth)`,ex:`同尾字 excuse(原諒)`},
+  {id:"w035",en:"accustom",ipa:"/ə'kʌstəm/",pos:"vt",u:"HW1",zh:"使習慣",def:`to make (oneself or someone) familiar with something new, usually through experience`,eg:`You have to accustom yourself to your new job. ／ I am not accustomed to going to bed so early.`,syn:`= inure`},
+  {id:"w036",en:"ace",ipa:"/es/",pos:"n. (C)",u:"HW1",zh:"（撲克牌）A牌；（某領域的）高手",def:`the playing card with a single symbol, ranked highest or lowest; an expert at something`,eg:`Here is an ace of spades/hearts/diamonds/clubs. ／ Betty is an ace at tennis/chess.`},
+  {id:"w037",en:"acknowledge",ipa:"/ək'nɑlɪdʒ/",pos:"vt",u:"HW1",zh:"承認；公認",def:`to accept or admit that something is true; to recognize the achievements or status of someone`,eg:`Jill acknowledged her mistake. ／ Mr. Liang is widely acknowledged as an authority on Shakespeare.`,syn:`= admit, confess, concede`},
+
+  // Crime & Safety（音標為 IPA）
+  {id:"c01",en:"escape",ipa:"/ɪˈskeɪp/",pos:"v.",u:"Crime",zh:"逃跑；逃脫",def:`to get away from a place or situation`,eg:`The prisoner escaped through a window.`,syn:`搭配 escape from prison, narrow escape`},
+  {id:"c02",en:"spot",ipa:"/spɒt/",pos:"v.",u:"Crime",zh:"發現；看見",def:`to notice or see something`,eg:`An officer spotted the stolen car near the station.`,syn:`搭配 spot a problem, spot the difference`},
+  {id:"c03",en:"uniform",ipa:"/ˈjuː.nɪ.fɔːm/",pos:"n.",u:"Crime",zh:"制服",def:`the special clothes worn by police, military, etc.`,eg:`You can always recognise police by their uniform.`,syn:`搭配 police uniform, wear a uniform`},
+  {id:"c04",en:"neighborhood",ipa:"/ˈneɪ.bə.hʊd/",pos:"n.",u:"Crime",zh:"鄰近地區；社區",def:`the area around where you live`,eg:`The police work closely with the local neighborhood.`,syn:`搭配 local / safe neighborhood`},
+  {id:"c05",en:"record",ipa:"/ˈrek.ɔːd/ (n) /rɪˈkɔːd/ (v)",pos:"n./v.",u:"Crime",zh:"記錄；檔案",def:`official information kept about someone; to write down information`,eg:`He has a criminal record for shoplifting.`,syn:`搭配 criminal record, keep a record`},
+  {id:"c06",en:"trust",ipa:"/trʌst/",pos:"v./n.",u:"Crime",zh:"信任",def:`to believe that someone is honest and will not harm you`,eg:`Communities need to trust their local police.`,syn:`搭配 build trust, gain trust`},
+  {id:"c07",en:"speed",ipa:"/spiːd/",pos:"v./n.",u:"Crime",zh:"超速；速度",def:`to move too fast, especially in a vehicle`,eg:`He was caught speeding on the motorway.`,syn:`搭配 speeding ticket, speed limit`},
+  {id:"c08",en:"drunk",ipa:"/drʌŋk/",pos:"adj.",u:"Crime",zh:"醉酒的",def:`having had too much alcohol`,eg:`Drunk drivers are a serious danger on the road.`,syn:`搭配 drink and drive, drunk driving`},
+  {id:"c09",en:"cooperate",ipa:"/kəʊˈɒp.ər.eɪt/",pos:"v.",u:"Crime",zh:"配合；合作",def:`to work together or help someone`,eg:`Please cooperate with the police investigation.`,syn:`搭配 cooperate with, cooperate fully`},
+  {id:"c10",en:"public",ipa:"/ˈpʌb.lɪk/",pos:"adj./n.",u:"Crime",zh:"公共的；大眾",def:`relating to all people in a community`,eg:`The police are there to serve the public.`,syn:`搭配 public safety, the general public`},
+  {id:"c11",en:"force",ipa:"/fɔːs/",pos:"n.",u:"Crime",zh:"武力；警力",def:`physical strength or power; a group of people`,eg:`The police should only use force when necessary.`,syn:`搭配 police force, use of force`},
+
+  // Arts & Culture（音標為 IPA）
+  {id:"a01",en:"creative",ipa:"/kriˈeɪ.tɪv/",pos:"adj.",u:"Arts",zh:"有創意的；創造性的",def:`able to make new and interesting things`,eg:`She is a very creative artist who uses unusual materials.`,syn:`搭配 creative writing, creative person`},
+  {id:"a02",en:"exhibit",ipa:"/ɪɡˈzɪb.ɪt/",pos:"v./n.",u:"Arts",zh:"展覽；展示",def:`to show something in a public place; a display`,eg:`The gallery is exhibiting new works by local artists.`,syn:`搭配 art exhibit, exhibit at a gallery`},
+  {id:"a03",en:"artistic",ipa:"/ɑːˈtɪs.tɪk/",pos:"adj.",u:"Arts",zh:"藝術的；有藝術才能的",def:`relating to art or showing skill in art`,eg:`She has a very artistic eye for colour and design.`,syn:`搭配 artistic style, artistic talent`},
+  {id:"a04",en:"audience",ipa:"/ˈɔː.di.əns/",pos:"n.",u:"Arts",zh:"觀眾；聽眾",def:`people watching or listening to a performance`,eg:`The audience clapped loudly at the end of the show.`,syn:`搭配 large audience, live audience`},
+  {id:"a05",en:"performance",ipa:"/pəˈfɔː.məns/",pos:"n.",u:"Arts",zh:"表演；演出",def:`the act of entertaining people by singing, playing, acting, etc.`,eg:`The dance performance lasted two hours.`,syn:`搭配 live performance, give a performance`},
+  {id:"a06",en:"inspire",ipa:"/ɪnˈspaɪər/",pos:"v.",u:"Arts",zh:"啟發；激勵",def:`to make someone feel they want to do or create something`,eg:`The film inspired her to start painting.`,syn:`搭配 inspire someone to, feel inspired`},
+  {id:"a07",en:"gallery",ipa:"/ˈɡæl.ər.i/",pos:"n.",u:"Arts",zh:"美術館；藝廊",def:`a building or room where art is shown`,eg:`We spent the afternoon in the art gallery.`,syn:`搭配 art gallery, visit a gallery`},
+  {id:"a08",en:"portrait",ipa:"/ˈpɔː.trət/",pos:"n.",u:"Arts",zh:"肖像；人物畫",def:`a painting, drawing, or photograph of a person`,eg:`The gallery has many famous portraits.`,syn:`搭配 paint a portrait, self-portrait`},
+  {id:"a09",en:"tradition",ipa:"/trəˈdɪʃ.ən/",pos:"n.",u:"Arts",zh:"傳統",def:`a way of doing something that has existed for a long time`,eg:`This festival is an important cultural tradition.`,syn:`搭配 local tradition, keep a tradition`},
+  {id:"a10",en:"unique",ipa:"/juˈniːk/",pos:"adj.",u:"Arts",zh:"獨特的；唯一的",def:`being the only one of its kind; very special`,eg:`The artist has a very unique style.`,syn:`搭配 unique style, unique experience`},
+  {id:"a11",en:"express",ipa:"/ɪkˈspres/",pos:"v.",u:"Arts",zh:"表達；表現",def:`to show what you think or feel through words, actions, or art`,eg:`Music is a great way to express your emotions.`,syn:`搭配 express yourself, express an opinion`},
+  {id:"a12",en:"emotion",ipa:"/ɪˈməʊ.ʃən/",pos:"n.",u:"Arts",zh:"情感；情緒",def:`a strong feeling such as love, happiness, or sadness`,eg:`Her paintings are full of emotion.`,syn:`搭配 show emotion, strong emotion`},
+
+  // Day 5 單字
+  {id:"w101",en:"promise",ipa:"/ˈprɒm.ɪs/ (UK) /ˈprɑː.mɪs/ (US)",pos:"v./n.",u:"Day5",zh:"答應、承諾",def:`to tell someone you will definitely do something`,eg:`I promised her I would help her move.`,syn:`句型 promise sb (that)… / promise to do；間接引述 will→would`},
+  {id:"w102",en:"attachment",ipa:"/əˈtætʃ.mənt/",pos:"n.",u:"Day5",zh:"附件；依附、依戀",def:`a file sent with an email`,eg:`Please find attached the minutes of the meeting.`,syn:`片語 please find attached / attached is/are = 附件是…（email 慣用）`},
+  {id:"w103",en:"minutes",ipa:"/ˈmɪn.ɪts/",pos:"n. (pl.)",u:"Day5",zh:"會議紀錄",def:`an official written record of what is said and decided at a meeting`,eg:`Attached are the minutes of last week's meeting.`,syn:`此義恆為複數 minutes`},
+  {id:"w104",en:"gross margin",ipa:"/ˌɡrəʊs ˈmɑː.dʒɪn/",pos:"n.",u:"Day5",zh:"毛利率",def:`a company's profit from selling goods or services before indirect costs`,eg:`The company's gross margin fell year-on-year.`,syn:`辨析 gross margin 毛利率 ≠ net margin 淨利率；profit margin 利潤率(泛)`},
+  {id:"w105",en:"hiking",ipa:"/ˈhaɪ.kɪŋ/",pos:"n.",u:"Day5",zh:"健行、爬山",def:`the activity of walking in the countryside or mountains for pleasure`,eg:`We went hiking in the mountains last weekend.`,syn:`辨析 hiking 休閒走山 ≠ mountain climbing / mountaineering 攀登(技術性)；go hiking`},
+
+  // Day 6 單字
+  {id:"w201",en:"fab",ipa:"/fæb/",pos:"n.",u:"Day6",zh:"晶圓廠、半導體製造廠",def:`a factory for making advanced electronic products, such as semiconductor chips (short for fabrication plant)`,eg:`TSMC will build a new fab in the US.`,syn:`辨析 口語 fab 也可指 fabulous；業界幾乎都指晶圓廠`},
+  {id:"w202",en:"announce",ipa:"/əˈnaʊns/",pos:"v.",u:"Day6",zh:"宣布、公告",def:`to tell people about something officially or publicly`,eg:`TSMC announced plans to build a new fab.`,syn:`片語 announce plans to do sth = 宣布計畫要…`},
+
+  // Day 7 單字
+  {id:"w301",en:"picnic",ipa:"/ˈpɪk.nɪk/",pos:"n.",u:"Day7",zh:"野餐",def:`an occasion when a meal is eaten outdoors, often in a park or countryside`,eg:`We invited them to a picnic in the park.`,syn:`辨析 picnic(白天出遊) ≠ camping(露營過夜)`},
+  {id:"w302",en:"issue",ipa:"/ˈɪʃ.uː/",pos:"n.",u:"Day7",zh:"問題、狀況",def:`a problem or difficulty`,eg:`We are resolving the issue you reported.`,syn:`辨析 issue(問題、狀況) ≠ question(疑問句)`},
+  {id:"w303",en:"inconvenience",ipa:"/ˌɪn.kənˈviː.ni.əns/",pos:"n.",u:"Day7",zh:"不便、麻煩",def:`a situation that causes trouble or difficulty`,eg:`We are sorry for the inconvenience this may have caused.`,syn:`片語 sorry for the inconvenience = 造成不便非常抱歉（用 the，非 your）`},
+  {id:"w304",en:"ease",ipa:"/iːz/",pos:"v.",u:"Day7",zh:"（經濟數據）趨緩、放鬆",def:`to become less severe or intense`,eg:`Analysts expect inflation to ease in the coming months.`,syn:`同源 slowdown/slowing；財經常用來講通膨、壓力趨緩`},
+
+  // Day 8 單字
+  {id:"w401",en:"shortage",ipa:"/ˈʃɔː.tɪdʒ/",pos:"n.",u:"Day8",zh:"短缺、不足",def:`a situation in which there is not enough of something that is needed`,eg:`The industry is struggling with a severe labor shortage.`,syn:`片語 labor shortage = 缺工（Cambridge 收錄搭配詞）`,cam:"shortage"},
+  {id:"w402",en:"labor costs",ipa:"/ˈleɪ.bər kɒst/",pos:"n.",u:"Day8",zh:"人力成本、勞動成本",def:`the cost of employing workers, including wages and benefits`,eg:`Labor costs in this industry have been rising in recent years.`,syn:`辨析 labor costs(人力成本) ≠ human resources(人資部門/概念)`},
+
+  // Day 9 單字
+  {id:"w501",en:"scroll through",ipa:"/skrəʊl θruː/",pos:"phr. v.",u:"Day9",zh:"滑（手機／頁面）、瀏覽",def:`to move through text or images on a screen by scrolling`,eg:`I ended up scrolling through my phone all day.`,syn:`辨析 ✗ play the phone 這個講法不存在，是中式直譯`},
+  {id:"w502",en:"feedback",ipa:"/ˈfiːd.bæk/",pos:"n. (U)",u:"Day9",zh:"意見、回饋",def:`comments about how well something is working, given so it can be improved`,eg:`Please provide your feedback by Friday.`,syn:`辨析 feedback(針對特定事物的具體回饋) vs opinions(較個人籠統的看法)`},
+  {id:"w503",en:"the Fed",ipa:"/ðə fed/",pos:"n.",u:"Day9",zh:"聯準會（美國中央銀行，正式名稱 the Federal Reserve）",def:`the central bank of the United States, responsible for setting US interest rates and monetary policy`,eg:`Tech stocks may see a rally if the Fed cuts rates.`,syn:`辨析 ⚠️ the Fed(美國央行,管美國利率) ≠ IMF(國際貨幣基金組織,管跨國金融穩定與貸款)，職責完全不同`},
+  {id:"w504",en:"rally",ipa:"/ˈræl.i/",pos:"n./v.",u:"Day9",zh:"（股市）反彈、回升",def:`a sudden increase in share prices after a period when they have been falling`,eg:`Tech stocks may see a rally if the Fed cuts rates.`,syn:`搭配 a rally in shares/prices；stage/enjoy a rally`},
+
+  // Day 10 單字
+  {id:"w601",en:"performance",ipa:"/pəˈfɔː.məns/",pos:"n.",u:"Day10",zh:"效能、表現",def:`how well a person, machine, or organization does a piece of work or an activity`,eg:`The laptop's performance hasn't declined at all after two years of use.`,syn:`辨析 performance(效能、表現) vs efficiency(效率，資源使用得好不好，如省電)`},
+  {id:"w602",en:"phenomenon",ipa:"/fəˈnɒm.ɪ.nən/",pos:"n.",u:"Day10",zh:"現象",def:`a fact or event that can be observed, especially one that is unusual`,eg:`This rally may be a short-term phenomenon.`,syn:`複數 phenomena（不規則複數，注意拼法）`},
+  {id:"w603",en:"postpone...until",ipa:"/pəˈspəʊn/",pos:"phr.",u:"Day10",zh:"把…延到（某時間點）",def:`postpone + 事情 + until + 時間，是最標準常見的搭配`,eg:`The project may have to be postponed until next month.`,syn:`辨析 postpone...to 也對，但語意較模糊，until 更清楚指出延到哪個時間點`},
+  {id:"w604",en:"stock rally",ipa:"/stɒk ˈræl.i/",pos:"phr.",u:"Day10",zh:"股市反彈",def:`a period of rising stock prices`,eg:`Analysts pointed out that the stock rally may be a short-term phenomenon.`,syn:`辨析 名詞+名詞語序是 stock rally，非 the rally of the stock`},
+
+  // Day 11 單字
+  {id:"w701",en:"check out",ipa:"/tʃek aʊt/",pos:"phr. v.",u:"Day11",zh:"去看看、去瞧瞧",def:`to look at or visit something to see if you like it`,eg:`Let's check it out sometime.`,syn:`辨析 及物用法，通常要接受詞（check it out / check out the place），不能只說 check out 結尾`},
+  {id:"w702",en:"feel free to",ipa:"/fiːl friː tuː/",pos:"phr.",u:"Day11",zh:"歡迎、請隨意（做某事）",def:`used to tell someone they are allowed to do something`,eg:`Please feel free to contact us to discuss the details.`,syn:`辨析 ✗ it's welcome for you to... 此結構不存在；「歡迎你做…」= feel free to / you are welcome to`},
+  {id:"w703",en:"purchasing power",ipa:"/ˈpɜː.tʃə.sɪŋ ˌpaʊ.ər/",pos:"n.",u:"Day11",zh:"（實質）購買力",def:`a person's or currency's ability to buy goods and services`,eg:`Consumers' real purchasing power has not fully recovered.`,syn:`辨析 ≠ consumption ability（此講法不存在）`},
+  {id:"w704",en:"easing",ipa:"/ˈiː.zɪŋ/",pos:"n. (動名詞)",u:"Day11",zh:"（經濟數據）趨緩、降溫的過程",def:`the gerund form of "ease", describing the ongoing process of becoming less severe`,eg:`Despite the easing of inflation, real purchasing power has not fully recovered.`,syn:`辨析 ease(名詞)=輕鬆、容易，跟「降溫」意思完全不同；動態過程要用 easing`},
+
+  // Day 12 單字
+  {id:"w801",en:"at the last minute",ipa:"/æt ðə lɑːst ˈmɪn.ɪt/",pos:"phr.",u:"Day12",zh:"最後一刻",def:`at the final possible moment, just before it's too late`,eg:`I caught the bus at the last minute.`},
+  {id:"w802",en:"catch up (with)",ipa:"/kætʃ ʌp/",pos:"phr. v.",u:"Day12",zh:"追上（進度、某人）",def:`to reach the same level or position as someone/something after being behind`,eg:`I need to catch up with my work.`,syn:`辨析 catch(趕上交通工具、抓住) vs catch up(追上進度)；✗ caught up the bus`},
+  {id:"w803",en:"assistance",ipa:"/əˈsɪs.təns/",pos:"n. (U)",u:"Day12",zh:"協助、幫助",def:`help given to someone`,eg:`If you need any assistance, please contact us.`,syn:`辨析 assistance(不可數,協助) vs assistant(可數,助理/一個人)`},
+  {id:"w804",en:"geopolitical",ipa:"/ˌdʒiː.əʊ.pəˈlɪt.ɪ.kəl/",pos:"adj.",u:"Day12",zh:"地緣政治的",def:`connected with political activity as influenced by geography`,eg:`Despite rising geopolitical risk, oil prices fluctuated only slightly.`,syn:`搭配 geopolitical risk / tension = 地緣政治風險／緊張情勢`},
+  {id:"w805",en:"fluctuate",ipa:"/ˈflʌk.tʃu.eɪt/",pos:"v.",u:"Day12",zh:"波動（可上可下）",def:`to change or vary, especially continually and irregularly`,eg:`Oil prices fluctuated only slightly this week.`,syn:`辨析 fluctuate(中性,上下都算) ≠ rise(只表上升,方向明確)`},
+
+  // Day 13 單字
+  {id:"w901",en:"better than expected",ipa:"/ˈbet.ər ðən ɪkˈspek.tɪd/",pos:"phr.",u:"Day13",zh:"優於預期",def:`better than what people predicted`,eg:`Thanks to better-than-expected export figures, the market surged.`,syn:`同義 beat expectations；形容詞用連字號 better-than-expected + 名詞；辨析 ✗ prior to(在…之前，與「優於」無關)`,cam:"better"},
+  {id:"w902",en:"surge",ipa:"/sɜːdʒ/",pos:"v./n.",u:"Day13",zh:"大漲、飆升",def:`to increase suddenly and strongly`,eg:`The market surged in early trading.`,syn:`辨析 surge=洶湧上漲、jump=跳漲、rally=跌後回升；rise sharply 也對但力道較弱`},
+  {id:"w903",en:"in early trading",ipa:"/ɪn ˈɜː.li ˈtreɪ.dɪŋ/",pos:"phr.",u:"Day13",zh:"早盤（開盤後不久）",def:`in the period soon after the market opens`,eg:`Stocks jumped in early trading this morning.`,cam:"trading"},
+  {id:"w904",en:"revised",ipa:"/rɪˈvaɪzd/",pos:"adj.",u:"Day13",zh:"修訂後的、修改過的",def:`changed in order to correct or improve it`,eg:`Attached is the revised draft of the contract.`,syn:`辨析 revised(正式,用於文件/合約) 比 modified 更貼合約、報告語境`,cam:"revised"},
+
+  // Day 14 單字
+  {id:"w1001",en:"turn out (to be)",ipa:"/tɜːn aʊt/",pos:"phr. v.",u:"Day14",zh:"結果（竟然）是、原來是",def:`to be discovered to be; to happen in a particular way, often unexpectedly`,eg:`I thought it would be boring, but it turned out to be great.`,syn:`辨析 帶「出乎意料」語感，對應中文「沒想到、結果竟然」`,cam:"turn-out"},
+  {id:"w1002",en:"check with",ipa:"/tʃek wɪð/",pos:"phr. v.",u:"Day14",zh:"與某人確認、跟某人核對",def:`to ask someone for information or permission`,eg:`I need to check with my team before getting back to you.`,syn:`「跟某人確認」= check with(問一下) / confirm with(正式確認)，皆可；✗ confirm to；別跟 conform to(符合規範)搞混`,cam:"check"},
+  {id:"w1003",en:"keep unchanged",ipa:"/kiːp ʌnˈtʃeɪndʒd/",pos:"phr.",u:"Day14",zh:"維持（利率等）不變",def:`to keep something at the same level`,eg:`The central bank decided to keep interest rates unchanged.`,syn:`同義 hold rates steady；皆央行標準用語`,cam:"unchanged"},
+  {id:"w1004",en:"cautious",ipa:"/ˈkɔː.ʃəs/",pos:"adj.",u:"Day14",zh:"謹慎的、小心的",def:`careful to avoid problems or danger`,eg:`The central bank remains cautious about the inflation outlook.`,syn:`辨析 ⚠️ cautious(謹慎) ≠ modest(謙虛的、適度的)，完全不同別搞混`,cam:"cautious"},
+  {id:"w1005",en:"inflation outlook",ipa:"/ɪnˈfleɪ.ʃən ˈaʊt.lʊk/",pos:"n.",u:"Day14",zh:"通膨走勢、通膨前景",def:`the expected future direction of inflation`,eg:`The Fed remains cautious about the inflation outlook.`,syn:`搭配 cautious about the inflation outlook = 對通膨走勢持謹慎態度`,cam:"outlook"}
+];
+for(const w of WORDS){
+  const link = `<a href='${C}${(w.cam||w.en).replace(/ /g,'-')}' target='_blank'>Cambridge</a>`;
+  const base = [];
+  if(w.def) base.push(["EN",w.def]);
+  if(w.eg) base.push(["例",w.eg]);
+  if(w.syn) base.push(["相關",w.syn]);
+  if(w.ex) base.push(["補充",w.ex]);
+  base.push(["🔊",link]);
+  DECK.push({ id:w.id+"-p", type:"vocab", tags:["單字",w.u], qlabel:"中 → 英", speak:w.en,
+    front:`「${w.zh}」${w.pos?'('+w.pos+')':''}<br>英文？`,
+    answer:`${w.en} <span class="ipa">${w.ipa}</span>`, analysis:base });
+  DECK.push({ id:w.id+"-r", type:"vocab", tags:["單字",w.u,"英→中"], qlabel:"英 → 中", speak:w.en,
+    front:`${w.en} <span class="ipa">${w.ipa}</span> ${w.pos?'('+w.pos+')':''}<br>中文意思？`,
+    answer:`${w.zh}`, analysis:base });
+}
+
+// ---------- Legacy vocab → add 英→中 reverse (Day 1–4 pure vocab) ----------
+const LEGACY_REV = [
+  {id:"v1",zh:"睡意朦朧的、昏昏欲睡的 (adj.)"},
+  {id:"v2",zh:"行動緩慢的、遲緩的、提不起勁的 (adj.)"},
+  {id:"v3",zh:"招標／投標（書）(n.)"},
+  {id:"v4",zh:"重新評估、重新考慮 (v.)"},
+  {id:"v5",zh:"（公司的）營收、收益 (n.)"},
+  {id:"v6",zh:"耐心、忍耐 (n.)"},
+  {id:"v7",zh:"海外的、國外的 (adj./adv.)"},
+  {id:"v8",zh:"（財報的）季，一季三個月 (n.)"},
+  {id:"v9",zh:"塞車、交通堵塞 (n.)"},
+  {id:"v10",zh:"（貨幣、資產）升值、增值 (v.)"},
+  {id:"v11",zh:"延期、延後 (v.)"},
+  {id:"v12",zh:"出口商、出口國 (n.)"},
+  {id:"v13",zh:"擠壓；（財經）壓縮獲利 (v.)"},
+  {id:"v14",zh:"放緩、趨緩（經濟）(n.)"},
+  {id:"v15",zh:"（公司）公佈、繳出（財報、獲利）(v.)"},
+  {id:"v16",zh:"晶片廠、晶片製造商 (n.)"},
+  {id:"v17",zh:"電池續航力（片語）"}
+];
+for(const r of LEGACY_REV){
+  const f = DECK.find(c=>c.id===r.id);
+  if(!f) continue;
+  DECK.push({ id:r.id+"-r", type:"vocab", tags:[...(f.tags||[]),"英→中"], qlabel:"英 → 中", speak:f.speak,
+    front:`${f.answer}<br>中文意思？`, answer:r.zh, analysis:f.analysis });
+}
+
+// ---------- Storage (localStorage) ----------
+const KEY="ce-srs-v1";
+const NEW_PER_DAY=30;
+function loadRaw(){ try{ return JSON.parse(localStorage.getItem(KEY)||"null"); }catch(e){ return null; } }
+function saveRaw(s){ try{ localStorage.setItem(KEY, JSON.stringify(s)); }catch(e){} }
+
+function today(){ const d=new Date(); d.setHours(0,0,0,0); return d; }
+function dstr(d){ const z=new Date(d.getTime()-d.getTimezoneOffset()*60000); return z.toISOString().slice(0,10); }
+function addDays(n){ const d=today(); d.setDate(d.getDate()+n); return dstr(d); }
+const TODAY=dstr(today());
+
+function loadState(){
+  let s=loadRaw();
+  if(!s){ s={cards:{}, newByDate:{}}; }
+  for(const c of DECK){ if(!s.cards[c.id]) s.cards[c.id]={ef:2.5,interval:0,reps:0,due:null,introduced:false}; }
+  return s;
+}
+function saveState(s){ saveRaw(s); }
+
+// ---------- Pronunciation (device TTS) ----------
+let VOICES=[];
+function loadVoices(){ try{ VOICES = window.speechSynthesis ? speechSynthesis.getVoices() : []; }catch(e){ VOICES=[]; } }
+if(window.speechSynthesis){ loadVoices(); window.speechSynthesis.onvoiceschanged=loadVoices; }
+function speak(word,lang){
+  if(!window.speechSynthesis){ alert("此裝置不支援內建發音，請點 Cambridge 連結。"); return; }
+  try{ speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(word); u.lang=lang; u.rate=0.9;
+    const v=VOICES.find(v=>v.lang&&v.lang.replace("_","-")===lang)||VOICES.find(v=>v.lang&&v.lang.toLowerCase().startsWith(lang.slice(0,2)));
+    if(v) u.voice=v; speechSynthesis.speak(u);
+  }catch(e){}
+}
+
+// ---------- Scheduling (SM-2 lite) ----------
+function nextInterval(cs,q){
+  if(q==="again") return 0;
+  if(cs.reps===0){            // 新卡第一次複習：固定階梯
+    return q==="hard"?1 : q==="good"?2 : 4;
+  }
+  const iv = cs.interval<1?1:cs.interval;
+  const hard = Math.max(1, Math.round(iv*1.2));
+  const good = Math.max(hard+1, Math.round(iv*cs.ef));
+  const easy = Math.max(good+1, Math.round(iv*cs.ef*1.5));
+  return q==="hard"?hard : q==="good"?good : easy;
+}
+function preview(cs,q){
+  if(q==="again") return "<1分";
+  return nextInterval(cs,q)+"天";
+}
+function applyGrade(s,c,q){ const cs=s.cards[c.id];
+  if(!cs.introduced){ cs.introduced=true; s.newByDate[TODAY]=(s.newByDate[TODAY]||0)+1; }
+  const iv = nextInterval(cs,q);
+  if(q==="again"){ cs.reps=0; cs.interval=0; cs.ef=Math.max(1.3,cs.ef-0.2); cs.due=TODAY; return "again"; }
+  if(q==="hard") cs.ef=Math.max(1.3,cs.ef-0.15);
+  if(q==="easy") cs.ef=cs.ef+0.15;
+  cs.reps+=1; cs.interval=iv; cs.due=addDays(iv);
+  return "scheduled";
+}
+
+// ---------- Filtering ----------
+const GRAMMAR_TAGS = ["文法","辨析","易錯","用法"];
+const FUNCTIONAL_TAGS = new Set(["單字","句子","文法","辨析","易錯","用法","片語","英→中"]);
+function isGrammar(c){ return c.type==="grammar" || c.tags.some(t=>GRAMMAR_TAGS.includes(t)); }
+function isVocab(c){ return c.type==="vocab" && !isGrammar(c); }
+function isSentence(c){ return c.type==="sentence"; }
+let FILTER="all";
+let DAY_MIN=null, DAY_MAX=null;
+let HW_MODE="latest"; // 'latest' | 'all' — 使用者通常只複習最近一次作業
+function maxHw(){ let m=null; for(const c of DECK){ const h=hwOf(c); if(h!==null && (m===null||h>m)) m=h; } return m; }
+function matchesHwRange(c){
+  const h=hwOf(c);
+  if(h===null) return true; // 無 HW 標籤的卡不受此列限制
+  if(HW_MODE==="all") return true;
+  return h===maxHw(); // latest：只保留最新一週
+}
+function dayOf(c){
+  for(const t of c.tags){
+    let m=/^D(\d+)$/.exec(t); if(m) return parseInt(m[1]);
+    m=/^Day(\d+)$/.exec(t); if(m) return parseInt(m[1]);
+  }
+  return null; // 無日期標籤的卡（每日翻譯練習以外的批次）
+}
+// 英文課回家複習週次（例如 HW1、HW2…），跟 Day 系統完全分開的另一條時間軸
+function hwOf(c){
+  for(const t of c.tags){
+    const m=/^HW(\d+)$/.exec(t); if(m) return parseInt(m[1]);
+  }
+  return null;
+}
+// 主題：只用於「既沒有 Day 也沒有 HW 週次」的一次性批次（例如字表/Crime/Arts、單次考試單字）
+function topicOf(c){
+  if(dayOf(c)!==null || hwOf(c)!==null) return null;
+  const t=c.tags.find(t=>!FUNCTIONAL_TAGS.has(t));
+  return t||null;
+}
+let ALL_TOPICS=[]; let TOPIC_ACTIVE=new Set();
+function initTopics(){
+  ALL_TOPICS=[...new Set(DECK.map(topicOf).filter(Boolean))];
+  TOPIC_ACTIVE=new Set(ALL_TOPICS); // 預設全選
+}
+function matchesDayRange(c){
+  const d=dayOf(c);
+  if(d===null) return true; // 無 Day 標籤的卡不受此列限制
+  if(DAY_MIN!==null && d<DAY_MIN) return false;
+  if(DAY_MAX!==null && d>DAY_MAX) return false;
+  return true;
+}
+function matchesTopic(c){
+  const tp=topicOf(c);
+  if(tp===null) return true; // 有 Day 或 HW 標籤的卡不受主題篩選限制
+  return TOPIC_ACTIVE.has(tp);
+}
+function matchesFilter(c){
+  if(!matchesDayRange(c)) return false;
+  if(!matchesHwRange(c)) return false;
+  if(!matchesTopic(c)) return false;
+  if(FILTER==="all") return true;
+  if(FILTER==="單字") return isVocab(c);
+  if(FILTER==="句子") return isSentence(c);
+  if(FILTER==="grammar") return isGrammar(c);
+  return true;
+}
+function shuffle(arr){ const a=[...arr]; for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+
+// ---------- Session ----------
+let STATE, queue=[], extraToday=0, MODE="srs";
+const BATCH=15;
+function buildQueue(){
+  if(MODE==="free"){ queue=shuffle(DECK.filter(matchesFilter).map(c=>c.id)); return; }
+  const pool=DECK.filter(matchesFilter);
+  const rev=[],news=[];
+  for(const c of pool){ const cs=STATE.cards[c.id];
+    if(cs.introduced){ if(cs.due && cs.due<=TODAY) rev.push(c.id); } else news.push(c.id); }
+  const allow=Math.max(0,NEW_PER_DAY-(STATE.newByDate[TODAY]||0))+extraToday;
+  queue=[...rev,...news.slice(0,allow)];
+}
+function counts(){
+  if(MODE==="free"){ document.getElementById("c-rev").textContent=queue.length; document.getElementById("c-new").textContent="—"; return; }
+  let r=0,n=0; for(const id of queue){ STATE.cards[id].introduced?r++:n++; }
+  document.getElementById("c-rev").textContent=r; document.getElementById("c-new").textContent=n;
+}
+function nextDue(){ let m=null; for(const c of DECK.filter(matchesFilter)){ const d=STATE.cards[c.id].due; if(d&&(!m||d<m)) m=d; } return m; }
+function remainingUnseen(){ return DECK.filter(matchesFilter).filter(c=>!STATE.cards[c.id].introduced).length; }
+
+function render(){
+  counts();
+  const stage=document.getElementById("stage");
+  if(queue.length===0){
+    if(MODE==="free"){
+      stage.innerHTML=`<div class="done"><div class="big">🔁</div><p>這輪自由練習做完了（不影響正式進度）。</p>
+        <button class="reveal" id="againBtn" style="margin-top:10px;">再來一輪（重新洗牌）</button></div>`;
+      document.getElementById("againBtn").onclick=()=>{ buildQueue(); render(); };
+      return;
+    }
+    const nd=nextDue(); const left=remainingUnseen();
+    stage.innerHTML=`<div class="done"><div class="big">🎉</div><p>這批複習完了。</p>
+      <p>${nd?("到期複習下次："+nd):"目前沒有其他到期卡"}</p>
+      ${left>0?`<p style="margin-top:14px;">還有 <b>${left}</b> 張新卡沒看過</p>
+        <button class="reveal" id="moreBtn" style="margin-top:8px;">再複習一批新卡（${Math.min(BATCH,left)} 張）</button>`
+        : `<p>這個範圍的卡都看過了 👏</p>`}
+      </div>`;
+    if(left>0){ document.getElementById("moreBtn").onclick=()=>{ extraToday+=BATCH; buildQueue(); render(); }; }
+    return;
+  }
+  const c=DECK.find(x=>x.id===queue[0]); const cs=STATE.cards[c.id]; const isNew=!cs.introduced;
+  stage.innerHTML=`
+    ${MODE==="free"?'<span class="freebadge">🔁 自由練習中（不影響正式進度）</span>':''}
+    <div class="card">
+      <div class="tagbar">${c.tags.map(t=>`<span class="tag">${t}</span>`).join("")}${isNew&&MODE==="srs"?'<span class="tag" style="color:var(--pine);border-color:var(--pine)">新</span>':''}</div>
+      <div class="front"><div class="qlabel">${c.qlabel}</div><div class="prompt">${c.front}</div></div>
+      <div id="backwrap" class="hide">
+        <div class="divider"></div>
+        <div class="back">
+          <div class="seg"><div class="seg-h">參考答案</div>
+            <div class="answer">${c.answer}${c.speak?(()=>{ const words=Array.isArray(c.speak)?c.speak:[c.speak];
+              return `<span class="say">${words.map(w=>`<span class="sayword">${words.length>1?`<em>${w}</em>`:''}<button class="sayb" data-w="${w}" data-l="en-GB">🔊 UK</button><button class="sayb" data-w="${w}" data-l="en-US">🔊 US</button></span>`).join('')}</span>`; })():''}</div></div>
+          <div class="seg"><div class="seg-h">解析</div>
+            <div class="analysis">${c.analysis.map(a=>`<div><span class="ar">${a[0]}</span> → ${a[1]}</div>`).join("")}</div></div>
+        </div>
+      </div>
+      <div class="controls">
+        <button class="reveal" id="revealBtn">顯示答案</button>
+        <div class="grades hide" id="grades">
+          ${MODE==="free" ? `
+          <button class="grade g-again" data-q="again">還不熟</button>
+          <button class="grade g-hard"  data-q="hard">普通</button>
+          <button class="grade g-good"  data-q="good">會了</button>
+          <button class="grade g-easy"  data-q="easy">秒懂</button>` : `
+          <button class="grade g-again" data-q="again">重來<span class="iv">${preview(cs,'again')}</span></button>
+          <button class="grade g-hard"  data-q="hard">困難<span class="iv">${preview(cs,'hard')}</span></button>
+          <button class="grade g-good"  data-q="good">良好<span class="iv">${preview(cs,'good')}</span></button>
+          <button class="grade g-easy"  data-q="easy">簡單<span class="iv">${preview(cs,'easy')}</span></button>`}
+        </div>
+      </div>
+    </div>`;
+  document.getElementById("revealBtn").onclick=()=>{
+    document.getElementById("backwrap").classList.remove("hide");
+    document.getElementById("revealBtn").classList.add("hide");
+    document.getElementById("grades").classList.remove("hide");
+    if(c.speak) speak(Array.isArray(c.speak)?c.speak[0]:c.speak,"en-US");
+  };
+  document.querySelectorAll(".sayb").forEach(b=>{ b.onclick=()=>speak(b.dataset.w,b.dataset.l); });
+  document.querySelectorAll(".grade").forEach(b=>{
+    b.onclick=()=>{
+      const q=b.dataset.q;
+      if(MODE==="free"){
+        queue.shift(); if(q==="again") queue.push(c.id); render(); return; // 不寫回 STATE，不影響正式進度
+      }
+      const r=applyGrade(STATE,c,q); saveState(STATE);
+      queue.shift(); if(r==="again") queue.push(c.id); render();
+    };
+  });
+}
+
+// ---------- Mode bar wiring ----------
+document.querySelectorAll('.chip[data-mode]').forEach(b=>{
+  b.onclick=()=>{
+    MODE=b.dataset.mode;
+    document.querySelectorAll('.chip[data-mode]').forEach(x=>x.classList.toggle('active',x===b));
+    extraToday=0; buildQueue(); render();
+  };
+});
+document.querySelectorAll('.chip[data-filter]').forEach(b=>{
+  b.onclick=()=>{
+    FILTER=b.dataset.filter;
+    document.querySelectorAll('.chip[data-filter]').forEach(x=>x.classList.toggle('active',x===b));
+    extraToday=0; buildQueue(); render();
+  };
+});
+document.getElementById('applyDay').onclick=()=>{
+  const f=document.getElementById('dayFrom').value, t=document.getElementById('dayTo').value;
+  DAY_MIN = f!==""?parseInt(f):null;
+  DAY_MAX = t!==""?parseInt(t):null;
+  extraToday=0; buildQueue(); render();
+};
+document.getElementById('clearDay').onclick=()=>{
+  DAY_MIN=null; DAY_MAX=null;
+  document.getElementById('dayFrom').value=""; document.getElementById('dayTo').value="";
+  extraToday=0; buildQueue(); render();
+};
+document.getElementById('hwModeSelect').onchange=(e)=>{
+  HW_MODE=e.target.value;
+  extraToday=0; buildQueue(); render();
+};
+
+// ---------- Topic chips (dynamic, one per non-day batch e.g. 字表/Crime/Arts/考試批次) ----------
+function renderTopicBar(){
+  const wrap=document.getElementById('topicbar');
+  if(ALL_TOPICS.length===0){ document.getElementById('topicbarWrap').style.display='none'; return; }
+  wrap.innerHTML=ALL_TOPICS.map(tp=>`<button class="chip small ${TOPIC_ACTIVE.has(tp)?'topic-on':'topic-off'}" data-topic="${tp}">${tp}</button>`).join('');
+  wrap.querySelectorAll('.chip[data-topic]').forEach(b=>{
+    b.onclick=()=>{
+      const tp=b.dataset.topic;
+      if(TOPIC_ACTIVE.has(tp)) TOPIC_ACTIVE.delete(tp); else TOPIC_ACTIVE.add(tp);
+      renderTopicBar(); extraToday=0; buildQueue(); render();
+    };
+  });
+}
+document.getElementById('topicAll').onclick=()=>{ TOPIC_ACTIVE=new Set(ALL_TOPICS); renderTopicBar(); extraToday=0; buildQueue(); render(); };
+document.getElementById('topicNone').onclick=()=>{ TOPIC_ACTIVE=new Set(); renderTopicBar(); extraToday=0; buildQueue(); render(); };
+
+initTopics(); renderTopicBar();
+if(maxHw()===null) document.getElementById('hwbar').style.display='none';
+STATE=loadState(); buildQueue(); render();
+document.getElementById('gearToggle').onclick=()=>{
+  document.getElementById('advPanel').classList.toggle('hide');
+};
+let resetArmed=false, resetTimer=null;
+const resetBtn=document.getElementById("reset");
+resetBtn.onclick=()=>{
+  if(!resetArmed){
+    resetArmed=true;
+    resetBtn.textContent="⚠️ 再點一次以清除全部進度";
+    resetBtn.classList.add("armed");
+    resetTimer=setTimeout(()=>{ resetArmed=false; resetBtn.textContent="重設進度"; resetBtn.classList.remove("armed"); }, 4000);
+    return;
+  }
+  clearTimeout(resetTimer); resetArmed=false;
+  resetBtn.textContent="重設進度"; resetBtn.classList.remove("armed");
+  STATE={cards:{},newByDate:{}}; for(const c of DECK){ STATE.cards[c.id]={ef:2.5,interval:0,reps:0,due:null,introduced:false}; }
+  saveState(STATE); buildQueue(); render();
+};
+</script>
+</body>
+</html>
