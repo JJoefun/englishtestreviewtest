@@ -107,7 +107,7 @@
 <body>
 <div class="wrap">
   <header>
-    <h1>中翻英複習<small>Spaced Review · Day 1–14 ＋ 單字表</small></h1>
+    <h1>中翻英複習<small>Spaced Review · Day 1–15 ＋ 單字表</small></h1>
     <div class="counts">
       <span><span class="dot r"></span>複習 <b id="c-rev">0</b></span>
       <span><span class="dot n"></span>新卡 <b id="c-new">0</b></span>
@@ -546,7 +546,41 @@ const DECK = [
   { id:"g22", type:"grammar", tags:["易錯","D14"], qlabel:"易錯",
     front:"cautious 和 modest 差在哪？（別搞混）",
     answer:`cautious＝<mark>謹慎的</mark>；modest＝<mark>謙虛的、適度的</mark>`,
-    analysis:[["cautious","小心、謹慎以避免問題：remain cautious about the outlook"],["modest","謙虛的（態度）／適度的（程度）：a modest person／a modest increase"],["提醒","兩個字意思完全不同，「持謹慎態度」只能用 cautious"]]}
+    analysis:[["cautious","小心、謹慎以避免問題：remain cautious about the outlook"],["modest","謙虛的（態度）／適度的（程度）：a modest person／a modest increase"],["提醒","兩個字意思完全不同，「持謹慎態度」只能用 cautious"]]},
+  { id:"g23", type:"grammar", tags:["辨析","D14"], qlabel:"辨析",
+    front:"expect 和 anticipate 可以共用嗎？接法差在哪？",
+    answer:`意思大多可互換；但 <mark>expect 接 to V</mark>，<mark>anticipate 接 V-ing</mark>，不能對調`,
+    analysis:[["意思","核心都是「預期某事會發生」，多數情況可互換；anticipate 多帶「預先準備/情緒」味道"],["+名詞 / +that 子句","兩者都可：expect/anticipate a delay；expect/anticipate that he'll come"],["expect + to V","✅ I expect to finish early.（anticipate 不能這樣接）"],["anticipate + V-ing","✅ I anticipate finishing early. / anticipate having applicants"],["⚠️ 最常見錯誤","✗ anticipate to finish（anticipate 不接 to V）"]]},
+
+  // ---------- Day 15 ----------
+  { id:"s43", type:"sentence", tags:["句子","日常","D15"], qlabel:"中譯英",
+    front:"我朋友推薦的那家餐廳雖然有點貴，但氣氛跟服務都值得那個價格。",
+    answer:`Although the restaurant <mark>(that) my friend recommended</mark> is a little pricey, its atmosphere and service are <mark>worth the price</mark>.`,
+    analysis:[["✅ Although(不加but) / its / worth the price","Day10 although、its、Day8 worth+名詞全用對了"],["(that) my friend recommended","修飾一般事物口語常用 that 或直接省略；which 也對但稍正式"],["a little pricey","a little bit expensive 也對；pricey 更口語（潤飾）"],["🔄 換句話說","The place my friend recommended is a bit on the expensive side, but the atmosphere and service make it worth every penny.（on the expensive side；worth every penny=值回票價）"]]},
+  { id:"s44", type:"sentence", tags:["句子","職場","D15"], qlabel:"中譯英",
+    front:"為避免任何誤會，我已將會議結論整理成文件，附在信件下方供您參考。",
+    answer:`To avoid any misunderstanding, I have <mark>summarised the meeting's conclusions in a document</mark>, <mark>attached below for your reference</mark>.`,
+    analysis:[["summarised...in a document","整理成文件=summarise...in a document；一份用 a document"],["conclusions","會議通常多項結論，用複數"],["attached below","下方=below（非 under，那是物理「底下」）"],["for your reference","供您參考固定講法，比 for you to check 正式道地"],["🔄 換句話說","To prevent any confusion, I've put together a summary of the key takeaways from the meeting, which you'll find below.（prevent confusion；put together；key takeaways=重點結論；you'll find below）"]]},
+  { id:"s45", type:"sentence", tags:["句子","財經","D15"], qlabel:"中譯英",
+    front:"這份報告指出，儘管失業率下降，許多勞工的薪資成長仍跟不上通膨。",
+    answer:`The report pointed out that although <mark>the unemployment rate</mark> declined, <mark>many workers' wage growth still isn't keeping up with inflation</mark>.`,
+    analysis:[["the unemployment rate","失業率固定用字（✗ nonjob rate 不存在）"],["workers（非 labors）","勞工(人)=workers；labor 是不可數的勞動力概念"],["wage growth / 複數","薪資每人各一份→用 wage growth(不可數) 或 salaries(複數)"],["isn't keeping up with","跟不上=keep up with（✗ catch inflation）；現在持續用進行式"],["🔄 換句話說","The report noted that even though joblessness has fallen, pay rises for many workers still lag behind inflation.（joblessness=失業；pay rises；lag behind=落後於）"]]},
+  { id:"g24", type:"grammar", tags:["文法","D15"], qlabel:"文法",
+    front:"「一群人各自擁有的東西」（如薪資）該用單數還是複數？",
+    answer:`看被擁有的東西<mark>實際有幾個</mark>，不是看有多少人`,
+    analysis:[["判斷法","撇開人，只看那個名詞本身有幾個"],["每人各一份→複數","workers' salaries（每個勞工各有自己的薪水）；people's opinions"],["大家共享同一個→單數","the team's morale（一個團隊一種士氣）；the company's reputation"],["動詞","跟著主詞名詞：salaries(複)→複數動詞；wage growth(不可數)→單數動詞"]]},
+  { id:"g25", type:"grammar", tags:["易錯","D15"], qlabel:"易錯",
+    front:"「薪資成長」為什麼是 salary growth 不是 salaries growth？",
+    answer:`名詞當形容詞修飾另一個名詞時，<mark>要用單數</mark>`,
+    analysis:[["規則","名詞放在另一個名詞前面當形容詞用，一律用單數形"],["✅","salary growth／wage growth（wage 財經更常見）"],["✗","salaries growth"],["同類例","a shoe shop(非 shoes)／a car park(非 cars)／a three-year plan(非 years)"],["注意","salaries 單獨當名詞是對的：workers' salaries haven't kept up；只有當它修飾 growth 時才變回單數"]]},
+  { id:"g26", type:"grammar", tags:["辨析","D15"], qlabel:"辨析",
+    front:"keep up with 和 catch up with 差在哪？",
+    answer:`keep up with＝<mark>維持同速不落後</mark>；catch up with＝<mark>落後後追上</mark>`,
+    analysis:[["keep up with","一直跟在旁邊沒掉隊：Wage growth isn't keeping up with inflation.（一直落後）"],["catch up with","本來落後，現在縮短差距趕上：Wage growth is finally catching up with inflation.（終於追上）"],["判斷","「持續跟不上」用 keep up with；「還沒追上但正在趕」用 catch up with"]]},
+  { id:"g27", type:"grammar", tags:["文法","用法"], qlabel:"文法",
+    front:"什麼時候要加 the？（定冠詞的核心用法整理）",
+    answer:`核心原則：<mark>雙方都知道是「特定、唯一的那一個」</mark>時，加 the`,
+    analysis:[["① 世界上唯一/獨一無二","the sun, the world；the Fed(美國央行), the central bank(那個央行)——獨一無二的機構"],["② 被上下文限定成特定的那個","the severe labor shortage in this industry（被 in this industry 限定→特定）；the unemployment rate；the second half of the year"],["③ 幣別本身（講升貶值/匯率）","the US dollar, the euro, the yen——講「這個幣別」時加 the+單數（The dollar strengthened.）"],["對照：不加 the 的情況","泛指、不特定：a new café(其中一家)；不可數抽象概念泛指：inflation is rising(通膨泛指,不加 the)；複數泛指：workers are underpaid(勞工普遍)"],["一句話","問自己「對方知不知道我指的是哪一個？」知道→the；不知道/泛指→a 或不加"]]}
 ];
 
 // ---------- Bulk vocabulary (bidirectional 中↔英) ----------
@@ -588,9 +622,46 @@ const WORDS = [
   {id:"w032",en:"accumulation",ipa:"/əˌkjumjə'leʃən/",pos:"n. (C)",u:"HW1",zh:"累積（物）",def:`a mass or quantity that has gathered over time`,eg:`Wisdom is an accumulation of experience and knowledge.`},
   {id:"w033",en:"accusation",ipa:"/ˌækjə'zeʃən/",pos:"n. (C)",u:"HW1",zh:"指控、指責",def:`a claim that someone has done something wrong`,eg:`It is wrong to make wild accusations against your boss.`},
   {id:"w034",en:"accuse",ipa:"/ə'kjuz/",pos:"vt",u:"HW1",zh:"指控、控告",def:`to say that someone has done something wrong or illegal`,eg:`Jane was accused of taking bribes.`,syn:`= charge (sb with sth)，indict (sb for sth)`,ex:`同尾字 excuse(原諒)`},
-  {id:"w035",en:"accustom",ipa:"/ə'kʌstəm/",pos:"vt",u:"HW1",zh:"使習慣",def:`to make (oneself or someone) familiar with something new, usually through experience`,eg:`You have to accustom yourself to your new job. ／ I am not accustomed to going to bed so early.`,syn:`= inure`},
+  {id:"w035",en:"accustom",ipa:"/ə'kʌstəm/",pos:"vt",u:"HW1",zh:"使習慣",def:`to make (oneself or someone) familiar with something new, usually through experience`,eg:`You have to accustom yourself to your new job. ／ I am not accustomed to going to bed so early.`,syn:`= inure｜用法：①動詞 accustom 必須接受詞：accustom +受詞+ to（accustom myself to the cold；✗ I accustom to...漏受詞）②形容詞 be/get accustomed to（I'm accustomed to the cold）③⚠️ to 是介係詞，後接名詞或 V-ing，不接 to V：accustomed to waking(✅) / to wake(✗)`},
   {id:"w036",en:"ace",ipa:"/es/",pos:"n. (C)",u:"HW1",zh:"（撲克牌）A牌；（某領域的）高手",def:`the playing card with a single symbol, ranked highest or lowest; an expert at something`,eg:`Here is an ace of spades/hearts/diamonds/clubs. ／ Betty is an ace at tennis/chess.`},
   {id:"w037",en:"acknowledge",ipa:"/ək'nɑlɪdʒ/",pos:"vt",u:"HW1",zh:"承認；公認",def:`to accept or admit that something is true; to recognize the achievements or status of someone`,eg:`Jill acknowledged her mistake. ／ Mr. Liang is widely acknowledged as an authority on Shakespeare.`,syn:`= admit, confess, concede`},
+
+  // 英文課回家複習 HW2（Tate Modern 藝術/文化評論閱讀單字）
+  {id:"h201",en:"democratic revolution",ipa:"/ˌdeməˈkrætɪk ˌrevəˈluːʃən/",pos:"phr.",u:"HW2",zh:"民主革命",def:`a fundamental change that makes something open and equal for all people`,eg:`The Tate Modern was celebrated as a democratic revolution in art.`},
+  {id:"h202",en:"attendance figures",ipa:"/əˈtendəns ˈfɪɡjəz/",pos:"n.",u:"HW2",zh:"參觀人數、出席人數",def:`the numbers of people who attend an event or place`,eg:`Attendance figures are impressive, yet the visitors are not diverse.`},
+  {id:"h203",en:"disproportionately",ipa:"/ˌdɪsprəˈpɔːʃənətli/",pos:"adv.",u:"HW2",zh:"不成比例地",def:`in a way that is too large or too small in comparison to something else`,eg:`The gallery's visitors are disproportionately white and middle-class.`},
+  {id:"h204",en:"paradox",ipa:"/ˈpærədɒks/",pos:"n.",u:"HW2",zh:"悖論、自相矛盾的情況",def:`a situation that seems impossible because it contains two opposite facts`,eg:`This paradox: the publicly funded institution that fails to serve the public.`},
+  {id:"h205",en:"curatorial",ipa:"/ˌkjʊərəˈtɔːriəl/",pos:"adj.",u:"HW2",zh:"策展的",def:`relating to the selection and organization of items for an exhibition`,eg:`It has sparked a new wave of curatorial thinking.`},
+  {id:"h206",en:"community centre",ipa:"/kəˈmjuːnəti ˈsentə/",pos:"n.",u:"HW2",zh:"社區中心",def:`a building where local people can meet for social activities`,eg:`Artists are taking their work into community centres.`},
+  {id:"h207",en:"rooftop",ipa:"/ˈruːftɒp/",pos:"n.",u:"HW2",zh:"屋頂",def:`the outer surface of the roof of a building`,eg:`They perform on rooftops and in abandoned warehouses.`},
+  {id:"h208",en:"pub function room",ipa:"/pʌb ˈfʌŋkʃən ruːm/",pos:"n.",u:"HW2",zh:"酒吧的多功能宴會廳、包廂",def:`a private room in a pub used for events and gatherings`,eg:`Some artists show work in pub function rooms.`},
+  {id:"h209",en:"avant-garde provocation",ipa:"/ˌævɒ̃ˈɡɑːd ˌprɒvəˈkeɪʃən/",pos:"phr.",u:"HW2",zh:"前衛的挑釁",def:`radical, experimental art intended to challenge conventions`,eg:`The movement draws on a long history of avant-garde provocation.`},
+  {id:"h210",en:"guerrilla muralist",ipa:"/ɡəˈrɪlə ˈmjʊərəlɪst/",pos:"n.",u:"HW2",zh:"游擊壁畫藝術家",def:`an artist who paints murals in public, often without permission`,eg:`The guerrilla muralists of 1970s New York challenged institutions.`},
+  {id:"h211",en:"sought",ipa:"/sɔːt/",pos:"v.",u:"HW2",zh:"尋求（seek 的過去式/過去分詞）",def:`past and past participle of seek: tried to find or obtain`,eg:`Artists have always sought to subvert institutional gatekeeping.`},
+  {id:"h212",en:"subvert",ipa:"/səbˈvɜːt/",pos:"v.",u:"HW2",zh:"顛覆",def:`to try to destroy or undermine an established system or authority`,eg:`Artists have always sought to subvert the gatekeeping of culture.`},
+  {id:"h213",en:"institutional gatekeeping",ipa:"/ˌɪnstɪˈtjuːʃənəl ˈɡeɪtkiːpɪŋ/",pos:"phr.",u:"HW2",zh:"機構式的把關、機制審查",def:`control by institutions over what is accepted or allowed`,eg:`They aim to challenge institutional gatekeeping.`},
+  {id:"h214",en:"self-consciousness",ipa:"/ˌselfˈkɒnʃəsnəs/",pos:"n.",u:"HW2",zh:"自覺、自我意識",def:`awareness of oneself, sometimes with unease or deliberate reflection`,eg:`What is different today is the self-consciousness of the effort.`},
+  {id:"h215",en:"contemporary practitioner",ipa:"/kənˈtempərəri prækˈtɪʃənə/",pos:"n.",u:"HW2",zh:"當代實踐者、當代從業者",def:`a person who currently works in a particular field or art`,eg:`Contemporary practitioners speak of decolonising the canon.`},
+  {id:"h216",en:"decolonise",ipa:"/diːˈkɒlənaɪz/",pos:"v.",u:"HW2",zh:"去殖民化",def:`to remove the effects of colonial power or dominant culture`,eg:`They speak of decolonising the cultural canon.`},
+  {id:"h217",en:"cultural canon",ipa:"/ˈkʌltʃərəl ˈkænən/",pos:"n.",u:"HW2",zh:"文化經典",def:`the body of works traditionally regarded as the most important`,eg:`They question whose work belongs in the cultural canon.`},
+  {id:"h218",en:"dismantle",ipa:"/dɪsˈmæntl/",pos:"v.",u:"HW2",zh:"拆除、解構",def:`to take apart or gradually destroy a system or structure`,eg:`They aim at dismantling long-standing hierarchies.`},
+  {id:"h219",en:"hierarchy",ipa:"/ˈhaɪərɑːki/",pos:"n.",u:"HW2",zh:"等級制度、階層",def:`a system in which people or things are ranked by status`,eg:`The hierarchies determine whose stories are worth telling.`},
+  {id:"h220",en:"coercive",ipa:"/kəʊˈɜːsɪv/",pos:"adj.",u:"HW2",zh:"強迫性的、具強制力的",def:`using force or pressure to make people do things unwillingly`,eg:`Immersive installations can feel coercive to some audiences.`},
+  {id:"h221",en:"foreground",ipa:"/ˈfɔːɡraʊnd/",pos:"v.",u:"HW2",zh:"強調、使受到關注",def:`to make something the most prominent or important feature`,eg:`Work that foregrounds identity can seem didactic.`},
+  {id:"h222",en:"didactic",ipa:"/daɪˈdæktɪk/",pos:"adj.",u:"HW2",zh:"說教的、教條式的",def:`intended to teach a moral lesson, often too obviously`,eg:`Such work can seem didactic to some viewers.`},
+  {id:"h223",en:"aesthetic",ipa:"/iːsˈθetɪk/",pos:"adj.",u:"HW2",zh:"美學的、審美的",def:`relating to beauty or the appreciation of beauty`,eg:`They approach art in search of aesthetic pleasure.`},
+  {id:"h224",en:"critique",ipa:"/krɪˈtiːk/",pos:"n.",u:"HW2",zh:"評論、批判",def:`a detailed analysis and assessment of something`,eg:`They seek aesthetic pleasure rather than social critique.`},
+  {id:"h225",en:"accessibility",ipa:"/əkˌsesəˈbɪləti/",pos:"n.",u:"HW2",zh:"可及性、普及度",def:`the quality of being easy to reach, use, or understand`,eg:`The pursuit of accessibility can flatten complexity.`},
+  {id:"h226",en:"flatten",ipa:"/ˈflætn/",pos:"v.",u:"HW2",zh:"抹平、使扁平化",def:`to make something less varied, complex, or interesting`,eg:`Accessibility can flatten the complexity that makes art valuable.`},
+  {id:"h227",en:"counterargument",ipa:"/ˈkaʊntərˌɑːɡjumənt/",pos:"n.",u:"HW2",zh:"反駁論點、抗辯",def:`an argument put forward to oppose another argument`,eg:`The most compelling counterargument is the work itself.`},
+  {id:"h228",en:"marginalised",ipa:"/ˈmɑːdʒɪnəlaɪzd/",pos:"adj.",u:"HW2",zh:"邊緣化的、弱勢的",def:`treated as unimportant and pushed to the edge of society`,eg:`A marginalised community sees its own stories told.`},
+  {id:"h229",en:"reverence",ipa:"/ˈrevərəns/",pos:"n.",u:"HW2",zh:"敬意、尊崇",def:`a feeling of deep respect or admiration`,eg:`Its stories are told with skill and reverence.`},
+  {id:"h230",en:"vernacular",ipa:"/vəˈnækjələ/",pos:"n.",u:"HW2",zh:"在地話、方言、本地文化表達",def:`the everyday language or cultural expression of ordinary people`,eg:`Its vernacular and its humour are taken seriously.`},
+  {id:"h231",en:"grief",ipa:"/ɡriːf/",pos:"n.",u:"HW2",zh:"悲傷、哀痛",def:`very deep sadness, especially after a loss`,eg:`Its grief is rendered in a form that demands to be taken seriously.`},
+  {id:"h232",en:"canonical",ipa:"/kəˈnɒnɪkəl/",pos:"adj.",u:"HW2",zh:"經典的、正統的",def:`belonging to the accepted body of important works`,eg:`The effect surpasses what any canonical text ever managed.`},
+  {id:"h233",en:"elimination",ipa:"/ɪˌlɪmɪˈneɪʃən/",pos:"n.",u:"HW2",zh:"消除、排除",def:`the act of completely removing something`,eg:`This is not the elimination of difficulty, but its relocation.`},
+  {id:"h234",en:"contentious",ipa:"/kənˈtenʃəs/",pos:"adj.",u:"HW2",zh:"具爭議性的、引起爭論的",def:`likely to cause disagreement or argument`,eg:`The conversation is messy, contentious, and increasingly loud.`},
+
 
   // Crime & Safety（音標為 IPA）
   {id:"c01",en:"escape",ipa:"/ɪˈskeɪp/",pos:"v.",u:"Crime",zh:"逃跑；逃脫",def:`to get away from a place or situation`,eg:`The prisoner escaped through a window.`,syn:`搭配 escape from prison, narrow escape`},
@@ -676,7 +747,14 @@ const WORDS = [
   {id:"w1002",en:"check with",ipa:"/tʃek wɪð/",pos:"phr. v.",u:"Day14",zh:"與某人確認、跟某人核對",def:`to ask someone for information or permission`,eg:`I need to check with my team before getting back to you.`,syn:`「跟某人確認」= check with(問一下) / confirm with(正式確認)，皆可；✗ confirm to；別跟 conform to(符合規範)搞混`,cam:"check"},
   {id:"w1003",en:"keep unchanged",ipa:"/kiːp ʌnˈtʃeɪndʒd/",pos:"phr.",u:"Day14",zh:"維持（利率等）不變",def:`to keep something at the same level`,eg:`The central bank decided to keep interest rates unchanged.`,syn:`同義 hold rates steady；皆央行標準用語`,cam:"unchanged"},
   {id:"w1004",en:"cautious",ipa:"/ˈkɔː.ʃəs/",pos:"adj.",u:"Day14",zh:"謹慎的、小心的",def:`careful to avoid problems or danger`,eg:`The central bank remains cautious about the inflation outlook.`,syn:`辨析 ⚠️ cautious(謹慎) ≠ modest(謙虛的、適度的)，完全不同別搞混`,cam:"cautious"},
-  {id:"w1005",en:"inflation outlook",ipa:"/ɪnˈfleɪ.ʃən ˈaʊt.lʊk/",pos:"n.",u:"Day14",zh:"通膨走勢、通膨前景",def:`the expected future direction of inflation`,eg:`The Fed remains cautious about the inflation outlook.`,syn:`搭配 cautious about the inflation outlook = 對通膨走勢持謹慎態度`,cam:"outlook"}
+  {id:"w1005",en:"inflation outlook",ipa:"/ɪnˈfleɪ.ʃən ˈaʊt.lʊk/",pos:"n.",u:"Day14",zh:"通膨走勢、通膨前景",def:`the expected future direction of inflation`,eg:`The Fed remains cautious about the inflation outlook.`,syn:`搭配 cautious about the inflation outlook = 對通膨走勢持謹慎態度`,cam:"outlook"},
+
+  // Day 15 單字
+  {id:"w1101",en:"unemployment rate",ipa:"/ˌʌn.ɪmˈplɔɪ.mənt reɪt/",pos:"n.",u:"Day15",zh:"失業率",def:`the percentage of people who are able to work but do not have a job`,eg:`The unemployment rate declined last quarter.`,syn:`辨析 ✗ nonjob rate(不存在)；固定就是 unemployment rate`,cam:"unemployment"},
+  {id:"w1102",en:"worker",ipa:"/ˈwɜː.kər/",pos:"n.",u:"Day15",zh:"勞工、員工",def:`a person who works, especially one who does a particular kind of job`,eg:`Many workers are underpaid.`,syn:`辨析 worker(可數,一個個勞工) vs labor(不可數,勞動力/勞務概念)；✗ many labors`,cam:"worker"},
+  {id:"w1103",en:"wage growth",ipa:"/weɪdʒ ɡrəʊθ/",pos:"n.",u:"Day15",zh:"薪資成長",def:`the rate at which wages increase over time`,eg:`Wage growth still isn't keeping up with inflation.`,syn:`不可數，動詞用單數；等同薪資(複數 salaries/wages)的成長`,cam:"wage"},
+  {id:"w1104",en:"keep up with",ipa:"/kiːp ʌp wɪð/",pos:"phr. v.",u:"Day15",zh:"跟上（速度、進度、變化）",def:`to move or progress at the same rate as something else`,eg:`Wage growth isn't keeping up with inflation.`,syn:`辨析 keep up with=維持同速跟上；catch up with=落後後追上；✗ catch inflation`,cam:"keep-up"},
+  {id:"w1105",en:"for your reference",ipa:"/fɔːr jɔːr ˈref.ər.əns/",pos:"phr.",u:"Day15",zh:"供您參考",def:`for you to look at or use as information`,eg:`The document is attached below for your reference.`,syn:`比 for you to check 正式、道地；商務 email 常用`,cam:"reference"}
 ];
 for(const w of WORDS){
   const link = `<a href='${C}${(w.cam||w.en).replace(/ /g,'-')}' target='_blank'>Cambridge</a>`;
