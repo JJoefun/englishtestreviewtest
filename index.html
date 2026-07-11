@@ -598,7 +598,7 @@ const DECK = [
   { id:"s48", type:"sentence", tags:["句子","財經","D16"], qlabel:"中譯英",
     front:"隨著越來越多公司採用遠端工作，市中心的辦公室需求已明顯下滑。",
     answer:`As more and more companies <mark>adopt remote work</mark>, <mark>demand for office space in the city centre has dropped significantly</mark>.`,
-    analysis:[["adopt（非 adapt）","採用=adopt；adapt 是「適應」，只差一字母意思完全不同"],["remote work","遠端工作固定講法（✗ far-from-work 不存在）"],["demand for","對…的需求介係詞用 for（✗ demand of）；office space 比 offices 精準"],["significantly（非 apparently）","「明顯下滑」的明顯=幅度大→significantly/markedly；apparently 主要意思是「據說/看起來」(推測)，雖也有「顯然」義但推測語感太強，強調幅度時避免"],["🔄 換句話說","With remote work becoming more widespread, the need for downtown office space has fallen markedly.（widespread；the need for；downtown；markedly=顯著地）"]]},
+    analysis:[["adopt（非 adapt）","採用=adopt；adapt 是「適應」，只差一字母意思完全不同"],["remote work","遠端工作固定講法（✗ far-from-work 不存在）"],["demand for","對…的需求介係詞用 for（✗ demand of）；office space 比 offices 精準"],["significantly（非 apparently）","「明顯下滑」的明顯=幅度大→significantly/markedly；apparently 主要意思是「據說/看起來」(推測)，雖也有「顯然」義但推測語感太強，強調幅度時避免"],["下滑用字 declined/dropped/fallen 皆可","decline=逐漸持續走低(偏正式,趨勢感,財經最愛)；drop=較快較突然掉；fall=中性通用。本句是「隨遠端普及漸漸下滑」的趨勢，declined 其實最貼"],["🔄 換句話說","With remote work becoming more widespread, the need for downtown office space has fallen markedly.（widespread；the need for；downtown；markedly=顯著地）"]]},
   { id:"g29", type:"grammar", tags:["易錯","D16"], qlabel:"易錯",
     front:"adopt 和 adapt 差在哪？（只差一字母）",
     answer:`adopt＝<mark>採用、採納</mark>；adapt＝<mark>適應、調整</mark>`,
@@ -653,7 +653,7 @@ const WORDS = [
   {id:"w037",en:"acknowledge",ipa:"/ək'nɑlɪdʒ/",pos:"vt",u:"HW1",zh:"承認；公認",def:`to accept or admit that something is true; to recognize the achievements or status of someone`,eg:`Jill acknowledged her mistake. ／ Mr. Liang is widely acknowledged as an authority on Shakespeare.`,syn:`= admit, confess, concede`},
 
   // 英文課回家複習 HW2（Tate Modern 藝術/文化評論閱讀單字）
-  {id:"h201",en:"democratic revolution",ipa:"/ˌdeməˈkrætɪk ˌrevəˈluːʃən/",pos:"phr.",u:"HW2",zh:"民主革命",def:`a fundamental change that makes something open and equal for all people`,eg:`The Tate Modern was celebrated as a democratic revolution in art.`},
+  {id:"h201",en:"democratic revolution",ipa:"/ˌdeməˈkrætɪk ˌrevəˈluːʃən/",pos:"phr.",u:"HW2",zh:"民主革命",def:`a fundamental change that makes something open and equal for all people`,eg:`The Tate Modern was celebrated as a democratic revolution in art.`,syn:`拆解 democratic 民主的、平等開放的 + revolution 革命、劇烈變革`},
   {id:"h202",en:"attendance figures",ipa:"/əˈtendəns ˈfɪɡjəz/",pos:"n.",u:"HW2",zh:"參觀人數、出席人數",def:`the numbers of people who attend an event or place`,eg:`Attendance figures are impressive, yet the visitors are not diverse.`},
   {id:"h203",en:"disproportionately",ipa:"/ˌdɪsprəˈpɔːʃənətli/",pos:"adv.",u:"HW2",zh:"不成比例地",def:`in a way that is too large or too small in comparison to something else`,eg:`The gallery's visitors are disproportionately white and middle-class.`},
   {id:"h204",en:"paradox",ipa:"/ˈpærədɒks/",pos:"n.",u:"HW2",zh:"悖論、自相矛盾的情況",def:`a situation that seems impossible because it contains two opposite facts`,eg:`This paradox: the publicly funded institution that fails to serve the public.`},
@@ -661,15 +661,15 @@ const WORDS = [
   {id:"h206",en:"community centre",ipa:"/kəˈmjuːnəti ˈsentə/",pos:"n.",u:"HW2",zh:"社區中心",def:`a building where local people can meet for social activities`,eg:`Artists are taking their work into community centres.`},
   {id:"h207",en:"rooftop",ipa:"/ˈruːftɒp/",pos:"n.",u:"HW2",zh:"屋頂",def:`the outer surface of the roof of a building`,eg:`They perform on rooftops and in abandoned warehouses.`},
   {id:"h208",en:"pub function room",ipa:"/pʌb ˈfʌŋkʃən ruːm/",pos:"n.",u:"HW2",zh:"酒吧的多功能宴會廳、包廂",def:`a private room in a pub used for events and gatherings`,eg:`Some artists show work in pub function rooms.`},
-  {id:"h209",en:"avant-garde provocation",ipa:"/ˌævɒ̃ˈɡɑːd ˌprɒvəˈkeɪʃən/",pos:"phr.",u:"HW2",zh:"前衛的挑釁",def:`radical, experimental art intended to challenge conventions`,eg:`The movement draws on a long history of avant-garde provocation.`},
-  {id:"h210",en:"guerrilla muralist",ipa:"/ɡəˈrɪlə ˈmjʊərəlɪst/",pos:"n.",u:"HW2",zh:"游擊壁畫藝術家",def:`an artist who paints murals in public, often without permission`,eg:`The guerrilla muralists of 1970s New York challenged institutions.`},
+  {id:"h209",en:"avant-garde provocation",ipa:"/ˌævɒ̃ˈɡɑːd ˌprɒvəˈkeɪʃən/",pos:"phr.",u:"HW2",zh:"前衛的挑釁",def:`radical, experimental art intended to challenge conventions`,eg:`The movement draws on a long history of avant-garde provocation.`,syn:`拆解 avant-garde 前衛的、實驗性的(源自法語) + provocation 挑釁、激發`},
+  {id:"h210",en:"guerrilla muralist",ipa:"/ɡəˈrɪlə ˈmjʊərəlɪst/",pos:"n.",u:"HW2",zh:"游擊壁畫藝術家",def:`an artist who paints murals in public, often without permission`,eg:`The guerrilla muralists of 1970s New York challenged institutions.`,syn:`拆解 guerrilla 游擊(隊)的、非正規突襲的 + muralist 壁畫家(mural 壁畫 + -ist 人)`},
   {id:"h211",en:"sought",ipa:"/sɔːt/",pos:"v.",u:"HW2",zh:"尋求（seek 的過去式/過去分詞）",def:`past and past participle of seek: tried to find or obtain`,eg:`Artists have always sought to subvert institutional gatekeeping.`},
   {id:"h212",en:"subvert",ipa:"/səbˈvɜːt/",pos:"v.",u:"HW2",zh:"顛覆",def:`to try to destroy or undermine an established system or authority`,eg:`Artists have always sought to subvert the gatekeeping of culture.`},
-  {id:"h213",en:"institutional gatekeeping",ipa:"/ˌɪnstɪˈtjuːʃənəl ˈɡeɪtkiːpɪŋ/",pos:"phr.",u:"HW2",zh:"機構式的把關、機制審查",def:`control by institutions over what is accepted or allowed`,eg:`They aim to challenge institutional gatekeeping.`},
+  {id:"h213",en:"institutional gatekeeping",ipa:"/ˌɪnstɪˈtjuːʃənəl ˈɡeɪtkiːpɪŋ/",pos:"phr.",u:"HW2",zh:"機構式的把關、機制審查",def:`control by institutions over what is accepted or allowed`,eg:`They aim to challenge institutional gatekeeping.`,syn:`拆解 institutional 機構的、體制的 + gatekeeping 把關、守門(gate 門 + keep 看守)`},
   {id:"h214",en:"self-consciousness",ipa:"/ˌselfˈkɒnʃəsnəs/",pos:"n.",u:"HW2",zh:"自覺、自我意識",def:`awareness of oneself, sometimes with unease or deliberate reflection`,eg:`What is different today is the self-consciousness of the effort.`},
   {id:"h215",en:"contemporary practitioner",ipa:"/kənˈtempərəri prækˈtɪʃənə/",pos:"n.",u:"HW2",zh:"當代實踐者、當代從業者",def:`a person who currently works in a particular field or art`,eg:`Contemporary practitioners speak of decolonising the canon.`},
   {id:"h216",en:"decolonise",ipa:"/diːˈkɒlənaɪz/",pos:"v.",u:"HW2",zh:"去殖民化",def:`to remove the effects of colonial power or dominant culture`,eg:`They speak of decolonising the cultural canon.`},
-  {id:"h217",en:"cultural canon",ipa:"/ˈkʌltʃərəl ˈkænən/",pos:"n.",u:"HW2",zh:"文化經典",def:`the body of works traditionally regarded as the most important`,eg:`They question whose work belongs in the cultural canon.`},
+  {id:"h217",en:"cultural canon",ipa:"/ˈkʌltʃərəl ˈkænən/",pos:"n.",u:"HW2",zh:"文化經典",def:`the body of works traditionally regarded as the most important`,eg:`They question whose work belongs in the cultural canon.`,syn:`拆解 cultural 文化的 + canon 經典作品總集、正典(≠ cannon 大砲，拼字差一個 n)`},
   {id:"h218",en:"dismantle",ipa:"/dɪsˈmæntl/",pos:"v.",u:"HW2",zh:"拆除、解構",def:`to take apart or gradually destroy a system or structure`,eg:`They aim at dismantling long-standing hierarchies.`},
   {id:"h219",en:"hierarchy",ipa:"/ˈhaɪərɑːki/",pos:"n.",u:"HW2",zh:"等級制度、階層",def:`a system in which people or things are ranked by status`,eg:`The hierarchies determine whose stories are worth telling.`},
   {id:"h220",en:"coercive",ipa:"/kəʊˈɜːsɪv/",pos:"adj.",u:"HW2",zh:"強迫性的、具強制力的",def:`using force or pressure to make people do things unwillingly`,eg:`Immersive installations can feel coercive to some audiences.`},
@@ -687,6 +687,7 @@ const WORDS = [
   {id:"h232",en:"canonical",ipa:"/kəˈnɒnɪkəl/",pos:"adj.",u:"HW2",zh:"經典的、正統的",def:`belonging to the accepted body of important works`,eg:`The effect surpasses what any canonical text ever managed.`},
   {id:"h233",en:"elimination",ipa:"/ɪˌlɪmɪˈneɪʃən/",pos:"n.",u:"HW2",zh:"消除、排除",def:`the act of completely removing something`,eg:`This is not the elimination of difficulty, but its relocation.`},
   {id:"h234",en:"contentious",ipa:"/kənˈtenʃəs/",pos:"adj.",u:"HW2",zh:"具爭議性的、引起爭論的",def:`likely to cause disagreement or argument`,eg:`The conversation is messy, contentious, and increasingly loud.`},
+  {id:"h235",en:"draw on",ipa:"/drɔː ɒn/",pos:"phr. v.",u:"HW2",zh:"利用、汲取（資訊、知識、經驗、資源）",def:`to use information, knowledge, or experience to help you do something`,eg:`The movement draws on a long history of avant-garde provocation.`,syn:`C1 片語；draw on/upon 通用；例 His novels draw heavily on his childhood.`,cam:"draw-on"},
 
 
   // Crime & Safety（音標為 IPA）
