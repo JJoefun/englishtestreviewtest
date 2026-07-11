@@ -107,7 +107,7 @@
 <body>
 <div class="wrap">
   <header>
-    <h1>中翻英複習<small>Spaced Review · Day 1–15 ＋ 單字表</small></h1>
+    <h1>中翻英複習<small>Spaced Review · Day 1–16 ＋ 單字表</small></h1>
     <div class="counts">
       <span><span class="dot r"></span>複習 <b id="c-rev">0</b></span>
       <span><span class="dot n"></span>新卡 <b id="c-new">0</b></span>
@@ -512,7 +512,7 @@ const DECK = [
   { id:"s39", type:"sentence", tags:["句子","財經","D13"], qlabel:"中譯英",
     front:"由於出口數據優於預期，本地股市今天早盤大漲。",
     answer:`<mark>Thanks to better-than-expected export figures</mark>, the local <mark>stock market</mark> <mark>surged in early trading</mark> this morning.`,
-    analysis:[["better than expected","優於預期(財經高頻)；✗ prior to(意思是「在…之前」，與「優於」無關)"],["Thanks to / Due to","正面因素用 thanks to；用 because 則要接完整子句"],["stock market","本地股市=stock market(整個市場)，非 stock(單一支股票)"],["surged","大漲=surged/jumped(比 rise sharply 有力)；今早已發生用過去式"],["in early trading","早盤固定講法"],["🔄 換句話說","The local market jumped at the open this morning after export data beat expectations.（jumped；at the open=開盤；beat expectations）"]]},
+    analysis:[["better than expected","優於預期(財經高頻)；✗ prior to(意思是「在…之前」，與「優於」無關)"],["Thanks to / Due to","正面因素用 thanks to；用 because 則要接完整子句"],["stock market","本地股市=stock market(整個市場)，非 stock(單一支股票)"],["surged","大漲=surged/jumped(比 rise sharply 有力)；今早已發生用過去式"],["in early trading","早盤固定講法；本身已含「今天開盤後不久」→ this morning 可省，單句情境下寫 surged in early trading 更精簡（兩個並用不算錯，新聞為明確錨定「今天」有時會保留）"],["🔄 換句話說","The local market jumped at the open this morning after export data beat expectations.（jumped；at the open=開盤；beat expectations）"]]},
   { id:"g20", type:"grammar", tags:["易錯","D13"], qlabel:"易錯",
     front:"「包裹還沒送到」為什麼不能說 hasn't delivered？",
     answer:`包裹是<mark>被動接受者</mark>，要用 hasn't been delivered 或 hasn't arrived`,
@@ -580,7 +580,33 @@ const DECK = [
   { id:"g27", type:"grammar", tags:["文法","用法"], qlabel:"文法",
     front:"什麼時候要加 the？（定冠詞的核心用法整理）",
     answer:`核心原則：<mark>雙方都知道是「特定、唯一的那一個」</mark>時，加 the`,
-    analysis:[["① 世界上唯一/獨一無二","the sun, the world；the Fed(美國央行), the central bank(那個央行)——獨一無二的機構"],["② 被上下文限定成特定的那個","the severe labor shortage in this industry（被 in this industry 限定→特定）；the unemployment rate；the second half of the year"],["③ 幣別本身（講升貶值/匯率）","the US dollar, the euro, the yen——講「這個幣別」時加 the+單數（The dollar strengthened.）"],["對照：不加 the 的情況","泛指、不特定：a new café(其中一家)；不可數抽象概念泛指：inflation is rising(通膨泛指,不加 the)；複數泛指：workers are underpaid(勞工普遍)"],["一句話","問自己「對方知不知道我指的是哪一個？」知道→the；不知道/泛指→a 或不加"]]}
+    analysis:[["① 世界上唯一/獨一無二","the sun, the world；the Fed(美國央行), the central bank(那個央行)——獨一無二的機構"],["② 被上下文限定成特定的那個","the severe labor shortage in this industry（被 in this industry 限定→特定）；the unemployment rate；the second half of the year"],["③ 幣別本身（講升貶值/匯率）","the US dollar, the euro, the yen——講「這個幣別」時加 the+單數（The dollar strengthened.）"],["對照：不加 the 的情況","泛指、不特定：a new café(其中一家)；不可數抽象概念泛指：inflation is rising(通膨泛指,不加 the)；複數泛指：workers are underpaid(勞工普遍)"],["一句話","問自己「對方知不知道我指的是哪一個？」知道→the；不知道/泛指→a 或不加"]]},
+  { id:"g28", type:"grammar", tags:["文法","辨析"], qlabel:"文法",
+    front:"have + p.p. 和 had + p.p. 差在哪？（現在完成 vs 過去完成）",
+    answer:`have＝連到<mark>現在</mark>(before now)；had＝在<mark>另一個過去動作之前</mark>(before another past action)`,
+    analysis:[["have + p.p.（現在完成）","過去做的動作，結果連到現在：I have summarised it（文件現在就附在下面給你看）"],["had + p.p.（過去完成）","發生在另一個過去時間點「之前」：By the time the meeting ended, I had summarised the notes."],["判斷訣竅","問「有沒有另一個過去時間點當參照？」有→had；沒有、只連到現在→have"],["提醒","have had / had had 看第一個字：have had=現在完成；had had=過去完成"]]},
+
+  // ---------- Day 16 ----------
+  { id:"s46", type:"sentence", tags:["句子","日常","D16"], qlabel:"中譯英",
+    front:"我昨天不小心把咖啡灑在筆電上，還好它現在還能正常運作。",
+    answer:`I <mark>accidentally spilled coffee on my laptop</mark> yesterday, but <mark>luckily it still works fine</mark>.`,
+    analysis:[["accidentally spilled coffee","不小心=accidentally；咖啡不特定不加 the"],["but luckily","「還好」帶慶幸語氣，but luckily 比 although 貼切"],["works fine","3C正常運作用 work fine/properly（operate normally 偏正式機械操作）"],["🔄 換句話說","I knocked my coffee over onto my laptop yesterday, but thankfully it's still running perfectly fine.（knock over=打翻；thankfully；running fine）"]]},
+  { id:"s47", type:"sentence", tags:["句子","職場","D16"], qlabel:"中譯英",
+    front:"附件是我們上週討論的提案，若您方便的話，希望能在本週安排一次會議。",
+    answer:`Attached is the proposal we discussed last week. <mark>If it's convenient for you</mark>, <mark>I'd like to arrange a meeting this week</mark>.`,
+    analysis:[["✅ Attached is the proposal we discussed last week","關係子句省略 that 用得好"],[". If（斷句）","and 硬接兩完整句稍鬆散，斷成兩句更清楚"],["If it's convenient for you","⚠️ convenient 主詞不能是人（✗ if you feel convenient）；用 it 虛主詞或 if you're available"],["I'd like to","商務提議用 I'd like to 比 I hope we can 得體"],["🔄 換句話說","Please find attached the proposal we went over last week. If you're available, I'd love to set up a meeting sometime this week.（went over=討論；if you're available；set up a meeting）"]]},
+  { id:"s48", type:"sentence", tags:["句子","財經","D16"], qlabel:"中譯英",
+    front:"隨著越來越多公司採用遠端工作，市中心的辦公室需求已明顯下滑。",
+    answer:`As more and more companies <mark>adopt remote work</mark>, <mark>demand for office space in the city centre has dropped significantly</mark>.`,
+    analysis:[["adopt（非 adapt）","採用=adopt；adapt 是「適應」，只差一字母意思完全不同"],["remote work","遠端工作固定講法（✗ far-from-work 不存在）"],["demand for","對…的需求介係詞用 for（✗ demand of）；office space 比 offices 精準"],["significantly（非 apparently）","「明顯下滑」的明顯=幅度大→significantly/markedly；apparently 主要意思是「據說/看起來」(推測)，雖也有「顯然」義但推測語感太強，強調幅度時避免"],["🔄 換句話說","With remote work becoming more widespread, the need for downtown office space has fallen markedly.（widespread；the need for；downtown；markedly=顯著地）"]]},
+  { id:"g29", type:"grammar", tags:["易錯","D16"], qlabel:"易錯",
+    front:"adopt 和 adapt 差在哪？（只差一字母）",
+    answer:`adopt＝<mark>採用、採納</mark>；adapt＝<mark>適應、調整</mark>`,
+    analysis:[["adopt","採用某做法/新事物：companies adopt remote work／adopt a policy"],["adapt","適應環境/調整以配合：adapt to change／adapt the plan"],["提醒","拼字只差 o/a，意思完全不同；「採用」用 adopt，「適應」用 adapt"]]},
+  { id:"g30", type:"grammar", tags:["易錯","D16"], qlabel:"易錯",
+    front:"「你方便嗎」為什麼不能說 you feel convenient？",
+    answer:`convenient 的主詞<mark>不能是人</mark>，要用 it 當虛主詞`,
+    analysis:[["✅ 正確","If it's convenient for you... ／ Is it convenient for you? ／ Are you available?"],["✗ 錯誤","if you feel convenient / you are convenient（人不會「感到方便」）"],["原因","convenient 形容「事物對人來說方便」，主詞是那件事(it)，不是人"]]}
 ];
 
 // ---------- Bulk vocabulary (bidirectional 中↔英) ----------
@@ -754,7 +780,15 @@ const WORDS = [
   {id:"w1102",en:"worker",ipa:"/ˈwɜː.kər/",pos:"n.",u:"Day15",zh:"勞工、員工",def:`a person who works, especially one who does a particular kind of job`,eg:`Many workers are underpaid.`,syn:`辨析 worker(可數,一個個勞工) vs labor(不可數,勞動力/勞務概念)；✗ many labors`,cam:"worker"},
   {id:"w1103",en:"wage growth",ipa:"/weɪdʒ ɡrəʊθ/",pos:"n.",u:"Day15",zh:"薪資成長",def:`the rate at which wages increase over time`,eg:`Wage growth still isn't keeping up with inflation.`,syn:`不可數，動詞用單數；等同薪資(複數 salaries/wages)的成長`,cam:"wage"},
   {id:"w1104",en:"keep up with",ipa:"/kiːp ʌp wɪð/",pos:"phr. v.",u:"Day15",zh:"跟上（速度、進度、變化）",def:`to move or progress at the same rate as something else`,eg:`Wage growth isn't keeping up with inflation.`,syn:`辨析 keep up with=維持同速跟上；catch up with=落後後追上；✗ catch inflation`,cam:"keep-up"},
-  {id:"w1105",en:"for your reference",ipa:"/fɔːr jɔːr ˈref.ər.əns/",pos:"phr.",u:"Day15",zh:"供您參考",def:`for you to look at or use as information`,eg:`The document is attached below for your reference.`,syn:`比 for you to check 正式、道地；商務 email 常用`,cam:"reference"}
+  {id:"w1105",en:"for your reference",ipa:"/fɔːr jɔːr ˈref.ər.əns/",pos:"phr.",u:"Day15",zh:"供您參考",def:`for you to look at or use as information`,eg:`The document is attached below for your reference.`,syn:`比 for you to check 正式、道地；商務 email 常用`,cam:"reference"},
+
+  // Day 16 單字
+  {id:"w1201",en:"adopt",ipa:"/əˈdɒpt/",pos:"v.",u:"Day16",zh:"採用、採納",def:`to accept or start to use something new`,eg:`More companies are adopting remote work.`,syn:`⚠️ 辨析 adopt(採用) ≠ adapt(適應、調整)，只差一字母意思完全不同`,cam:"adopt"},
+  {id:"w1202",en:"remote work",ipa:"/rɪˈməʊt wɜːk/",pos:"n.",u:"Day16",zh:"遠端工作、遠距工作",def:`the practice of working from home or outside a traditional office`,eg:`More companies are adopting remote work.`,syn:`辨析 ✗ far-from-work(不存在)；固定 remote work / work from home (WFH)`,cam:"remote"},
+  {id:"w1203",en:"demand for",ipa:"/dɪˈmɑːnd fɔːr/",pos:"phr.",u:"Day16",zh:"對…的需求",def:`the desire or need for something`,eg:`Demand for office space has dropped significantly.`,syn:`辨析 介係詞固定用 for（demand for X），✗ demand of`,cam:"demand"},
+  {id:"w1204",en:"convenient",ipa:"/kənˈviː.ni.ənt/",pos:"adj.",u:"Day16",zh:"方便的",def:`suitable for your needs and easy to use, not causing problems`,eg:`If it's convenient for you, let's meet this week.`,syn:`⚠️ 主詞不能是人：✅ If it's convenient for you / ✗ if you feel convenient；也可用 Are you available?`,cam:"convenient"},
+  {id:"w1205",en:"significantly",ipa:"/sɪɡˈnɪf.ɪ.kənt.li/",pos:"adv.",u:"Day16",zh:"顯著地、大幅地",def:`in a way that is large or important enough to have an effect`,eg:`Demand has dropped significantly.`,syn:`「明顯下滑」的明顯=幅度大→用 significantly / markedly。辨析 apparently：主要意思是「據說、看起來」(推測)；雖也有「顯然」的意思(知道即可)，但因推測語感太強易生歧義，強調幅度時避免用它`,cam:"significantly"},
+  {id:"w1206",en:"work fine",ipa:"/wɜːk faɪn/",pos:"phr.",u:"Day16",zh:"正常運作",def:`to function correctly`,eg:`Luckily, the laptop still works fine.`,syn:`辨析 形容3C/日常物品「正常運作」比 operate normally 道地；work properly 同義`,cam:"work"}
 ];
 for(const w of WORDS){
   const link = `<a href='${C}${(w.cam||w.en).replace(/ /g,'-')}' target='_blank'>Cambridge</a>`;
