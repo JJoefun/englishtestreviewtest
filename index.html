@@ -107,7 +107,7 @@
 <body>
 <div class="wrap">
   <header>
-    <h1>中翻英複習<small>Spaced Review · Day 1–16 ＋ 單字表</small></h1>
+    <h1>中翻英複習<small>Spaced Review · Day 1–17 ＋ 單字表</small></h1>
     <div class="counts">
       <span><span class="dot r"></span>複習 <b id="c-rev">0</b></span>
       <span><span class="dot n"></span>新卡 <b id="c-new">0</b></span>
@@ -610,7 +610,29 @@ const DECK = [
   { id:"d6", type:"vocab", tags:["辨析","HW2"], qlabel:"辨析",
     front:"dismantle 和 demolish 差在哪？（都有「拆」的意思）",
     answer:`dismantle＝<mark>有秩序地拆解</mark>(常可復原/回收)；demolish＝<mark>猛力摧毀夷平</mark>(回不去)`,
-    analysis:[["dismantle","小心、逐件拆；中性語感；常可重組/回收：dismantle an engine/a tent；也可抽象「逐步瓦解」制度 dismantle the hierarchies"],["demolish","用推土機/炸藥猛力破壞，變成瓦礫、不可復原；負面語感：The old factory was demolished."],["對象","dismantle 機器/帳篷/系統/制度；demolish 通常是建築物"],["延伸","demolish an argument = 把某論點駁得體無完膚"]]}
+    analysis:[["dismantle","小心、逐件拆；中性語感；常可重組/回收：dismantle an engine/a tent；也可抽象「逐步瓦解」制度 dismantle the hierarchies"],["demolish","用推土機/炸藥猛力破壞，變成瓦礫、不可復原；負面語感：The old factory was demolished."],["對象","dismantle 機器/帳篷/系統/制度；demolish 通常是建築物"],["延伸","demolish an argument = 把某論點駁得體無完膚"]]},
+
+  // ---------- Day 17 ----------
+  { id:"s49", type:"sentence", tags:["句子","日常","D17"], qlabel:"中譯英",
+    front:"我這週太忙了，連好好吃頓飯的時間都沒有，更別說運動了。",
+    answer:`I've been <mark>so busy this week that I don't even have time to eat a proper meal, let alone exercise</mark>.`,
+    analysis:[["I've been（非 was）","這週未結束、狀態持續到現在→現在完成進行式"],["so...that","如此忙以至於…用 so...that（too busy to 也可，但後接子句用 so...that）"],["let alone exercise","更別說=let alone；用在否定句後，接對稱結構(to eat→exercise)"],["a proper meal / exercise 拼字","好好吃頓飯=eat a proper meal；exercise 只有一個 c"],["🔄 換句話說","This week has been so hectic I've barely had time to sit down for a meal, never mind working out.（hectic=忙亂；barely；never mind=更別說；work out=運動）"]]},
+  { id:"s50", type:"sentence", tags:["句子","職場","D17"], qlabel:"中譯英",
+    front:"這是我第三次來信詢問此事，希望這次能得到明確的答覆。",
+    answer:`This is the <mark>third time I've written to ask about this</mark>, and I hope <mark>to get a clear answer this time</mark>.`,
+    analysis:[["the third time I've written","第…次做某事=the ...th time + 主詞 + 現在完成式(✗ my third time to ask)"],["ask about this","詢問此事=ask about this(非 the thing)；by the email 多餘"],["hope to get","hope 接不定詞加 to"],["a clear answer","明確答覆用形容詞 clear+名詞(✗ clearly answer，clearly 是副詞)"],["🔄 換句話說","This is now the third time I'm reaching out about this matter, and I'd really appreciate a definite response this time.（reach out；this matter；a definite response=明確答覆）"]]},
+  { id:"s51", type:"sentence", tags:["句子","財經","D17"], qlabel:"中譯英",
+    front:"這家新創公司雖然成長快速，但至今仍未實現獲利。",
+    answer:`Although the <mark>startup is growing rapidly</mark>, it <mark>has yet to turn a profit</mark>.`,
+    analysis:[["startup","新創公司固定用字(✗ new industry company 不存在)"],["is growing rapidly","正在快速成長用現在進行式較動態(grows 也可)"],["has yet to turn a profit","至今仍未=has yet to+原形；實現獲利=turn a profit(✗ get the profit)；已含「至今」不用加 until today"],["✅ Although","不疊 but，用對了"],["🔄 換句話說","Despite its rapid growth, the startup still hasn't become profitable.（Despite+名詞；still hasn't；profitable=有獲利的）"]]},
+  { id:"g31", type:"grammar", tags:["文法","D17"], qlabel:"文法",
+    front:"let alone 怎麼用？（更別說）",
+    answer:`用在<mark>否定句之後</mark>，接<mark>跟前面對稱的結構</mark>`,
+    analysis:[["意思","更別說、遑論（前面那個都做不到了，後面這個更不可能）"],["用法","I don't have time to eat, let alone exercise.（to eat 對 exercise，結構對稱）"],["Cambridge 例","Some people never even read a newspaper, let alone a book."],["同義","never mind / much less"]]},
+  { id:"g32", type:"grammar", tags:["文法","D17"], qlabel:"文法",
+    front:"「這是我第…次做某事」的句型？",
+    answer:`the ...th time (that) + 主詞 + <mark>現在完成式</mark>`,
+    analysis:[["正確","This is the third time I've written.（到現在為止第三次→現在完成式）"],["✗ 錯誤","my third time to write / to ask"],["原因","強調「到目前為止累積到第幾次」，所以用現在完成式 have/has + p.p."]]}
 ];
 
 // ---------- Bulk vocabulary (bidirectional 中↔英) ----------
@@ -793,7 +815,15 @@ const WORDS = [
   {id:"w1203",en:"demand for",ipa:"/dɪˈmɑːnd fɔːr/",pos:"phr.",u:"Day16",zh:"對…的需求",def:`the desire or need for something`,eg:`Demand for office space has dropped significantly.`,syn:`辨析 介係詞固定用 for（demand for X），✗ demand of`,cam:"demand"},
   {id:"w1204",en:"convenient",ipa:"/kənˈviː.ni.ənt/",pos:"adj.",u:"Day16",zh:"方便的",def:`suitable for your needs and easy to use, not causing problems`,eg:`If it's convenient for you, let's meet this week.`,syn:`⚠️ 主詞不能是人：✅ If it's convenient for you / ✗ if you feel convenient；也可用 Are you available?`,cam:"convenient"},
   {id:"w1205",en:"significantly",ipa:"/sɪɡˈnɪf.ɪ.kənt.li/",pos:"adv.",u:"Day16",zh:"顯著地、大幅地",def:`in a way that is large or important enough to have an effect`,eg:`Demand has dropped significantly.`,syn:`「明顯下滑」的明顯=幅度大→用 significantly / markedly。辨析 apparently：主要意思是「據說、看起來」(推測)；雖也有「顯然」的意思(知道即可)，但因推測語感太強易生歧義，強調幅度時避免用它`,cam:"significantly"},
-  {id:"w1206",en:"work fine",ipa:"/wɜːk faɪn/",pos:"phr.",u:"Day16",zh:"正常運作",def:`to function correctly`,eg:`Luckily, the laptop still works fine.`,syn:`辨析 形容3C/日常物品「正常運作」比 operate normally 道地；work properly 同義`,cam:"work"}
+  {id:"w1206",en:"work fine",ipa:"/wɜːk faɪn/",pos:"phr.",u:"Day16",zh:"正常運作",def:`to function correctly`,eg:`Luckily, the laptop still works fine.`,syn:`辨析 形容3C/日常物品「正常運作」比 operate normally 道地；work properly 同義`,cam:"work"},
+
+  // Day 17 單字
+  {id:"w1301",en:"let alone",ipa:"/let əˈləʊn/",pos:"phr.",u:"Day17",zh:"更別說、遑論",def:`used after a negative statement to say that the next thing is even more unlikely`,eg:`I don't even have time to eat, let alone exercise.`,eg2:"I can't afford a car, let alone a house.",syn:`用法 ①用在否定句之後 ②後面接跟前面對稱的結構（to eat→exercise 都是動詞）`,cam:"let-alone"},
+  {id:"w1302",en:"so...that",ipa:"/səʊ ... ðæt/",pos:"phr.",u:"Day17",zh:"如此…以至於",def:`so + adjective/adverb + that + result clause`,eg:`I've been so busy that I don't even have time to eat.`,eg2:"The box was so heavy that I couldn't lift it.",syn:`辨析 so...that 強調程度大到造成某結果；too...to 是「太…而不能」(too busy to eat)`,cam:"so"},
+  {id:"w1303",en:"startup",ipa:"/ˈstɑːt.ʌp/",pos:"n.",u:"Day17",zh:"新創公司",def:`a small business that has recently been started`,eg:`The startup is growing rapidly but isn't profitable yet.`,eg2:"My cousin quit his job to join a tech startup.",syn:`辨析 ✗ new industry company(不存在)；一個字 startup / start-up`,cam:"start-up"},
+  {id:"w1304",en:"turn a profit",ipa:"/tɜːn ə ˈprɒf.ɪt/",pos:"phr.",u:"Day17",zh:"實現獲利、開始賺錢",def:`to make a profit`,eg:`The company has yet to turn a profit.`,eg2:"The little coffee shop finally turned a profit after two years.",syn:`辨析 實現獲利用 turn a profit(固定搭配)，非 get the profit`,cam:"profit"},
+  {id:"w1305",en:"has yet to",ipa:"/hæz jet tuː/",pos:"phr.",u:"Day17",zh:"至今仍未…",def:`has still not done something up to now`,eg:`The startup has yet to turn a profit.`,eg2:"I've lived here for a year but have yet to visit the museum.",syn:`辨析 本身已含「至今仍未」(=still hasn't)，不用再加 until today`,cam:"yet"},
+  {id:"w1306",en:"clear (adj) vs clearly (adv)",ipa:"/klɪər/ /ˈklɪə.li/",pos:"—",u:"Day17",zh:"clear 清楚的(形容詞) / clearly 清楚地(副詞)",def:`clear = adjective (modifies nouns); clearly = adverb (modifies verbs)`,eg:`a clear answer（明確的答覆）／ She explained it clearly.`,eg2:"Give me a clear answer. ／ Please speak clearly.",syn:`辨析 ✗ clearly answer（副詞不能修飾名詞，要用形容詞 clear）`,cam:"clear"}
 ];
 for(const w of WORDS){
   const link = `<a href='${C}${(w.cam||w.en).replace(/ /g,'-')}' target='_blank'>Cambridge</a>`;
