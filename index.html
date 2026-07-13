@@ -107,7 +107,7 @@
 <body>
 <div class="wrap">
   <header>
-    <h1>中翻英複習<small>Spaced Review · Day 1–17 ＋ 單字表</small></h1>
+    <h1>中翻英複習<small>Spaced Review · Day 1–18 ＋ 單字表</small></h1>
     <div class="counts">
       <span><span class="dot r"></span>複習 <b id="c-rev">0</b></span>
       <span><span class="dot n"></span>新卡 <b id="c-new">0</b></span>
@@ -632,7 +632,29 @@ const DECK = [
   { id:"g32", type:"grammar", tags:["文法","D17"], qlabel:"文法",
     front:"「這是我第…次做某事」的句型？",
     answer:`the ...th time (that) + 主詞 + <mark>現在完成式</mark>`,
-    analysis:[["正確","This is the third time I've written.（到現在為止第三次→現在完成式）"],["✗ 錯誤","my third time to write / to ask"],["原因","強調「到目前為止累積到第幾次」，所以用現在完成式 have/has + p.p."]]}
+    analysis:[["正確","This is the third time I've written.（到現在為止第三次→現在完成式）"],["✗ 錯誤","my third time to write / to ask"],["原因","強調「到目前為止累積到第幾次」，所以用現在完成式 have/has + p.p."]]},
+
+  // ---------- Day 18 ----------
+  { id:"s52", type:"sentence", tags:["句子","日常","D18"], qlabel:"中譯英",
+    front:"我原本想自己修那台冷氣，但後來發現還是請專業的來比較保險。",
+    answer:`I was going to fix the air conditioner myself, but <mark>then I realised it's safer to hire a professional</mark>.`,
+    analysis:[["✅ I was going to...myself","Day9 was going to 用對了；myself(自己)，by 可省"],["then I realised","「後來發現」帶「意識到」用 realised(found 也可)"],["safer（非 more safe）","單音節形容詞比較級加 -er"],["hire a professional","請專業「人士」用 a professional(✗ expertise 是抽象知識，非人)"],["🔄 換句話說","I'd planned to repair the AC on my own, but I figured it'd be safer to get a professional in.（planned to；on my own；figure=想通；get sb in=請人來）"]]},
+  { id:"s53", type:"sentence", tags:["句子","職場","D18"], qlabel:"中譯英",
+    front:"由於您提供的資料不完整，我們暫時無法處理您的申請。",
+    answer:`Due to the <mark>incomplete information you provided</mark>, we are <mark>unable to process your application at this time</mark>.`,
+    analysis:[["incomplete（非 un-entire）","⚠️ un-entire 不存在；不完整=incomplete"],["you provided","資料是之前提供的，用過去式"],["unable to...at this time","「暫時無法」商務講法(比 can't...temporarily 得體)"],["🔄 換句話說","As the details you submitted are incomplete, we're currently unable to move forward with your application.（details；submitted；currently；move forward with=推進處理）"]]},
+  { id:"s54", type:"sentence", tags:["句子","財經","D18"], qlabel:"中譯英",
+    front:"隨著人工智慧的快速發展，許多人開始擔心自己的工作會被取代。",
+    answer:`With the rapid development of AI, many people are <mark>starting to worry that their jobs will be replaced by it</mark>.`,
+    analysis:[["As AI grows rapidly 也對","你原句正確！With the rapid development of 只是同義替換，非修正"],["starting to worry","「開始擔心」把「開始」譯出→are starting to worry"],["will（非 would）","真實的未來預測用 will(would 是假設語氣)"],["replaced 拼字","✓ be replaced by 被動用對，注意拼字"],["🔄 換句話說","As AI advances so quickly, a lot of people are beginning to fear their jobs could be taken over by it.（advance；beginning to fear；be taken over by=被接手取代）"]]},
+  { id:"g33", type:"grammar", tags:["易錯","D18"], qlabel:"易錯",
+    front:"「不完整」可以說 un-entire 嗎？",
+    answer:`不行，<mark>un-entire 不存在</mark>；「不完整」用 incomplete`,
+    analysis:[["規則","英文不是所有字都能加 un- 造反義詞；incomplete 是既有的固定字"],["✅","incomplete information / an incomplete form"],["提醒","不確定某個 un-/in- 反義字存不存在時，查字典確認，別自創"]]},
+  { id:"g34", type:"grammar", tags:["文法","D18"], qlabel:"文法",
+    front:"形容詞比較級什麼時候加 -er，什麼時候用 more？",
+    answer:`單音節→<mark>加 -er</mark>；三音節以上→<mark>用 more</mark>；兩音節看情況`,
+    analysis:[["單音節加 -er","safe→safer、big→bigger、fast→faster（✗ more safe）"],["三音節以上用 more","more expensive、more beautiful、more important"],["兩音節","-y 結尾多加 -er(happy→happier)；其他多用 more(more careful)"],["提醒","safe 是單音節，一定是 safer 不是 more safe"]]}
 ];
 
 // ---------- Bulk vocabulary (bidirectional 中↔英) ----------
@@ -823,7 +845,15 @@ const WORDS = [
   {id:"w1303",en:"startup",ipa:"/ˈstɑːt.ʌp/",pos:"n.",u:"Day17",zh:"新創公司",def:`a small business that has recently been started`,eg:`The startup is growing rapidly but isn't profitable yet.`,eg2:"My cousin quit his job to join a tech startup.",syn:`辨析 ✗ new industry company(不存在)；一個字 startup / start-up`,cam:"start-up"},
   {id:"w1304",en:"turn a profit",ipa:"/tɜːn ə ˈprɒf.ɪt/",pos:"phr.",u:"Day17",zh:"實現獲利、開始賺錢",def:`to make a profit`,eg:`The company has yet to turn a profit.`,eg2:"The little coffee shop finally turned a profit after two years.",syn:`辨析 實現獲利用 turn a profit(固定搭配)，非 get the profit`,cam:"profit"},
   {id:"w1305",en:"has yet to",ipa:"/hæz jet tuː/",pos:"phr.",u:"Day17",zh:"至今仍未…",def:`has still not done something up to now`,eg:`The startup has yet to turn a profit.`,eg2:"I've lived here for a year but have yet to visit the museum.",syn:`辨析 本身已含「至今仍未」(=still hasn't)，不用再加 until today`,cam:"yet"},
-  {id:"w1306",en:"clear (adj) vs clearly (adv)",ipa:"/klɪər/ /ˈklɪə.li/",pos:"—",u:"Day17",zh:"clear 清楚的(形容詞) / clearly 清楚地(副詞)",def:`clear = adjective (modifies nouns); clearly = adverb (modifies verbs)`,eg:`a clear answer（明確的答覆）／ She explained it clearly.`,eg2:"Give me a clear answer. ／ Please speak clearly.",syn:`辨析 ✗ clearly answer（副詞不能修飾名詞，要用形容詞 clear）`,cam:"clear"}
+  {id:"w1306",en:"clear (adj) vs clearly (adv)",ipa:"/klɪər/ /ˈklɪə.li/",pos:"—",u:"Day17",zh:"clear 清楚的(形容詞) / clearly 清楚地(副詞)",def:`clear = adjective (modifies nouns); clearly = adverb (modifies verbs)`,eg:`a clear answer（明確的答覆）／ She explained it clearly.`,eg2:"Give me a clear answer. ／ Please speak clearly.",syn:`辨析 ✗ clearly answer（副詞不能修飾名詞，要用形容詞 clear）`,cam:"clear"},
+
+  // Day 18 單字
+  {id:"w1401",en:"incomplete",ipa:"/ˌɪn.kəmˈpliːt/",pos:"adj.",u:"Day18",zh:"不完整的、未完成的",def:`not having some parts, or not finished`,eg:`The decision was based on incomplete information.`,eg2:"My homework is still incomplete; I've only done half.",syn:`辨析 ✗ un-entire(不存在的自創字)；「不完整」固定用 incomplete`,cam:"incomplete"},
+  {id:"w1402",en:"professional",ipa:"/prəˈfeʃ.ən.əl/",pos:"n.",u:"Day18",zh:"專業人士",def:`a person who does a job that needs special training or skill`,eg:`It's safer to hire a professional.`,eg2:"When my sink broke, I called a professional to fix it.",syn:`⚠️ 辨析 professional(可數,專業「人士」) vs expertise(不可數,專業「知識/技能」)`,cam:"professional"},
+  {id:"w1403",en:"expertise",ipa:"/ˌek.spɜːˈtiːz/",pos:"n. (U)",u:"Day18",zh:"專業知識、專門技能",def:`a high level of knowledge or skill in a particular area`,eg:`She has great expertise in law.`,eg2:"He built the whole app himself — that takes real expertise.",syn:`⚠️ 辨析 expertise(抽象知識/技能,不可數) ≠ professional(專業人士,人)`,cam:"expertise"},
+  {id:"w1404",en:"safer",ipa:"/ˈseɪ.fər/",pos:"adj.",u:"Day18",zh:"更安全的（safe 的比較級）",def:`comparative of safe`,eg:`It's safer to hire a professional.`,eg2:"Wearing a helmet is much safer.",syn:`規則 單音節形容詞比較級直接加 -er：safe→safer(✗ more safe)；雙音節以上才用 more`,cam:"safe"},
+  {id:"w1405",en:"at this time",ipa:"/æt ðɪs taɪm/",pos:"phr.",u:"Day18",zh:"目前、暫時",def:`at the present moment, often implying it may change later`,eg:`We are unable to process your application at this time.`,eg2:"I'm not able to help at this time, but maybe later.",syn:`辨析 比 temporarily 更適合放句尾、更商務；「暫時無法」= unable to...at this time`,cam:"time"},
+  {id:"w1406",en:"be replaced by",ipa:"/biː rɪˈpleɪst baɪ/",pos:"phr.",u:"Day18",zh:"被…取代",def:`to be substituted by something or someone else`,eg:`Many jobs will be replaced by AI.`,eg2:"The old printer was replaced by a faster one.",syn:`被動語態 be replaced by + 取代者`,cam:"replace"}
 ];
 for(const w of WORDS){
   const link = `<a href='${C}${(w.cam||w.en).replace(/ /g,'-')}' target='_blank'>Cambridge</a>`;
