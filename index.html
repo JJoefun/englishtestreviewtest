@@ -135,8 +135,7 @@
     <div class="daybar" id="hwbar">
       <span class="daylabel">英文課回家複習：</span>
       <select id="hwModeSelect" class="dropdown">
-        <option value="latest" selected>只看最新一次</option>
-        <option value="all">全部作業</option>
+        <option value="all" selected>全部作業</option>
       </select>
     </div>
     <div class="topicbar" id="topicbarWrap" style="display:none;">
@@ -787,7 +786,7 @@ const WORDS = [
   {id:"h256",en:"advocate",ipa:"/ˈædvəkət/",pos:"n.",u:"HW2",zh:"倡導者、支持者",def:`a person who publicly supports or recommends a particular cause or policy`,eg:`Advocates suggest that the principles of slow travel can be applied on any scale.`,eg2:`She's a strong advocate for mental health awareness.`,syn:`名詞 /ˈædvəkət/ 倡導者 vs 動詞 /ˈædvəkeɪt/ 提倡(重音同,尾音不同)；片語 an advocate for/of`},
   {id:"h257",en:"in haste",ipa:"/ɪn heɪst/",pos:"phr.",u:"HW2",zh:"匆忙地、倉促地",def:`quickly, in a hurried way`,eg:`...exploring one neighbourhood in depth rather than three cities in haste.`,eg2:`I replied in haste and later regretted what I wrote.`,syn:`片語 in haste = 匆忙(⇔ in depth 深入地，文中兩者對比)；諺語 more haste, less speed`},
   {id:"h258",en:"resist the urge",ipa:"/rɪˈzɪst ði ɜːdʒ/",pos:"phr.",u:"HW2",zh:"克制…的衝動",def:`to stop yourself from doing something you want to do`,eg:`...resisting the urge to photograph everything...`,eg2:`I had to resist the urge to check my phone during dinner.`,syn:`拆解 resist 抵抗 + the urge to V 做…的衝動；resist 後接 V-ing 或名詞`},
-  {id:"h259",en:"dwell",ipa:"/dwel/",pos:"v.",u:"HW2",zh:"(文中)沉浸、居住",def:`to live in a place; (dwell in/on) to spend time thinking about or being in something`,eg:`...simply dwelling in the moment.`,eg2:`Try not to dwell on your mistakes.`,syn:`文中 dwell in the moment = 沉浸當下；片語 dwell on sth = 老想著某事(常指負面)`},
+  {id:"h259",en:"dwell",ipa:"/dwel/",pos:"v.",u:"HW2",zh:"(文中)沉浸、居住",def:`to live in a place; (dwell in/on) to spend time being in or thinking about something`,eg:`...simply dwelling in the moment.`,eg2:`Try not to dwell on your mistakes.`,syn:`⚠️ 介係詞決定語感：dwell in + 狀態=沉浸(中性～正面皆可)：dwell in joy / in the moment ✅；dwell on + 事情=反覆糾結(偏負面)：dwell on past mistakes ❌。要講「沉浸美好」用 dwell in(或 savour/immerse in)`},
 
 
 
@@ -1025,13 +1024,14 @@ function isVocab(c){ return c.type==="vocab" && !isGrammar(c); }
 function isSentence(c){ return c.type==="sentence"; }
 let FILTER="all";
 let DAY_MIN=null, DAY_MAX=null;
-let HW_MODE="latest"; // 'latest' | 'all' — 使用者通常只複習最近一次作業
+let HW_MODE="all"; // 'all' | 具體 HW 編號字串(如 '1','2') — 使用者可自選要複習哪一批作業
 function maxHw(){ let m=null; for(const c of DECK){ const h=hwOf(c); if(h!==null && (m===null||h>m)) m=h; } return m; }
+function allHwNumbers(){ const set=new Set(); for(const c of DECK){ const h=hwOf(c); if(h!==null) set.add(h); } return [...set].sort((a,b)=>a-b); }
 function matchesHwRange(c){
   const h=hwOf(c);
   if(h===null) return true; // 無 HW 標籤的卡不受此列限制
   if(HW_MODE==="all") return true;
-  return h===maxHw(); // latest：只保留最新一週
+  return h===parseInt(HW_MODE); // 只顯示所選的那一批 HW
 }
 function dayOf(c){
   for(const t of c.tags){
@@ -1220,7 +1220,14 @@ document.getElementById('topicAll').onclick=()=>{ TOPIC_ACTIVE=new Set(ALL_TOPIC
 document.getElementById('topicNone').onclick=()=>{ TOPIC_ACTIVE=new Set(); renderTopicBar(); extraToday=0; buildQueue(); render(); };
 
 initTopics(); renderTopicBar();
-if(maxHw()===null) document.getElementById('hwbar').style.display='none';
+// 動態填入英文課回家複習的下拉：全部作業 + 每一批 HW（HW1、HW2…）
+(function buildHwDropdown(){
+  const sel=document.getElementById('hwModeSelect');
+  const nums=allHwNumbers();
+  if(nums.length===0){ document.getElementById('hwbar').style.display='none'; return; }
+  sel.innerHTML='<option value="all">全部作業</option>'+nums.map(n=>`<option value="${n}">HW${n}</option>`).join('');
+  sel.value=HW_MODE;
+})();
 STATE=loadState(); buildQueue(); render();
 document.getElementById('gearToggle').onclick=()=>{
   document.getElementById('advPanel').classList.toggle('hide');
