@@ -107,7 +107,7 @@
 <body>
 <div class="wrap">
   <header>
-    <h1>中翻英複習<small>Spaced Review · Day 1–19 ＋ 單字表</small></h1>
+    <h1>中翻英複習<small>Spaced Review · Day 1–20 ＋ 單字表</small></h1>
     <div class="counts">
       <span><span class="dot r"></span>複習 <b id="c-rev">0</b></span>
       <span><span class="dot n"></span>新卡 <b id="c-new">0</b></span>
@@ -679,7 +679,25 @@ const DECK = [
   { id:"d7", type:"vocab", tags:["辨析","HW2"], qlabel:"辨析",
     front:"meander 和 wander 差在哪？（都是「漫遊」）",
     answer:`meander＝<mark>沿蜿蜒曲折路線走</mark>(繞來繞去)；wander＝<mark>漫無目的到處走</mark>(沒方向)`,
-    analysis:[["meander","重點在「路線彎彎曲曲」；原意河流蜿蜒，通常沿著某條路/區域慢慢繞：meander through the old town / along the path"],["wander","重點在「沒有目的」；到處亂晃不一定沿路徑：wander aimlessly around / wander off(走失)"],["比喻用法","思緒飄走多用 wander(My mind wandered)；講話/文章繞圈子多用 meander(The speech meandered)"],["記憶","meander 想到「河流」(彎但有流向)；wander 想到「走丟的小孩」(沒目的)"]]}
+    analysis:[["meander","重點在「路線彎彎曲曲」；原意河流蜿蜒，通常沿著某條路/區域慢慢繞：meander through the old town / along the path"],["wander","重點在「沒有目的」；到處亂晃不一定沿路徑：wander aimlessly around / wander off(走失)"],["比喻用法","思緒飄走多用 wander(My mind wandered)；講話/文章繞圈子多用 meander(The speech meandered)"],["記憶","meander 想到「河流」(彎但有流向)；wander 想到「走丟的小孩」(沒目的)"]]},
+
+  // ---------- Day 20 ----------
+  { id:"s58", type:"sentence", tags:["句子","日常","D20"], qlabel:"中譯英",
+    front:"我朋友昨天問我要不要一起去爬山，但我還沒決定。",
+    answer:`My friend asked me <mark>yesterday</mark> if I wanted to go hiking with him, but I haven't decided <mark>yet</mark>.`,
+    analysis:[["✅ asked me if I wanted to go hiking","間接問句語序、時態一致(asked→wanted)、go hiking 全對"],["yesterday","原文有「昨天」，別漏譯；可放 asked me yesterday 或句首"],["yet（潤飾）","haven't decided 已正確；加 yet 更貼「還沒」語氣，非必要"],["🔄 換句話說","A friend of mine invited me to go hiking yesterday, but I still haven't made up my mind.（invite sb to；a friend of mine；make up one's mind=下定決心）"]]},
+  { id:"s59", type:"sentence", tags:["句子","職場","D20"], qlabel:"中譯英",
+    front:"為了確保專案能如期完成，我們建議每週召開一次進度會議。",
+    answer:`To ensure the project is completed on schedule, we suggest <mark>holding a weekly progress meeting</mark>.`,
+    analysis:[["⚠️ suggest holding（非 suggest to have）","suggest 不接 to V！三種正確：suggest + V-ing／suggest that + 主詞 + 原形／suggest + 名詞"],["can be done on time 也對","你原句正確；is completed on schedule 只是更正式的商務講法(非修正)"],["hold / have a meeting","兩者皆可，hold 較正式"],["🔄 換句話說","To keep the project on track, we'd recommend a weekly check-in to review progress.（keep on track；recommend；check-in）"]]},
+  { id:"s60", type:"sentence", tags:["句子","財經","D20"], qlabel:"中譯英",
+    front:"這波裁員潮顯示，即使是大型科技公司也難以抵擋景氣寒冬。",
+    answer:`<mark>This wave of layoffs</mark> shows that even <mark>big tech companies</mark> <mark>are not immune to the economic downturn</mark>.`,
+    analysis:[["this wave of layoffs","裁員=layoffs(名詞)；「這波…潮」= a/this wave of + 複數名詞"],["big tech companies","泛指這一類公司用複數、不加 the"],["are not immune to","難以抵擋/無法倖免=not immune to；✗ can't resist(resist 是抵抗誘惑/攻擊)"],["the economic downturn","景氣寒冬=economic downturn(✗ prospects winter 不存在)"],["🔄 換句話說","The latest round of job cuts suggests that even the biggest tech firms can't escape the economic slowdown.（round of job cuts；tech firms；escape；slowdown）"]]},
+  { id:"g37", type:"grammar", tags:["文法","D20"], qlabel:"文法",
+    front:"suggest 後面可以接 to V 嗎？",
+    answer:`不行！suggest 接 <mark>V-ing／that 子句／名詞</mark>，不接 to V`,
+    analysis:[["✅ suggest + V-ing","We suggest holding a meeting."],["✅ suggest + that + 主詞 + 原形動詞","We suggest that we hold a meeting.（動詞用原形，不隨主詞變化）"],["✅ suggest + 名詞","We suggest a weekly meeting."],["✗ suggest to V","✗ We suggest to have a meeting.（suggest 不接不定詞）"],["同類動詞","recommend、advise(接受詞時可 advise sb to V)、consider 也多接 V-ing"]]}
 ];
 
 // ---------- Bulk vocabulary (bidirectional 中↔英) ----------
@@ -913,7 +931,15 @@ const WORDS = [
   {id:"w1503",en:"make a loss",ipa:"/meɪk ə lɒs/",pos:"phr.",u:"Day19",zh:"虧損",def:`to spend more money than you earn; to fail to make a profit`,eg:`The company made a loss last year.`,eg2:"The shop made a loss in its first year but recovered later.",syn:`也可 report/post a loss；✗ didn't get profit(沒賺≠虧損)；⇔ turn/make a profit`,cam:"loss"},
   {id:"w1504",en:"remain optimistic about",ipa:"/rɪˈmeɪn ˌɒptɪˈmɪstɪk əˈbaʊt/",pos:"phr.",u:"Day19",zh:"對…仍持樂觀、看好",def:`to continue to believe something good will happen`,eg:`Investors remain optimistic about its long-term prospects.`,eg2:"Despite the setback, she remains optimistic about the future.",syn:`⚠️ ≠ look forward to(期待、開心等待)；「看好、有信心」用 optimistic about / confident in`,cam:"optimistic"},
   {id:"w1505",en:"long-term prospects",ipa:"/ˌlɒŋ.tɜːm ˈprɒspekts/",pos:"n.",u:"Day19",zh:"長期前景、長遠發展",def:`the chances of future success over a long period`,eg:`Analysts are positive about the firm's long-term prospects.`,eg2:"He turned down the offer because the job had poor long-term prospects.",syn:`形容詞連字號 long-term。辨析三選一皆可：prospects=未來成功的可能性/機會(最貼「看好」)；outlook=對未來的展望/預測(中性,可好可壞,如 optimistic about the long-term outlook)；growth=成長本身(較具體)`,cam:"prospect"},
-  {id:"w1506",en:"issue (vs question)",ipa:"/ˈɪʃuː/",pos:"n.",u:"Day19",zh:"議題、待處理的事項",def:`a subject or problem that people are thinking or talking about`,eg:`Regarding the budget issue we discussed...`,eg2:"We need to sort out this issue before the deadline.",syn:`辨析 issue(議題、待處理的事) vs question(要問的疑問)；「預算問題」用 issue`,cam:"issue"}
+  {id:"w1506",en:"issue (vs question)",ipa:"/ˈɪʃuː/",pos:"n.",u:"Day19",zh:"議題、待處理的事項",def:`a subject or problem that people are thinking or talking about`,eg:`Regarding the budget issue we discussed...`,eg2:"We need to sort out this issue before the deadline.",syn:`辨析 issue(議題、待處理的事) vs question(要問的疑問)；「預算問題」用 issue`,cam:"issue"},
+
+  // Day 20 單字
+  {id:"w1601",en:"layoffs / lay off",ipa:"/ˈleɪ.ɒfs/ /leɪ ɒf/",pos:"n. / phr.v.",u:"Day20",zh:"裁員（名詞）／裁掉某人（動詞）",def:`layoffs (n.) = the act of ending workers' employment; lay off (v.) = to end someone's employment`,eg:`This wave of layoffs shows that even big tech companies are struggling.`,eg2:"The company laid off 500 workers last month.",syn:`辨析 名詞 layoff(s) 合寫；動詞 lay off 分開；✗ firing employee(不是名詞片語)`,cam:"layoff"},
+  {id:"w1602",en:"a wave of",ipa:"/ə weɪv ɒv/",pos:"phr.",u:"Day20",zh:"一波…潮",def:`a sudden increase in a particular activity or feeling`,eg:`a wave of layoffs（裁員潮）／ a wave of protests（抗議潮）`,eg2:"A wave of nostalgia hit me when I saw the old photos.",syn:`後接複數名詞；媒體標準講法 a wave of tech layoffs`,cam:"wave"},
+  {id:"w1603",en:"be immune to",ipa:"/biː ɪˈmjuːn tuː/",pos:"phr.",u:"Day20",zh:"對…免疫、不受…影響",def:`not affected by something`,eg:`Even big tech companies are not immune to the economic downturn.`,eg2:"Nobody is immune to criticism.",syn:`⚠️ 辨析「難以抵擋、無法倖免」用 not immune to；✗ can't resist(resist 是抵抗誘惑/攻擊)`,cam:"immune"},
+  {id:"w1604",en:"economic downturn",ipa:"/ˌiː.kəˈnɒm.ɪk ˈdaʊn.tɜːn/",pos:"n.",u:"Day20",zh:"景氣寒冬、經濟下行",def:`a period when the economy becomes weaker`,eg:`Even big tech companies are not immune to the economic downturn.`,eg2:"Many shops closed during the economic downturn.",syn:`辨析 ✗ prospects winter(不存在)；同義 economic slowdown`,cam:"downturn"},
+  {id:"w1605",en:"hold a meeting",ipa:"/həʊld ə ˈmiː.tɪŋ/",pos:"phr.",u:"Day20",zh:"召開會議",def:`to have or organise a meeting`,eg:`We suggest holding a weekly progress meeting.`,eg2:"We hold a team meeting every Monday morning.",syn:`hold(較正式)／have(口語)皆可；✗ open a meeting`,cam:"hold"},
+  {id:"w1606",en:"on schedule",ipa:"/ɒn ˈʃed.juːl/",pos:"phr.",u:"Day20",zh:"如期、按進度",def:`happening at the planned or expected time`,eg:`To ensure the project is completed on schedule...`,eg2:"The train arrived right on schedule.",syn:`同義 on time；⇔ behind schedule(進度落後)／ahead of schedule(超前)`,cam:"schedule"}
 ];
 for(const w of WORDS){
   const link = `<a href='${C}${(w.cam||w.en).replace(/ /g,'-')}' target='_blank'>Cambridge</a>`;
