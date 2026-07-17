@@ -106,7 +106,7 @@
 <body>
 <div class="wrap">
   <header>
-    <h1>中翻英複習<small>Spaced Review · Day 1–21 ＋ 單字表</small></h1>
+    <h1>中翻英複習<small>Spaced Review · Day 1–22 ＋ 單字表</small></h1>
     <div class="counts">
       <span><span class="dot r"></span>複習 <b id="c-rev">0</b></span>
       <span><span class="dot n"></span>新卡 <b id="c-new">0</b></span>
@@ -725,6 +725,25 @@ const DECK = [
     front:"sojourn 和 sabbatical 差在哪？",
     answer:`不同類別！sojourn 講<mark>人在哪</mark>(暫居某地)；sabbatical 講<mark>工作狀態</mark>(停職休假)`,
     analysis:[["sojourn","a short period when a person stays in a particular place（暫時停留某地，跟工作無關）；偏文學優雅；介係詞 a sojourn IN a place：After a brief sojourn in Holland, he moved to India."],["sabbatical","a period when someone stops their usual work to study/travel/rest（從工作抽離）；源自 Sabbath(希伯來文 shabbāth=休息)，傳統教授每7年一次，現企業也有；介係詞 sabbatical FROM work / on sabbatical：He took a year's sabbatical from teaching."],["關鍵：可同時發生","During his academic sabbatical, he undertook a scholarly sojourn at the Bodleian Library.（sabbatical=他停職了；sojourn=他這段期間待在圖書館）"],["文章對照","take a six-week sabbatical in Andalusia(請六週假) vs a month-long sojourn(為期一個月的停留)"]]}
+,
+
+  // ---------- Day 22 ----------
+  { id:"s64", type:"sentence", tags:["句子","日常","D22"], qlabel:"中譯英",
+    front:"這部電影的評價很兩極——有人說是年度最佳，也有人覺得只是普普通通。",
+    answer:`The movie's reviews are <mark>mixed</mark>: some <mark>say</mark> it's the best film of the year, <mark>while others</mark> say it's just so-so.`,
+    analysis:[["✅ so-so","Day21 學的用對了"],["mixed（非 complicated）","評價兩極=好壞參半 mixed／意見分歧 divided；complicated=複雜難懂，意思不同"],["⚠️ comma splice（見 g15）","reviews are complicated, some people said... 兩個完整句只用逗號連接。修法：冒號(說明前句)／加連接詞／改句號分號"],["while others（非 the other）","the other=兩個中的另一個(特指)；「有些人…另一些人…」用 some... while others..."],["say（非 said）","前面 reviews are 是現在式，後面要一致用 say"],["🔄 換句話說","Opinions on the film are divided: some call it the year's best, others find it unremarkable.（opinions are divided；call it；unremarkable=不特別）"]]},
+  { id:"s65", type:"sentence", tags:["句子","職場","D22"], qlabel:"中譯英",
+    front:"由於預算有限，我們建議優先把資源分配給最急迫的項目。",
+    answer:`Due to the limited budget, we recommend <mark>prioritising the most urgent projects when allocating resources</mark>.`,
+    analysis:[["✅✅ we recommend + V-ing","Day20 g37 學的完全用對，避開 ✗ recommend to V 的坑"],["✅ Due to the limited budget","正確"],["✅ 用 prioritise 是對的","原文有「優先」，就該譯出來——問題只在搭配，不在要不要用這個字"],["⚠️ 搭配別混","prioritise + 受詞（直接接，✗ prioritise resources TO X）／allocate + 資源 + TO + 對象／give priority TO sth"],["其他正確寫法","allocating resources to the most urgent projects first ／ giving priority to the most urgent projects"],["🔄 換句話說","Given our budget constraints, we'd suggest channelling resources into the most pressing projects first.（budget constraints；channel...into；pressing=急迫的）"]]},
+  { id:"s66", type:"sentence", tags:["句子","財經","D22"], qlabel:"中譯英",
+    front:"這家公司的股價雖然創下新高，但分析師警告，這波漲勢恐怕難以持續。",
+    answer:`Although the company's stock price <mark>has hit a record high</mark>, analysts <mark>warn</mark> that <mark>the rally is unlikely to be sustained</mark>.`,
+    analysis:[["✅ Although（不加 but）","已經穩了"],["⚠️ 真正要改的只有這個","became highest → hit / reach a record high（創新高的固定講法）"],["the rising ✗","rising 不能當名詞用；要用 the rally／the current rise／the gains／the run-up／the surge"],["⚠️ rally 的語感（重要）","Cambridge：rally=股價在「一段下跌或交投清淡之後」的突然上漲→核心是「反彈」（Day10 s30 就是這個意思）。媒體會寬鬆地拿它泛指漲勢(連創新高也用，如 bull market rally)，但在「創新高」語境用 the current rise / the gains 更精準"],["🔸 warned（過去式）也對","報導某次具體發言用過去式完全正確；analysts warn(現在式)=這看法現在仍成立，新聞常用。兩者皆可，非修正"],["🔸 might not continue 也對","你原本的寫法正確；is unlikely to be sustained 只是更道地的財經講法（sustained 是 HW3 學的字）"],["全過去式版本也很好","Although the stock price hit a record high, analysts warned that the rally was unlikely to be sustained."],["🔄 換句話說","The stock has touched an all-time high, but analysts caution that the current gains may prove short-lived.（an all-time high；caution that；prove short-lived=事後證明是曇花一現）"]]},
+  { id:"g39", type:"grammar", tags:["文法","D22"], qlabel:"文法",
+    front:"other / others / the other / the others / another 怎麼分？",
+    answer:`看兩個軸：<mark>有沒有 the</mark>(不特指/特指) × <mark>後面有沒有接名詞</mark>(限定詞/代名詞)`,
+    analysis:[["不特指 + 接名詞","another + 單數可數（another cup）｜other + 複數/不可數（other students, other information）"],["不特指 + 單獨用(代名詞)","another = 再一個（I'll have another.）｜others = 其他一些（Some passed; others failed.）"],["特指 + 接名詞","the other + 單數（the other computer）｜the other + 複數（where are the other kids?）"],["特指 + 單獨用(代名詞)","the other = 兩者中的另一個（One is black; the other is white.）｜the others = 剩下的全部（Three left; the others stayed.）"],["⚠️ 四條鐵則","①another=an+other，只接單數可數（✗ another students）②other 當限定詞永不加 s（✗ others students）③others 是代名詞，後面永不接名詞 ④例外：another + 數字 + 複數 ✅（another two weeks）"],["本題","「有些人…另一些人…」不特指→ some... while others...（✗ the other）"]]}
 ];
 
 // ---------- Bulk vocabulary (bidirectional 中↔英) ----------
@@ -1075,7 +1094,15 @@ const WORDS = [
   {id:"w1703",en:"contact (vt)",ipa:"/ˈkɒn.tækt/",pos:"v.",u:"Day21",zh:"聯絡（某人）",def:`to communicate with someone`,eg:`Please do not hesitate to contact me.`,eg2:"You can contact me by email anytime.",syn:`⚠️ 及物動詞，不加 to（✗ contact to me）；直接 contact + 人`,cam:"contact"},
   {id:"w1704",en:"ask for",ipa:"/ɑːsk fɔːr/",pos:"phr. v.",u:"Day21",zh:"要求、索取（某物）",def:`to request something`,eg:`the information you asked for（你要求的資料）`,eg2:"He asked for a glass of water.",syn:`ask for + 東西(少了 for 不完整)；request 是及物不用 for(the information you requested)`,cam:"ask-for"},
   {id:"w1705",en:"spread the risk",ipa:"/spred ðə rɪsk/",pos:"phr.",u:"Day21",zh:"分散風險",def:`to reduce risk by investing in different things`,eg:`Analysts recommended that investors should spread their risk(s).`,eg2:"Don't put all your eggs in one basket.（諺語：別把雞蛋放同一個籃子）",syn:`同義 diversify (the) risk；✗ separate risks。⚠️ 單複數皆可：risk 是可數/不可數兩用（Oxford 標 [C, U]）→ spread their risks(複數,各種風險) ✅ / spread the risk(不可數,風險這個概念) ✅ 兩者 Cambridge 都收。判斷順序：先問「此語境可數嗎」，再問「有幾個」`,cam:"risk"},
-  {id:"w1706",en:"store vs restaurant",ipa:"/stɔːr/ /ˈres.trɒnt/",pos:"n.",u:"Day21",zh:"store 商店（零售）／ restaurant 餐廳",def:`store = a shop selling goods; restaurant = a place where meals are served`,eg:`the food at this restaurant（這家餐廳的餐點）`,eg2:"I bought milk at the store, then had lunch at a restaurant.",syn:`辨析「這家店」指餐廳時用 restaurant 或 place，不用 store`,cam:"restaurant"}
+  {id:"w1706",en:"store vs restaurant",ipa:"/stɔːr/ /ˈres.trɒnt/",pos:"n.",u:"Day21",zh:"store 商店（零售）／ restaurant 餐廳",def:`store = a shop selling goods; restaurant = a place where meals are served`,eg:`the food at this restaurant（這家餐廳的餐點）`,eg2:"I bought milk at the store, then had lunch at a restaurant.",syn:`辨析「這家店」指餐廳時用 restaurant 或 place，不用 store`,cam:"restaurant"},
+
+  // Day 22 單字
+  {id:"w1801",en:"mixed (reviews/opinions)",ipa:"/mɪkst/",pos:"adj.",u:"Day22",zh:"好壞參半的、褒貶不一的",def:`consisting of both good and bad parts or opinions`,eg:`The movie's reviews are mixed.`,eg2:"I got mixed feedback on my presentation — some loved it, some didn't.",syn:`⚠️ 辨析 ✗ complicated（=複雜難懂，不是「兩極」）｜同義 divided（Cambridge 搭配 divided opinion）｜財經常見 mixed results/ratings/signals`,cam:"mixed"},
+  {id:"w1802",en:"some... while others...",ipa:"/sʌm ... waɪl ˈʌðəz/",pos:"phr.",u:"Day22",zh:"有些人…另一些人…",def:`used to contrast two groups of unspecified people`,eg:`Some say it's the best film of the year, while others say it's just so-so.`,eg2:"Some like the new office layout, while others hate it.",syn:`⚠️ ✗ the other（=兩個中的「另一個」，特指單數）；不特指的「其他人」用 others（複數、不加 the）`,cam:"other"},
+  {id:"w1803",en:"hit a record high",ipa:"/hɪt ə ˈrekɔːd haɪ/",pos:"phr.",u:"Day22",zh:"創下新高",def:`to reach the highest level ever recorded`,eg:`The company's stock price has hit a record high.`,eg2:"Temperatures hit a record high last summer.",syn:`也可 reach/touch a record high、an all-time high、a fresh record high｜✗ became highest（不是英文講法）｜⇔ hit a record low`,cam:"record"},
+  {id:"w1804",en:"prioritise / prioritize",ipa:"/praɪˈɒrətaɪz/",pos:"v.",u:"Day22",zh:"優先處理、排定優先順序",def:`to decide which of a group of things are the most important`,eg:`We should prioritise the most urgent projects.`,eg2:"I need to prioritise sleep over Netflix this week.",syn:`⚠️ 直接接受詞，不接 to（✗ prioritise resources to X）｜「優先給某物」用 give priority TO sth｜英式 -ise／美式 -ize｜📌 中文有「優先」時就該譯出來：prioritise X when allocating resources ／ allocate resources to X first`,cam:"prioritize"},
+  {id:"w1805",en:"allocate sth to sth",ipa:"/ˈæləkeɪt ... tuː/",pos:"phr.",u:"Day22",zh:"把（資源）分配給…",def:`to give something to someone or something as their share`,eg:`We recommend allocating resources to the most urgent projects.`,eg2:"They allocated two seats to our team.",syn:`句型 allocate + 資源 + TO + 對象；也可 allocate sth FOR sth（撥款做某事）｜📌 HW3 單字書也有 allocate，這裡補的是句型`,cam:"allocate"},
+  {id:"w1806",en:"be unlikely to be sustained",ipa:"/ʌnˈlaɪkli ... səˈsteɪnd/",pos:"phr.",u:"Day22",zh:"恐怕難以持續",def:`probably will not continue for long`,eg:`Analysts warn that the rally is unlikely to be sustained.`,eg2:"This good weather is unlikely to be sustained.",syn:`📌 sustained（持續的）是 HW3 文章學的字｜較口語的 might not continue / may be short-lived 也完全正確｜「這波漲勢」創新高時用 the current rise / the gains / the run-up 比 the rally 精準（rally 核心是「跌後反彈」）`,cam:"sustain"}
 ];
 for(const w of WORDS){
   const link = `<a href='${C}${(w.cam||w.en).replace(/ /g,'-')}' target='_blank'>Cambridge</a>`;
