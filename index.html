@@ -97,6 +97,9 @@
   .bkbar{display:flex; gap:6px;}
   .bkbtn{background:none; color:var(--muted); border:1px solid var(--line); padding:5px 10px; font-size:11.5px; border-radius:8px; cursor:pointer;}
   .bkbtn:hover{color:var(--ink); border-color:var(--muted);}
+  #textPanel{margin-top:10px; padding:12px; border:1px solid var(--line); border-radius:10px; background:var(--panel);}
+  .tp-row{display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px;}
+  #bkText{width:100%; box-sizing:border-box; height:110px; font-family:ui-monospace,Menlo,Consolas,monospace; font-size:11px; line-height:1.45; padding:8px; border:1px solid var(--line); border-radius:8px; background:#fff; color:var(--ink); resize:vertical;}
   #bkMsg{margin-top:8px; font-size:12px; text-align:right; min-height:16px;}
   #bkMsg.ok{color:var(--good);} #bkMsg.err{color:var(--again);}
   .hide{display:none;}
@@ -106,7 +109,7 @@
 <body>
 <div class="wrap">
   <header>
-    <h1>中翻英複習<small>Spaced Review · Day 1–22 ＋ 單字表</small></h1>
+    <h1>中翻英複習<small>Spaced Review · Day 1–23 ＋ 單字表</small></h1>
     <div class="counts">
       <span><span class="dot r"></span>複習 <b id="c-rev">0</b></span>
       <span><span class="dot n"></span>新卡 <b id="c-new">0</b></span>
@@ -147,11 +150,20 @@
   <footer>
     <span id="foot">進度自動保存在這個瀏覽器</span>
     <span class="bkbar">
-      <button class="bkbtn" id="btnExport">⬇️ 備份進度</button>
-      <button class="bkbtn" id="btnImport">⬆️ 還原備份</button>
+      <button class="bkbtn" id="btnText">📋 文字備份</button>
+      <button class="bkbtn" id="btnExport">⬇️ 下載檔案</button>
+      <button class="bkbtn" id="btnImport">⬆️ 讀取檔案</button>
       <input type="file" id="fileImport" accept=".json,application/json" style="display:none">
     </span>
   </footer>
+  <div id="textPanel" class="hide">
+    <div class="tp-row">
+      <button class="bkbtn" id="btnGenText">產生備份文字並複製</button>
+      <button class="bkbtn" id="btnRestoreText">從下方文字還原</button>
+      <button class="bkbtn" id="btnCloseText">關閉</button>
+    </div>
+    <textarea id="bkText" placeholder="按「產生備份文字並複製」→ 貼到記事本/備忘錄存起來。&#10;要還原時，把存好的文字貼回這裡，再按「從下方文字還原」。"></textarea>
+  </div>
   <div id="bkMsg"></div>
 </div>
 
@@ -743,7 +755,25 @@ const DECK = [
   { id:"g39", type:"grammar", tags:["文法","D22"], qlabel:"文法",
     front:"other / others / the other / the others / another 怎麼分？",
     answer:`看兩個軸：<mark>有沒有 the</mark>(不特指/特指) × <mark>後面有沒有接名詞</mark>(限定詞/代名詞)`,
-    analysis:[["不特指 + 接名詞","another + 單數可數（another cup）｜other + 複數/不可數（other students, other information）"],["不特指 + 單獨用(代名詞)","another = 再一個（I'll have another.）｜others = 其他一些（Some passed; others failed.）"],["特指 + 接名詞","the other + 單數（the other computer）｜the other + 複數（where are the other kids?）"],["特指 + 單獨用(代名詞)","the other = 兩者中的另一個（One is black; the other is white.）｜the others = 剩下的全部（Three left; the others stayed.）"],["⚠️ 四條鐵則","①another=an+other，只接單數可數（✗ another students）②other 當限定詞永不加 s（✗ others students）③others 是代名詞，後面永不接名詞 ④例外：another + 數字 + 複數 ✅（another two weeks）"],["本題","「有些人…另一些人…」不特指→ some... while others...（✗ the other）"]]}
+    analysis:[["不特指 + 接名詞","another + 單數可數（another cup）｜other + 複數/不可數（other students, other information）"],["不特指 + 單獨用(代名詞)","another = 再一個（I'll have another.）｜others = 其他一些（Some passed; others failed.）"],["特指 + 接名詞","the other + 單數（the other computer）｜the other + 複數（where are the other kids?）"],["特指 + 單獨用(代名詞)","the other = 兩者中的另一個（One is black; the other is white.）｜the others = 剩下的全部（Three left; the others stayed.）"],["⚠️ 四條鐵則","①another=an+other，只接單數可數（✗ another students）②other 當限定詞永不加 s（✗ others students）③others 是代名詞，後面永不接名詞 ④例外：another + 數字 + 複數 ✅（another two weeks）"],["本題","「有些人…另一些人…」不特指→ some... while others...（✗ the other）"]]},
+
+  // ---------- Day 23 ----------
+  { id:"s67", type:"sentence", tags:["句子","日常","D23"], qlabel:"中譯英",
+    front:"我本來以為這間餐廳很貴，結果帳單出來比我想的還便宜。",
+    answer:`I thought the restaurant would be expensive, but <mark>when the bill came</mark>, it turned out to be cheaper than I expected.`,
+    analysis:[["✅ I thought...would be","「本來以為」用過去式 thought + would（過去看未來），時態觀念到位"],["✅ turned out to be cheaper than I expected","turn out、比較級+than+子句全對"],["🔸 語序（非必要）","when the bill came 往前放語氣更順；when I saw the bill 也可以，你原本的寫法沒錯"],["🔸 the bill came","「帳單出來」用 the bill came 比 I saw the bill 更貼原意"],["🔄 換句話說","I'd expected the place to be pricey, but the bill came to less than I'd thought.（I'd expected；pricey；come to=總計為）"]]},
+  { id:"s68", type:"sentence", tags:["句子","職場","D23"], qlabel:"中譯英",
+    front:"附件是這個月的報告，如果您發現任何錯誤，請不吝告知。",
+    answer:`Attached is <mark>this month's report</mark>. If you <mark>find any mistakes</mark>, please feel free to <mark>let me know</mark>.`,
+    analysis:[["✅ Attached is...","商用 email 固定講法用對了"],["✅✅ contact 沒加 to","Day21 學的及物動詞用法，這次寫對了"],["✅ please feel free to","Day11 學的，穩了"],["this month's report","⚠️ 用所有格（✗ the report this month——時間副詞不能黏在名詞後當修飾語）"],["If you find（非 found）","⚠️ 第一條件句：真實的未來可能性用現在式；found 會變成假設語氣或講過去"],["let me know / 人稱一致","⚠️ 前面隱含是「我」寄的，後面別忽然變 us；「告知」用 let me know 更貼"],["🔄 換句話說","Please find this month's report attached. Should you spot any errors, do let me know.（Please find...attached；Should you+V=倒裝的 if；spot=發現；do let me know 加強語氣）"]]},
+  { id:"s69", type:"sentence", tags:["句子","財經","D23"], qlabel:"中譯英",
+    front:"儘管通膨略有下降，多數家庭仍感受不到物價的實質變化。",
+    answer:`Despite the <mark>slight slowdown in inflation</mark>, most families still <mark>don't feel any real change in prices</mark>.`,
+    analysis:[["✅ Despite + 名詞片語","用對了（Despite 後面不能接子句）"],["✅✅ still can't 的位置","g36 學的：否定句 still 要放否定詞前面，你放對了"],["slight（非 little）","⚠️ 「略微」標準搭配是 slight（a slight decrease/slowdown）；little 當形容詞是「小小的」，不用於數據變化"],["slowdown IN（非 of）","⚠️ 介係詞：a slowdown in inflation/growth"],["real change in prices","⚠️ real 才是形容詞(實質的)，reality 是名詞(現實)→✗ the reality change；變化用 change IN prices"],["🔸 don't feel（非 can't feel）","can't feel=能力上感覺不到；這裡是「沒感受到」，don't feel 更貼。你的寫法可接受"],["📌 財經知識","這個情境的專有名詞是 disinflation（通膨趨緩）：通膨率降了，但物價仍在漲，只是漲得慢——這正是感受不到變化的原因"],["🔄 換句話說","Even though inflation has eased slightly, most households have yet to notice any meaningful difference in prices.（ease=趨緩；households；have yet to=至今仍未(Day17 學的)；meaningful difference）"]]},
+  { id:"d10", type:"vocab", tags:["辨析","HW3"], qlabel:"辨析",
+    front:"counsellor 和 consultant 差在哪？",
+    answer:`counsellor＝處理<mark>人的問題</mark>(個人困擾)；consultant＝提供<mark>專業領域建議</mark>(多為企業)`,
+    analysis:[["counsellor","Cambridge：受訓去傾聽人們、針對他們的問題給建議→對象是個人，處理 personal/emotional 困擾：marriage/school/grief/employment counsellor"],["consultant","Cambridge：針對某特定主題給建議的專家→對象多是企業/組織：management/PR/IT consultant"],["一句話記","counsellor 直接陪「有問題的那個人」處理；consultant 提供策略給決策者，由對方去執行。例：員工績效不佳→counsellor 跟員工談；consultant 跟主管提方案"],["⚠️ 英式大陷阱","在英國/愛爾蘭，consultant = 醫院最高階的專科醫師（Cambridge 第二義：a hospital doctor at the highest level）：He was on a waiting list to see a consultant about his back.（等看專科醫師，不是顧問）"],["拼字/易混三兄弟","counsellor(英式雙l)／counselor(美式單l，美國法律界也用來稱呼律師)｜councillor=議員(來自 council)｜consultant=顧問/英式專科醫師"],["文章用法","Officer Chen is...a counsellor → 她在街角陪害怕的少年談話，處理「人的困境」，用 counsellor 完全正確"]]}
 ];
 
 // ---------- Bulk vocabulary (bidirectional 中↔英) ----------
@@ -862,7 +892,7 @@ const WORDS = [
   // ---------- HW3：Community Policing 文章單字（Cambridge UK 音標） ----------
   {id:"h301",en:"mandatory",ipa:"/ˈmændətəri/",pos:"adj.",u:"HW3",zh:"強制性的、法律規定必須的",def:`something that must be done, or is demanded by law`,eg:`Carrying a knife — even "for protection" — carries a mandatory minimum sentence.`,eg2:`Wearing a helmet is mandatory on this construction site.`,syn:`文中 a mandatory minimum sentence = 法定最低刑度（法院無裁量空間）｜同義 compulsory、obligatory｜⇔ optional、voluntary｜US 音 /ˈmændətɔːri/`},
   {id:"h302",en:"stabbing",ipa:"/ˈstæbɪŋ/",pos:"n.",u:"HW3",zh:"持刀攻擊（事件）、刺傷",def:`an occasion when someone is injured or killed with a knife`,eg:`...a street where three stabbings occurred last year.`,eg2:`The news reported a stabbing outside the station last night.`,syn:`文中複數 three stabbings occurred = 發生三起持刀傷人案｜動詞 stab 刺（stab-stabbed-stabbed）｜也可當形容詞 a stabbing pain 刺痛`},
-  {id:"h303",en:"less A than B",ipa:"/les ... ðæn/",pos:"phr.",u:"HW3",zh:"與其說是 A，不如說是 B",def:`used to say that the second description is more accurate than the first`,eg:`Officer Chen is less a law enforcer than a social worker.`,eg2:`This isn't less a job than a lifestyle.（這與其說是工作，不如說是一種生活方式）`,syn:`⚠️ 文中句型：less a law enforcer than a social worker = 與其說她是執法者，不如說是社工｜A、B 結構要對稱（名詞對名詞）｜同義句型 more B than A、not so much A as B`},
+  {id:"h303",en:"less A than B",ipa:"/les ... ðæn/",pos:"phr.",u:"HW3",zh:"與其說是 A，不如說是 B",def:`used to say that the second description is more accurate than the first`,eg:`Officer Chen is less a law enforcer than a social worker.`,eg2:`This is less a job than a lifestyle.（這與其說是工作，不如說是一種生活方式）`,syn:`⚠️ 文中句型：less a law enforcer than a social worker = 與其說她是執法者，不如說是社工｜A、B 結構要對稱（名詞對名詞）｜⚠️⚠️ 本句型是肯定句，不要加 not（否定意味已包在 less 裡）：✅ This IS less a job than a lifestyle ／ ✗ This isn't less a job than...（意思會相反）｜三個同義句型比較：less A than B（不加 not）＝ more B than A（不加 not）＝ not so much A as B（⚠️ 這個才要 not）`},
   {id:"h304",en:"counsellor",ipa:"/ˈkaʊnsələr/",pos:"n.",u:"HW3",zh:"諮商師、輔導員",def:`someone whose job is to give advice and help with personal problems`,eg:`Officer Chen is less a law enforcer than a social worker, a counsellor, and, occasionally, a reluctant parent.`,eg2:`The school counsellor helped me choose a major.`,syn:`⚠️ 英式拼 counsellor（雙 l）／美式 counselor（單 l）——文章是英式｜動詞 counsel 提供諮商／建議｜注意 ≠ councillor（議員，來自 council 議會）`},
   {id:"h305",en:"reluctant",ipa:"/rɪˈlʌktənt/",pos:"adj.",u:"HW3",zh:"不情願的、勉強的",def:`not willing to do something and therefore slow to do it`,eg:`...and, occasionally, a reluctant parent.`,eg2:`I was reluctant to lend him money again.`,syn:`文中 a reluctant parent = 不情願扮演的家長角色｜常見 be reluctant to + V｜副詞 reluctantly 不情願地｜名詞 reluctance`},
   {id:"h306",en:"embedded",ipa:"/ɪmˈbedɪd/",pos:"adj.",u:"HW3",zh:"嵌入的、深植其中的",def:`fixed firmly and deeply into something; forming part of it`,eg:`Community policing — the philosophy that positions officers as embedded partners in the neighbourhoods they serve...`,eg2:`The idea is deeply embedded in our company culture.`,syn:`文中 embedded partners = 深植在社區裡的夥伴（相對於 an external force 外來力量）｜動詞 embed 嵌入｜也用於 embedded journalist（隨軍記者）`},
@@ -1102,7 +1132,15 @@ const WORDS = [
   {id:"w1803",en:"hit a record high",ipa:"/hɪt ə ˈrekɔːd haɪ/",pos:"phr.",u:"Day22",zh:"創下新高",def:`to reach the highest level ever recorded`,eg:`The company's stock price has hit a record high.`,eg2:"Temperatures hit a record high last summer.",syn:`也可 reach/touch a record high、an all-time high、a fresh record high｜✗ became highest（不是英文講法）｜⇔ hit a record low`,cam:"record"},
   {id:"w1804",en:"prioritise / prioritize",ipa:"/praɪˈɒrətaɪz/",pos:"v.",u:"Day22",zh:"優先處理、排定優先順序",def:`to decide which of a group of things are the most important`,eg:`We should prioritise the most urgent projects.`,eg2:"I need to prioritise sleep over Netflix this week.",syn:`⚠️ 直接接受詞，不接 to（✗ prioritise resources to X）｜「優先給某物」用 give priority TO sth｜英式 -ise／美式 -ize｜📌 中文有「優先」時就該譯出來：prioritise X when allocating resources ／ allocate resources to X first`,cam:"prioritize"},
   {id:"w1805",en:"allocate sth to sth",ipa:"/ˈæləkeɪt ... tuː/",pos:"phr.",u:"Day22",zh:"把（資源）分配給…",def:`to give something to someone or something as their share`,eg:`We recommend allocating resources to the most urgent projects.`,eg2:"They allocated two seats to our team.",syn:`句型 allocate + 資源 + TO + 對象；也可 allocate sth FOR sth（撥款做某事）｜📌 HW3 單字書也有 allocate，這裡補的是句型`,cam:"allocate"},
-  {id:"w1806",en:"be unlikely to be sustained",ipa:"/ʌnˈlaɪkli ... səˈsteɪnd/",pos:"phr.",u:"Day22",zh:"恐怕難以持續",def:`probably will not continue for long`,eg:`Analysts warn that the rally is unlikely to be sustained.`,eg2:"This good weather is unlikely to be sustained.",syn:`📌 sustained（持續的）是 HW3 文章學的字｜較口語的 might not continue / may be short-lived 也完全正確｜「這波漲勢」創新高時用 the current rise / the gains / the run-up 比 the rally 精準（rally 核心是「跌後反彈」）`,cam:"sustain"}
+  {id:"w1806",en:"be unlikely to be sustained",ipa:"/ʌnˈlaɪkli ... səˈsteɪnd/",pos:"phr.",u:"Day22",zh:"恐怕難以持續",def:`probably will not continue for long`,eg:`Analysts warn that the rally is unlikely to be sustained.`,eg2:"This good weather is unlikely to be sustained.",syn:`📌 sustained（持續的）是 HW3 文章學的字｜較口語的 might not continue / may be short-lived 也完全正確｜「這波漲勢」創新高時用 the current rise / the gains / the run-up 比 the rally 精準（rally 核心是「跌後反彈」）`,cam:"sustain"},
+
+  // Day 23 單字
+  {id:"w1901",en:"this month's report",ipa:"/ðɪs mʌnθs rɪˈpɔːt/",pos:"phr.",u:"Day23",zh:"這個月的報告",def:`the report for the current month`,eg:`Attached is this month's report.`,eg2:"Have you seen this week's schedule?",syn:`⚠️ 用所有格：this month's report ／ the report FOR this month（✗ the report this month——時間副詞不能直接黏在名詞後面當修飾語）`,cam:"month"},
+  {id:"w1902",en:"slight",ipa:"/slaɪt/",pos:"adj.",u:"Day23",zh:"輕微的、些微的",def:`small in amount or degree`,eg:`Despite the slight slowdown in inflation, prices still feel high.`,eg2:"There's a slight problem with the booking.",syn:`⚠️ 「略微」的標準搭配是 slight：a slight decrease/increase/slowdown/delay（Cambridge、Collins 皆收）｜✗ little（當形容詞是「小小的」，帶親暱/輕描淡寫語感，不用於數據變化）｜副詞 slightly`,cam:"slight"},
+  {id:"w1903",en:"a slowdown in",ipa:"/ə ˈsləʊdaʊn ɪn/",pos:"phr.",u:"Day23",zh:"…的趨緩、放慢",def:`a reduction in speed, activity, or rate`,eg:`a slight slowdown in inflation（通膨略微趨緩）`,eg2:"There's been a slowdown in hiring this year.",syn:`⚠️ 介係詞用 IN（✗ slowdown of）：a slowdown in inflation/growth/the economy`,cam:"slowdown"},
+  {id:"w1904",en:"real change (vs reality)",ipa:"/rɪəl tʃeɪndʒ/",pos:"phr.",u:"Day23",zh:"實質變化",def:`a genuine, meaningful change`,eg:`Most families don't feel any real change in prices.`,eg2:"I want to see real change, not just promises.",syn:`⚠️ real 是形容詞(實質的)，reality 是名詞(現實)——✗ the reality change｜⚠️ 變化用介係詞 IN：a change IN prices/policy/attitude`,cam:"real"},
+  {id:"w1905",en:"disinflation",ipa:"/ˌdɪsɪnˈfleɪʃən/",pos:"n.",u:"Day23",zh:"通膨趨緩（通膨率下降但物價仍在漲）",def:`a decrease in the rate of inflation — prices still rise, but more slowly`,eg:`Despite the disinflation, most families still don't feel any real change in prices.`,eg2:"Disinflation means your groceries still cost more than last year, just not as much more.",syn:`⚠️ 三個要分清楚：inflation 通膨(物價上漲)／disinflation 通膨趨緩(還在漲，但漲慢了)／deflation 通縮(物價真的下跌)｜這正是「感受不到變化」的原因——東西還是越來越貴`,cam:"disinflation"},
+  {id:"w1906",en:"let me know (vs contact)",ipa:"/let miː nəʊ/",pos:"phr.",u:"Day23",zh:"告知我、跟我說一聲",def:`to tell someone about something`,eg:`If you find any mistakes, please feel free to let me know.`,eg2:"Let me know if you need a hand.",syn:`「不吝告知」用 let me know 比 contact 更貼｜⚠️ email 人稱要一致：署名是「我」就用 me，別忽然變 us（除非代表團隊）`,cam:"let"}
 ];
 for(const w of WORDS){
   const link = `<a href='${C}${(w.cam||w.en).replace(/ /g,'-')}' target='_blank'>Cambridge</a>`;
@@ -1450,6 +1488,46 @@ document.getElementById('btnExport').onclick=()=>{
   }catch(e){ bkSay('匯出失敗：'+e.message, false); }
 };
 document.getElementById('btnImport').onclick=()=>{ document.getElementById('fileImport').click(); };
+
+// 文字備份（不用下載檔案，直接複製/貼上）
+function applyBackupData(data){
+  const st = (data && data.state) ? data.state : data;
+  if(!st || typeof st!=='object' || !st.cards || typeof st.cards!=='object'){
+    bkSay('這不是有效的備份內容', false); return false;
+  }
+  const incoming=studiedCount(st), current=studiedCount(STATE);
+  if(!confirm(`還原備份會覆蓋目前的進度。\n\n備份：${incoming} 張卡有進度${data && data.exportedAt?`（${data.exportedAt.slice(0,10)}）`:''}\n目前：${current} 張卡有進度\n\n確定要還原嗎？`)){ bkSay(''); return false; }
+  const merged={ cards:{}, newByDate: st.newByDate || {} };
+  for(const c of DECK){ merged.cards[c.id] = st.cards[c.id] || {ef:2.5,interval:0,reps:0,due:null,introduced:false}; }
+  STATE=merged; saveState(STATE); buildQueue(); render();
+  bkSay(`已還原備份（${incoming} 張卡的進度）`, true);
+  return true;
+}
+document.getElementById('btnText').onclick=()=>{
+  document.getElementById('textPanel').classList.toggle('hide');
+};
+document.getElementById('btnCloseText').onclick=()=>{
+  document.getElementById('textPanel').classList.add('hide');
+};
+document.getElementById('btnGenText').onclick=async ()=>{
+  try{
+    const payload={ app:"ce-srs", format:1, key:KEY, exportedAt:new Date().toISOString(),
+                    totalCards:DECK.length, studied:studiedCount(STATE), state:STATE };
+    const txt=JSON.stringify(payload);
+    const ta=document.getElementById('bkText');
+    ta.value=txt;
+    let copied=false;
+    try{ if(navigator.clipboard && navigator.clipboard.writeText){ await navigator.clipboard.writeText(txt); copied=true; } }catch(e){}
+    if(!copied){ try{ ta.focus(); ta.select(); copied=document.execCommand('copy'); }catch(e){} }
+    bkSay(copied?`已複製備份文字（${payload.studied} 張卡的進度）`:`已產生備份文字，請長按全選複製（${payload.studied} 張卡）`, true);
+  }catch(e){ bkSay('產生失敗：'+e.message, false); }
+};
+document.getElementById('btnRestoreText').onclick=()=>{
+  const txt=(document.getElementById('bkText').value||'').trim();
+  if(!txt){ bkSay('請先把備份文字貼到下方框裡', false); return; }
+  try{ applyBackupData(JSON.parse(txt)); }
+  catch(e){ bkSay('文字格式不正確，請確認完整複製', false); }
+};
 document.getElementById('fileImport').onchange=(e)=>{
   const f=e.target.files && e.target.files[0];
   if(!f) return;
