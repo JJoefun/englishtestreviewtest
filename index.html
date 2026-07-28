@@ -109,7 +109,7 @@
 <body>
 <div class="wrap">
   <header>
-    <h1>中翻英複習<small>Spaced Review · Day 1–23 ＋ 單字表</small></h1>
+    <h1>中翻英複習<small>Spaced Review · Day 1–24 ＋ 單字表</small></h1>
     <div class="counts">
       <span><span class="dot r"></span>複習 <b id="c-rev">0</b></span>
       <span><span class="dot n"></span>新卡 <b id="c-new">0</b></span>
@@ -153,7 +153,7 @@
       <button class="bkbtn" id="btnText">📋 文字備份</button>
       <button class="bkbtn" id="btnExport">⬇️ 下載檔案</button>
       <button class="bkbtn" id="btnImport">⬆️ 讀取檔案</button>
-      <input type="file" id="fileImport" accept=".json,application/json" style="display:none">
+      <input type="file" id="fileImport" accept=".json,.txt,application/json,text/plain" style="display:none">
     </span>
   </footer>
   <div id="textPanel" class="hide">
@@ -162,7 +162,7 @@
       <button class="bkbtn" id="btnRestoreText">從下方文字還原</button>
       <button class="bkbtn" id="btnCloseText">關閉</button>
     </div>
-    <textarea id="bkText" placeholder="按「產生備份文字並複製」→ 貼到記事本/備忘錄存起來。&#10;要還原時，把存好的文字貼回這裡，再按「從下方文字還原」。"></textarea>
+    <textarea id="bkText" placeholder="按「產生備份文字並複製」→ 貼到備忘錄/記事本存起來（只含有進度的卡，字數已壓到最短）。&#10;要還原時，把存好的文字整段貼回這裡，再按「從下方文字還原」。"></textarea>
   </div>
   <div id="bkMsg"></div>
 </div>
@@ -773,7 +773,33 @@ const DECK = [
   { id:"d10", type:"vocab", tags:["辨析","HW3"], qlabel:"辨析",
     front:"counsellor 和 consultant 差在哪？",
     answer:`counsellor＝處理<mark>人的問題</mark>(個人困擾)；consultant＝提供<mark>專業領域建議</mark>(多為企業)`,
-    analysis:[["counsellor","Cambridge：受訓去傾聽人們、針對他們的問題給建議→對象是個人，處理 personal/emotional 困擾：marriage/school/grief/employment counsellor"],["consultant","Cambridge：針對某特定主題給建議的專家→對象多是企業/組織：management/PR/IT consultant"],["一句話記","counsellor 直接陪「有問題的那個人」處理；consultant 提供策略給決策者，由對方去執行。例：員工績效不佳→counsellor 跟員工談；consultant 跟主管提方案"],["⚠️ 英式大陷阱","在英國/愛爾蘭，consultant = 醫院最高階的專科醫師（Cambridge 第二義：a hospital doctor at the highest level）：He was on a waiting list to see a consultant about his back.（等看專科醫師，不是顧問）"],["拼字/易混三兄弟","counsellor(英式雙l)／counselor(美式單l，美國法律界也用來稱呼律師)｜councillor=議員(來自 council)｜consultant=顧問/英式專科醫師"],["文章用法","Officer Chen is...a counsellor → 她在街角陪害怕的少年談話，處理「人的困境」，用 counsellor 完全正確"]]}
+    analysis:[["counsellor","Cambridge：受訓去傾聽人們、針對他們的問題給建議→對象是個人，處理 personal/emotional 困擾：marriage/school/grief/employment counsellor"],["consultant","Cambridge：針對某特定主題給建議的專家→對象多是企業/組織：management/PR/IT consultant"],["一句話記","counsellor 直接陪「有問題的那個人」處理；consultant 提供策略給決策者，由對方去執行。例：員工績效不佳→counsellor 跟員工談；consultant 跟主管提方案"],["⚠️ 英式大陷阱","在英國/愛爾蘭，consultant = 醫院最高階的專科醫師（Cambridge 第二義：a hospital doctor at the highest level）：He was on a waiting list to see a consultant about his back.（等看專科醫師，不是顧問）"],["拼字/易混三兄弟","counsellor(英式雙l)／counselor(美式單l，美國法律界也用來稱呼律師)｜councillor=議員(來自 council)｜consultant=顧問/英式專科醫師"],["文章用法","Officer Chen is...a counsellor → 她在街角陪害怕的少年談話，處理「人的困境」，用 counsellor 完全正確"]]},
+  { id:"d11", type:"vocab", tags:["辨析","HW3"], qlabel:"辨析",
+    front:"scrutiny 和 surveillance 差在哪？",
+    answer:`scrutiny＝<mark>仔細檢視、挑毛病</mark>(評判)；surveillance＝<mark>持續監看、盯梢</mark>(控制)`,
+    analysis:[["scrutiny /ˈskruːtəni/","Cambridge：仔細而詳盡的檢視，以取得資訊→重點是「檢查、評判」；做的人可以是大眾/媒體/國會/同行；對象事和人都行；通常對方知情：come under scrutiny、close/public/media scrutiny"],["surveillance /səˈveɪləns/","Collins：對某人的密切觀察或監控，尤其是受懷疑或被拘留者→重點是「持續盯著看」，為了安全或控制；做的人多是警方/國家/保全；對象幾乎都是人；常是暗中：under constant surveillance、CCTV/mass surveillance"],["⚠️ 拼字技巧","surveillance 來自法文 surveiller(watch over)=sur- + veiller(守望，與 vigil 同源)→中間那段就是 veil：sur-VEIL-lance"],["字源補充","scrutiny 來自拉丁文 scrutari「徹底翻找」(最早 scruta=破爛雜物)→原意是「在雜物堆裡翻找」，很貼近仔細審視的畫面"],["📌 文章的光譜","visibility(看得見) → scrutiny(被盯著審視) → surveillance(被監控)：同樣的警力存在，一線之隔就從「服務」變成「監控」——這是全文的核心論點，作者用三組對比鋪陳(visibility/scrutiny、deterrence/intimidation、service/surveillance)"],["注意","兩字在辭典同義詞表裡互列，語意有重疊；差別在「側重與典型用法」，不是絕對切分"]]},
+
+  // ---------- Day 24 ----------
+  { id:"s70", type:"sentence", tags:["句子","日常","D24"], qlabel:"中譯英",
+    front:"這家健身房離我家很近，唯一的缺點是尖峰時段人太多。",
+    answer:`This <mark>gym</mark> is close to my place, but the only <mark>downside</mark> is that <mark>it gets too crowded</mark> during peak hours.`,
+    analysis:[["✅ the only ___ is that...","句型完全正確！Cambridge 例句結構相同：The only downside of working here is that it is so far from my home."],["✅ 有 but，沒有 comma splice","連續兩天乾淨"],["downside（非 shortage）","⚠️ 必改：shortage=數量不夠、短缺（a water/staff shortage）；「缺點」用 downside/drawback/disadvantage"],["🔸 gym（非 fitness club）","gym 最通用；fitness club 讀起來像會員制俱樂部，不算錯"],["🔸 it gets too crowded","crowded 形容「地方擁擠」更道地；there are too many people 也可用"],["🔄 換句話說","The gym is just round the corner from me; the one drawback is how packed it gets at peak times.（round the corner=就在附近；the one drawback；packed=擠爆；at peak times）"]]},
+  { id:"s71", type:"sentence", tags:["句子","職場","D24"], qlabel:"中譯英",
+    front:"您反映的問題我們已列為優先事項，最晚下週五會給您回覆。",
+    answer:`The issue you <mark>raised</mark> <mark>has been prioritised</mark>, and we'll <mark>get back to you</mark> by next Friday <mark>at the latest</mark>.`,
+    analysis:[["has BEEN prioritised（非 has prioritized）","⚠️⚠️ 必改：少了 been 語態就反了。「問題被列為優先」是被動 be+p.p.；你的寫法變成「問題自己把東西列為優先」"],["判斷法","問「這個主詞是動作的執行者，還是被執行的對象？」issue 是被列為優先→用被動"],["at the latest","⚠️ 原文有「最晚」要譯出：by + 時間 + at the latest，少了它承諾強度不同"],["🔸 raised（非 reported）","「反映問題」標準搭配 raise an issue；report 偏通報/舉報，也通"],["🔸 get back to you","商務 email 更自然；reply to you 沒錯"],["🔄 換句話說","We've flagged the issue you raised as a priority and will respond no later than next Friday.（flag as a priority=標記為優先；no later than=不晚於）"]]},
+  { id:"s72", type:"sentence", tags:["句子","財經","D24"], qlabel:"中譯英",
+    front:"這項政策雖然立意良善，但缺乏配套措施，恐怕難以真正改善問題。",
+    answer:`Although the policy <mark>is well-intentioned</mark>, it lacks the <mark>corresponding measures</mark>, <mark>so it is unlikely to genuinely improve the situation</mark>.`,
+    analysis:[["⚠️⚠️ Although...but 不能並用","必改，且是退步：前面連續多天都寫對。中文「雖然…但是…」兩個都要，英文只能留一個（見 g40）"],["policy's（非 policy'）","⚠️ 必改：單數名詞所有格是 's；只加撇號是複數名詞的所有格（students'）"],["corresponding measures（非 comparison）","⚠️⚠️ 必改：comparison=比較，與配套措施無關｜📌 corresponding 是 HW3 學的字：without corresponding investment in education..."],["漏了「恐怕難以真正」","⚠️ 這是重要語氣（不確定、可能做不到）→ is unlikely to genuinely..."],["🔸 improve the issue","不算錯但各家說法不一；穩妥用 improve the situation 或 address/tackle the problem"],["✅ lacks","用對了：lack 是及物動詞，直接接受詞不加 of"],["🔄 換句話說","Well-intentioned as it is, the policy comes without supporting measures and is unlikely to make a real difference.（Well-intentioned as it is=倒裝讓步；come without；make a real difference=帶來實質改變）"]]},
+  { id:"g40", type:"grammar", tags:["文法","D24"], qlabel:"文法",
+    front:"為什麼 Although...but 不能一起用？",
+    answer:`中文「雖然…但是…」兩個都要，英文<mark>只能留一個</mark>`,
+    analysis:[["✗ 錯誤","Although the policy is good, but it lacks measures.（Although 和 but 重複表達同一個轉折）"],["✅ 三種正確寫法","① Although the policy is good, it lacks measures.（留 Although）② The policy is good, but it lacks measures.（留 but）③ The policy is good; however, it lacks measures.（用 however，前面要分號或句號）"],["同類陷阱","Because...so 也不能並用：✗ Because it rained, so we stayed home. → 留一個就好"],["原因","英文一個子句關係只用一個連接詞；中文則習慣前後呼應（雖然…但是、因為…所以）"],["📌 提醒","句子越難、生字越多時最容易犯——寫完回頭檢查一次基本規則"]]},
+  { id:"g41", type:"grammar", tags:["文法","D24"], qlabel:"文法",
+    front:"什麼時候該用被動語態？（has prioritized vs has been prioritised）",
+    answer:`主詞是<mark>被執行的對象</mark>→用被動 <mark>be + p.p.</mark>`,
+    analysis:[["判斷法","問一句：這個主詞是「動作的執行者」還是「被執行的對象」？"],["✗ The issue has prioritized","變成「問題自己把某些東西列為優先」——issue 不會做這個動作"],["✅ The issue has been prioritised","問題「被」列為優先 → has + been + p.p."],["常見漏 been 的情境","完成式被動要三層：have/has + been + p.p.（The report has been sent. / The bug has been fixed.）"],["其他例","✅ The email was sent yesterday.／✅ Your order is being processed.／✅ The rules have been updated."]]}
 ];
 
 // ---------- Bulk vocabulary (bidirectional 中↔英) ----------
@@ -1140,7 +1166,15 @@ const WORDS = [
   {id:"w1903",en:"a slowdown in",ipa:"/ə ˈsləʊdaʊn ɪn/",pos:"phr.",u:"Day23",zh:"…的趨緩、放慢",def:`a reduction in speed, activity, or rate`,eg:`a slight slowdown in inflation（通膨略微趨緩）`,eg2:"There's been a slowdown in hiring this year.",syn:`⚠️ 介係詞用 IN（✗ slowdown of）：a slowdown in inflation/growth/the economy`,cam:"slowdown"},
   {id:"w1904",en:"real change (vs reality)",ipa:"/rɪəl tʃeɪndʒ/",pos:"phr.",u:"Day23",zh:"實質變化",def:`a genuine, meaningful change`,eg:`Most families don't feel any real change in prices.`,eg2:"I want to see real change, not just promises.",syn:`⚠️ real 是形容詞(實質的)，reality 是名詞(現實)——✗ the reality change｜⚠️ 變化用介係詞 IN：a change IN prices/policy/attitude`,cam:"real"},
   {id:"w1905",en:"disinflation",ipa:"/ˌdɪsɪnˈfleɪʃən/",pos:"n.",u:"Day23",zh:"通膨趨緩（通膨率下降但物價仍在漲）",def:`a decrease in the rate of inflation — prices still rise, but more slowly`,eg:`Despite the disinflation, most families still don't feel any real change in prices.`,eg2:"Disinflation means your groceries still cost more than last year, just not as much more.",syn:`⚠️ 三個要分清楚：inflation 通膨(物價上漲)／disinflation 通膨趨緩(還在漲，但漲慢了)／deflation 通縮(物價真的下跌)｜這正是「感受不到變化」的原因——東西還是越來越貴`,cam:"disinflation"},
-  {id:"w1906",en:"let me know (vs contact)",ipa:"/let miː nəʊ/",pos:"phr.",u:"Day23",zh:"告知我、跟我說一聲",def:`to tell someone about something`,eg:`If you find any mistakes, please feel free to let me know.`,eg2:"Let me know if you need a hand.",syn:`「不吝告知」用 let me know 比 contact 更貼｜⚠️ email 人稱要一致：署名是「我」就用 me，別忽然變 us（除非代表團隊）`,cam:"let"}
+  {id:"w1906",en:"let me know (vs contact)",ipa:"/let miː nəʊ/",pos:"phr.",u:"Day23",zh:"告知我、跟我說一聲",def:`to tell someone about something`,eg:`If you find any mistakes, please feel free to let me know.`,eg2:"Let me know if you need a hand.",syn:`「不吝告知」用 let me know 比 contact 更貼｜⚠️ email 人稱要一致：署名是「我」就用 me，別忽然變 us（除非代表團隊）`,cam:"let"},
+
+  // Day 24 單字
+  {id:"w2001",en:"downside / drawback",ipa:"/ˈdaʊnsaɪd/ /ˈdrɔːbæk/",pos:"n.",u:"Day24",zh:"缺點、負面之處",def:`a disadvantage or the negative part of a situation`,eg:`The only downside is that it gets too crowded during peak hours.`,eg2:"The only downside of working here is that it is so far from my home.",syn:`⚠️⚠️ 別用 shortage！shortage=數量不夠、短缺（a water/staff shortage 缺水/人手不足）｜「缺點」用 downside / drawback / disadvantage｜句型 The only downside is that...`,cam:"downside"},
+  {id:"w2002",en:"it gets crowded",ipa:"/ɪt ɡets ˈkraʊdɪd/",pos:"phr.",u:"Day24",zh:"（那裡）會變得很擁擠",def:`the place becomes full of people`,eg:`It gets too crowded during peak hours.`,eg2:"The night market gets really crowded on weekends.",syn:`crowded 形容「地方」擁擠，比 there are too many people 道地｜get + 形容詞＝變得…（get busy/dark/cold）`,cam:"crowded"},
+  {id:"w2003",en:"raise an issue",ipa:"/reɪz ən ˈɪʃuː/",pos:"phr.",u:"Day24",zh:"提出／反映問題",def:`to mention a subject or problem for people to discuss`,eg:`The issue you raised has been prioritised.`,eg2:"She raised an issue about the new schedule at the meeting.",syn:`「反映問題」標準搭配是 raise an issue；report 偏「通報、舉報」｜同類 raise a question/concern/point`,cam:"raise"},
+  {id:"w2004",en:"at the latest",ipa:"/ət ðə ˈleɪtɪst/",pos:"phr.",u:"Day24",zh:"最晚、至遲",def:`no later than the time mentioned`,eg:`We'll get back to you by next Friday at the latest.`,eg2:"Be there by 8 at the latest, or we'll miss the train.",syn:`放句尾：by + 時間 + at the latest｜⇔ at the earliest 最早｜漏掉它承諾強度會不一樣`,cam:"latest"},
+  {id:"w2005",en:"well-intentioned",ipa:"/ˌwel ɪnˈtenʃənd/",pos:"adj.",u:"Day24",zh:"立意良善的、出於好意的",def:`intended to be helpful, even if not actually helpful`,eg:`Although the policy is well-intentioned, it lacks the corresponding measures.`,eg2:"His advice was well-intentioned but not very useful.",syn:`⚠️ 語感：常帶「出發點好、但效果不彰」的暗示（後面通常接轉折）｜同義 well-meaning`,cam:"well-intentioned"},
+  {id:"w2006",en:"corresponding / supporting measures",ipa:"/ˌkɒrɪˈspɒndɪŋ ˈmeʒəz/",pos:"phr.",u:"Day24",zh:"配套措施",def:`additional actions taken alongside a policy to make it work`,eg:`It lacks the corresponding measures to make the policy work.`,eg2:"The new rule came with supporting measures like extra training.",syn:`⚠️⚠️ 不是 comparison（=比較）！｜📌 corresponding 是 HW3 文章學的字：without corresponding investment in education...｜同義 supporting / complementary / accompanying measures`,cam:"corresponding"}
 ];
 for(const w of WORDS){
   const link = `<a href='${C}${(w.cam||w.en).replace(/ /g,'-')}' target='_blank'>Cambridge</a>`;
@@ -1489,6 +1523,89 @@ document.getElementById('btnExport').onclick=()=>{
 };
 document.getElementById('btnImport').onclick=()=>{ document.getElementById('fileImport').click(); };
 
+// ---- 精簡備份格式 CESRS2 ----
+// 只匯出「有進度」的卡；未動過的卡還原時自動補預設值
+function toD6(d){ return d ? String(d).slice(2).replace(/-/g,"") : ""; }              // 2026-07-20 -> 260720
+function fromD6(x){ return (x&&x.length===6) ? "20"+x.slice(0,2)+"-"+x.slice(2,4)+"-"+x.slice(4,6) : null; }
+function isTouched(v){ return !!v && (v.reps>0 || v.introduced || v.due || v.interval>0 || (v.ef!==undefined && v.ef!==2.5)); }
+function encodeBackup(st){
+  const parts=[];
+  for(const id in st.cards){
+    const v=st.cards[id]; if(!isTouched(v)) continue;
+    const f=[ id,
+      (v.ef===undefined||v.ef===2.5) ? "" : String(Math.round(v.ef*100)),
+      v.interval ? String(v.interval) : "",
+      v.reps ? String(v.reps) : "",
+      toD6(v.due),
+      v.introduced ? "1" : "" ];
+    while(f.length>1 && f[f.length-1]==="") f.pop();
+    parts.push(f.join(":"));
+  }
+  const nb=[]; for(const d in (st.newByDate||{})) nb.push(toD6(d)+":"+st.newByDate[d]);
+  return "CESRS2|"+toD6(TODAY)+"|"+parts.join(",")+"|"+nb.join(",");
+}
+function decodeBackup(txt){
+  txt=(txt||"").trim();
+  if(txt.startsWith("{")){                       // 舊的 JSON 格式也接受
+    const data=JSON.parse(txt); return (data && data.state) ? data.state : data;
+  }
+  if(!txt.startsWith("CESRS2|")) return null;
+  const seg=txt.split("|");
+  if(seg.length<3) return null;
+  const st={cards:{}, newByDate:{}};
+  for(const e of (seg[2]||"").split(",")){
+    if(!e) continue;
+    const f=e.split(":");
+    const id=f[0]; if(!id) continue;
+    st.cards[id]={
+      ef: f[1] ? parseInt(f[1],10)/100 : 2.5,
+      interval: f[2] ? parseInt(f[2],10) : 0,
+      reps: f[3] ? parseInt(f[3],10) : 0,
+      due: fromD6(f[4]||""),
+      introduced: f[5]==="1"
+    };
+  }
+  for(const e of (seg[3]||"").split(",")){
+    if(!e) continue;
+    const f=e.split(":");
+    const d=fromD6(f[0]||""); if(d) st.newByDate[d]=parseInt(f[1],10)||0;
+  }
+  return st;
+}
+
+// ---- 再壓一層：gzip + base64（瀏覽器內建，不支援時自動退回純文字）----
+function bytesToB64(bytes){
+  let bin=""; const CH=0x8000;
+  for(let i=0;i<bytes.length;i+=CH) bin+=String.fromCharCode.apply(null,bytes.subarray(i,i+CH));
+  return btoa(bin);
+}
+function b64ToBytes(b64){
+  const bin=atob(b64); const out=new Uint8Array(bin.length);
+  for(let i=0;i<bin.length;i++) out[i]=bin.charCodeAt(i);
+  return out;
+}
+async function packBackup(st){
+  const raw=encodeBackup(st);
+  try{
+    if(typeof CompressionStream==="undefined") return raw;
+    const cs=new CompressionStream("gzip");
+    const stream=new Blob([new TextEncoder().encode(raw)]).stream().pipeThrough(cs);
+    const buf=await new Response(stream).arrayBuffer();
+    const packed="CEZ1|"+bytesToB64(new Uint8Array(buf));
+    return packed.length<raw.length ? packed : raw;   // 萬一壓完更長就用原始的
+  }catch(e){ return raw; }
+}
+async function unpackBackup(txt){
+  txt=(txt||"").trim();
+  if(!txt.startsWith("CEZ1|")) return decodeBackup(txt);
+  if(typeof DecompressionStream==="undefined") throw new Error("此瀏覽器無法解壓縮，請改用檔案備份");
+  const bytes=b64ToBytes(txt.slice(5));
+  const ds=new DecompressionStream("gzip");
+  const stream=new Blob([bytes]).stream().pipeThrough(ds);
+  const raw=await new Response(stream).text();
+  return decodeBackup(raw);
+}
+
 // 文字備份（不用下載檔案，直接複製/貼上）
 function applyBackupData(data){
   const st = (data && data.state) ? data.state : data;
@@ -1511,43 +1628,34 @@ document.getElementById('btnCloseText').onclick=()=>{
 };
 document.getElementById('btnGenText').onclick=async ()=>{
   try{
-    const payload={ app:"ce-srs", format:1, key:KEY, exportedAt:new Date().toISOString(),
-                    totalCards:DECK.length, studied:studiedCount(STATE), state:STATE };
-    const txt=JSON.stringify(payload);
+    const txt=await packBackup(STATE);
     const ta=document.getElementById('bkText');
     ta.value=txt;
     let copied=false;
     try{ if(navigator.clipboard && navigator.clipboard.writeText){ await navigator.clipboard.writeText(txt); copied=true; } }catch(e){}
     if(!copied){ try{ ta.focus(); ta.select(); copied=document.execCommand('copy'); }catch(e){} }
-    bkSay(copied?`已複製備份文字（${payload.studied} 張卡的進度）`:`已產生備份文字，請長按全選複製（${payload.studied} 張卡）`, true);
+    const n=studiedCount(STATE);
+    bkSay(copied?`已複製（${n} 張卡的進度，${txt.length} 字）`:`已產生備份文字，請長按全選複製（${n} 張卡，${txt.length} 字）`, true);
   }catch(e){ bkSay('產生失敗：'+e.message, false); }
 };
-document.getElementById('btnRestoreText').onclick=()=>{
+document.getElementById('btnRestoreText').onclick=async ()=>{
   const txt=(document.getElementById('bkText').value||'').trim();
   if(!txt){ bkSay('請先把備份文字貼到下方框裡', false); return; }
-  try{ applyBackupData(JSON.parse(txt)); }
-  catch(e){ bkSay('文字格式不正確，請確認完整複製', false); }
+  try{
+    const st=await unpackBackup(txt);
+    if(!st){ bkSay('備份文字格式不正確，請確認完整複製', false); return; }
+    applyBackupData(st);
+  }catch(e){ bkSay(e.message&&e.message.indexOf('解壓縮')>=0 ? e.message : '備份文字格式不正確，請確認完整複製', false); }
 };
 document.getElementById('fileImport').onchange=(e)=>{
   const f=e.target.files && e.target.files[0];
   if(!f) return;
   const reader=new FileReader();
-  reader.onload=()=>{
+  reader.onload=async ()=>{
     try{
-      const data=JSON.parse(reader.result);
-      const st = (data && data.state) ? data.state : data; // 容許直接餵 state
-      if(!st || typeof st!=='object' || !st.cards || typeof st.cards!=='object'){
-        bkSay('這個檔案不是有效的備份', false); return;
-      }
-      const incoming=studiedCount(st), current=studiedCount(STATE);
-      if(!confirm(`還原備份會覆蓋目前的進度。\n\n備份：${incoming} 張卡有進度${data.exportedAt?`（${data.exportedAt.slice(0,10)}）`:''}\n目前：${current} 張卡有進度\n\n確定要還原嗎？`)) { bkSay(''); return; }
-      // 以備份為主，補上目前牌組有但備份沒有的新卡
-      const merged={ cards:{}, newByDate: st.newByDate || {} };
-      for(const c of DECK){
-        merged.cards[c.id] = st.cards[c.id] || {ef:2.5,interval:0,reps:0,due:null,introduced:false};
-      }
-      STATE=merged; saveState(STATE); buildQueue(); render();
-      bkSay(`已還原備份（${incoming} 張卡的進度）`, true);
+      const st=await unpackBackup(String(reader.result));
+      if(!st){ bkSay('這個檔案不是有效的備份', false); return; }
+      applyBackupData(st);
     }catch(err){ bkSay('讀取失敗：'+err.message, false); }
   };
   reader.onerror=()=>bkSay('讀取檔案失敗', false);
