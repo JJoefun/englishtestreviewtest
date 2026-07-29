@@ -100,6 +100,7 @@
   #textPanel{margin-top:10px; padding:12px; border:1px solid var(--line); border-radius:10px; background:var(--panel);}
   .tp-row{display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px;}
   #bkText{width:100%; box-sizing:border-box; height:110px; font-family:ui-monospace,Menlo,Consolas,monospace; font-size:11px; line-height:1.45; padding:8px; border:1px solid var(--line); border-radius:8px; background:#fff; color:var(--ink); resize:vertical;}
+  #lastBk{font-size:11.5px; color:var(--muted); margin-bottom:8px;}
   #bkMsg{margin-top:8px; font-size:12px; text-align:right; min-height:16px;}
   #bkMsg.ok{color:var(--good);} #bkMsg.err{color:var(--again);}
   .hide{display:none;}
@@ -109,7 +110,7 @@
 <body>
 <div class="wrap">
   <header>
-    <h1>中翻英複習<small>Spaced Review · Day 1–24 ＋ 單字表</small></h1>
+    <h1>中翻英複習<small>Spaced Review · Day 1–25 ＋ 單字表</small></h1>
     <div class="counts">
       <span><span class="dot r"></span>複習 <b id="c-rev">0</b></span>
       <span><span class="dot n"></span>新卡 <b id="c-new">0</b></span>
@@ -162,6 +163,7 @@
       <button class="bkbtn" id="btnRestoreText">從下方文字還原</button>
       <button class="bkbtn" id="btnCloseText">關閉</button>
     </div>
+    <div id="lastBk"></div>
     <textarea id="bkText" placeholder="按「產生備份文字並複製」→ 貼到備忘錄/記事本存起來（只含有進度的卡，字數已壓到最短）。&#10;要還原時，把存好的文字整段貼回這裡，再按「從下方文字還原」。"></textarea>
   </div>
   <div id="bkMsg"></div>
@@ -803,7 +805,25 @@ const DECK = [
   { id:"d12", type:"vocab", tags:["辨析","HW3"], qlabel:"辨析",
     front:"tutor / teacher / coach / mentor / consultant 怎麼分？",
     answer:`看他<mark>做什麼</mark>：教技能→tutor/teacher｜達成特定目標→coach｜長期引導→mentor｜給決策建議→consultant`,
-    analysis:[["tutor 家教、私人教師","一對一或很小的group，在學校之外給額外指導→「找人教我英文」就是找 a tutor（English tutor / private tutor）"],["teacher 老師","通用；課程內容通常由老師決定（top-down）"],["coach 教練","協助你達成「特定目標」，方向由你定、他幫你解決卡住的地方（bottom-up，多用於中高階學習者）｜字源是馬車(coche)——載你到你想去的地方"],["mentor 導師","比你有經驗的人，長期、全面地給建議與引導（不限單一技能）：He acted as a business mentor to young entrepreneurs."],["consultant 顧問","給建議做決策，不親自教｜education/study-abroad consultant＝留學顧問（建議申請哪間、考什麼）；language consultant 多是幫企業/學校規劃課程"],["📌 串回 d10","counsellor 處理「人的情緒困擾」，不教技能——除非是「開口說英文就極度焦慮」那種心理問題，否則學英文一律用 tutor"]]}
+    analysis:[["tutor 家教、私人教師","一對一或很小的group，在學校之外給額外指導→「找人教我英文」就是找 a tutor（English tutor / private tutor）"],["teacher 老師","通用；課程內容通常由老師決定（top-down）"],["coach 教練","協助你達成「特定目標」，方向由你定、他幫你解決卡住的地方（bottom-up，多用於中高階學習者）｜字源是馬車(coche)——載你到你想去的地方"],["mentor 導師","比你有經驗的人，長期、全面地給建議與引導（不限單一技能）：He acted as a business mentor to young entrepreneurs."],["consultant 顧問","給建議做決策，不親自教｜education/study-abroad consultant＝留學顧問（建議申請哪間、考什麼）；language consultant 多是幫企業/學校規劃課程"],["📌 串回 d10","counsellor 處理「人的情緒困擾」，不教技能——除非是「開口說英文就極度焦慮」那種心理問題，否則學英文一律用 tutor"]]},
+  { id:"d13", type:"vocab", tags:["辨析","HW3"], qlabel:"辨析",
+    front:"alter / alteration / alternate / alternative 怎麼分？",
+    answer:`先分兩家：<mark>alter 家＝改</mark>｜<mark>altern- 家＝另一個／輪流</mark>`,
+    analysis:[["第1家 alter（改）","alter (v) 改、修改 → alteration (n) 改動｜🪝 鉤子：服飾店招牌上的 Alterations ＝ 改衣服"],["第2家 alternate（輪流）","輪流的、隔一個｜🪝 鉤子：交流電 AC ＝ alternating current（電流來回交替）"],["第2家 alternative（替代）","另一種選擇｜🪝 鉤子：alternative rock 另類搖滾 ＝ 另一種"],["選字判準","說「改」→ alter/alteration｜說「輪流、隔一個」→ alternate（alternate Saturdays＝隔週六）｜說「另一個選擇」→ alternative（the alternative road＝另一條路）"],["⚠️ 會讓你混亂的現實","美式英文常拿 alternate 當 alternative 用（an alternate route＝替代道路）——看到別以為自己記錯了；但你自己寫的時候把兩個分開用，就永遠不會錯"]]},
+
+  // ---------- Day 25 ----------
+  { id:"s73", type:"sentence", tags:["句子","日常","D25"], qlabel:"中譯英",
+    front:"我昨天終於把拖了三個月的健康檢查做完了，結果報告出來一切正常。",
+    answer:`<mark>Yesterday</mark> I <mark>finally had</mark> the health <mark>check-up</mark> I'd <mark>been putting off for three months</mark>, and the <mark>results came back normal</mark>.`,
+    analysis:[["check-up（非 health inspection）","⚠️ inspection 檢查「東西/場所」(建築安檢、工廠稽查)，人的健檢用 check-up"],["finally had（非 had done）","過去完成式要有「比某過去時間更早」的參照點；這裡只是昨天做了→簡單過去式。另外別漏「終於」finally"],["putting off FOR 三個月","⚠️ postpone/put off FOR+一段時間 vs TO+時間點；「一直拖著」用 had been putting off"],["yesterday 位置","⚠️ 別塞在關係子句後面（會看不出它修飾誰）→ 放句首最乾淨：Yesterday I finally had...，一眼看出 yesterday 修飾 had（做檢查），不是 putting off"],["⭐ 這裡 normal 是對的","醫學檢查的「正常」就是 normal（沒有異常）｜對比 Day21「餐點普通」✗ normal(那是平庸)——同字換場合就對了"],["results came back","報告用複數 results；「報告出來」固定講法 come back"],["🔄 換句話說","I'd been putting off my health check for three months and finally got it done yesterday — everything came back clear.（get sth done；came back clear=結果沒問題）"]]},
+  { id:"s74", type:"sentence", tags:["句子","職場","D25"], qlabel:"中譯英",
+    front:"您的退款申請已經送件，款項最晚會在七個工作天內退回您的原付款帳戶。",
+    answer:`Your refund <mark>request has been submitted</mark>, and the <mark>payment will be returned</mark> to your <mark>original payment account</mark> within seven business days <mark>at the latest</mark>.`,
+    analysis:[["⚠️⚠️ has BEEN submitted","必改，且是 g41 剛學的：申請是「被」送出→have/has + been + p.p. 三層缺一不可"],["will BE returned（非 will back）","back 當動詞是「支持、倒退」；款項「被退回」→ will be returned / refunded（又是被動）"],["original（非 ordinary）","⚠️⚠️ ordinary=普通、平凡；「原」付款帳戶是 original"],["at the latest（非 lately）","⚠️⚠️ lately=recently 最近！「最晚」是 at the latest，放句尾（Day24 學的）"],["✅ within seven business days","用對了"],["🔄 換句話說","We've received your refund request; the amount will be credited back to the account you originally paid from within seven working days.（be credited back to；the account you originally paid from）"]]},
+  { id:"s75", type:"sentence", tags:["句子","財經","D25"], qlabel:"中譯英",
+    front:"儘管政府推出了多項紓困措施，許多小企業主仍主張這些幫助來得太遲。",
+    answer:`Although the government <mark>has introduced</mark> many <mark>relief measures</mark>, many small <mark>business owners</mark> still <mark>contend that the help came too late</mark>.`,
+    analysis:[["✅✅ Although 沒加 but","g40 昨天才學，今天就修正過來了"],["✅ still 的位置","肯定句放主要動詞前，正確"],["has introduced（非 publish）","publish=出版、發表文章；推出措施用 introduce/roll out/launch。時態：推出「了」→現在完成式"],["⚠️⚠️ contend（非 acclaim）","必改且意思相反：acclaim=公開讚揚、喝采(critical acclaim 好評)；「主張」用 contend/argue/maintain（contend 是 HW3 學的字）"],["business owners / entrepreneurs 拼字","「小企業主」用 small business owners 更精準；entrepreneur 偏「創業家」，拼字 en-tre-pre-neur"],["the help（非 these help）","help 是不可數名詞，不能用 these"],["🔄 換句話說","Despite a raft of government relief measures, many small business owners argue the support arrived too late to help.（a raft of=一大批；argue；arrive too late）"]]}
 ];
 
 // ---------- Bulk vocabulary (bidirectional 中↔英) ----------
@@ -1009,7 +1029,7 @@ const WORDS = [
   {id:"h389",en:"alter",ipa:"/ˋɔltɚ/",pos:"v. (vt)",u:"HW3",zh:"改變、修改",def:`to change something, usually slightly`,eg:`The coat has to be altered; it is too large.（外套要修改一下，太大了）`,eg2:`I had to alter my plans at the last minute.`,syn:`書上 = change｜⚠️ 語感：alter 多指「小幅修改」（衣服改尺寸、計畫微調），change 是通用的「改變」｜⚠️ 別跟 altar(祭壇) 混，同音不同字`},
   {id:"h390",en:"alteration",ipa:"/͵ɔltəˋreʃən/",pos:"n. (C, U)",u:"HW3",zh:"改變、修改",def:`a change, usually small; the process of changing something`,eg:`I am planning to make a few alterations to my house.（我正打算把自己的住屋作些改動）／ My coat needs alteration.（我的外套要修改）`,eg2:`The dress needs a few alterations before the wedding.`,co:`片語 make alterations to sth`,syn:`書上 = change｜⚠️ 服飾業常用：alterations＝修改衣服（店家招牌常見）`},
   {id:"h391",sp:[{label:"形容詞 /ˋɔltɚnɪt/：I work on alternate days.",text:"I work on alternate days."},{label:"動詞 /ˋɔltɚ͵net/：They alternate between them.",text:"They alternate between them."}],en:"alternate",ipa:"/ˋɔltɚnɪt/ (adj) ／ /ˋɔltɚ͵net/ (v)",pos:"adj. / v. (vi)",u:"HW3",zh:"輪流的、間隔的；交替",def:`happening one after the other in a regular pattern; to happen in turn`,eg:`I work on alternate Saturdays.（我隔週六工作）／ The weather alternates between rain and sunshine.（天氣時雨時晴）`,eg2:`We take alternate turns driving on long trips.`,co:`片語 alternate between A and B`,syn:`⚠️ 重音/尾音移動：形容詞 /ˋɔltɚnɪt/ 尾音輕 vs 動詞 /ˋɔltɚ͵net/ 尾音 -neɪt｜⚠️ alternate Saturdays＝隔週的週六（不是「所有週六」）`},
-  {id:"h392",en:"alternative",ipa:"/ɔlˋtɝnətɪv/",pos:"adj. / n. (C)",u:"HW3",zh:"替代的；選擇、替代方案",def:`available as another possibility; something you can choose instead`,eg:`They went by the alternative road.（他們另選了一條路走）／ The only alternative to being captured is to die fighting.（除了當俘虜外，唯一的選擇就是戰死）`,eg2:`Is there a vegetarian alternative?`,syn:`書上 = substitute (for)；* alternatively (adv) 或者｜⚠️ 句型 an alternative TO sth（不是 of）｜⚠️ 跟 alternate 只差字尾但意思不同：alternative＝替代選擇；alternate＝輪流交替`},
+  {id:"h392",en:"alternative",ipa:"/ɔlˋtɝnətɪv/",pos:"adj. / n. (C)",u:"HW3",zh:"替代的；選擇、替代方案",def:`available as another possibility; something you can choose instead`,eg:`They went by the alternative road.（他們另選了一條路走）／ The only alternative to being captured is to die fighting.（除了當俘虜外，唯一的選擇就是戰死）`,eg2:`Is there a vegetarian alternative?`,co:`句型 an alternative TO sth（不是 of）`,syn:`書上 = substitute (for)；* alternatively (adv) 或者`},
   {id:"h393",en:"altitude",ipa:"/ˋæltə͵tjud/",pos:"n.",u:"HW3",zh:"高度、海拔",def:`the height of something above sea level`,eg:`The plane is flying at an altitude of 50,000 feet.（飛機正飛在五萬英尺高空）`,eg2:`You may feel dizzy at high altitude.`,syn:`書上 = elevation｜書上同尾字（-tude＝狀態/性質）：attitude (態度)、aptitude (才能；性向)、latitude (緯度)、multitude (大量)、platitude (老生常談)、rectitude (正直)、fortitude (堅忍)、gratitude (感謝)、certitude (確定)、longitude (經度)、magnitude (巨大)、ineptitude (笨拙)、vicissitudes (個人狀況；興衰)｜⚠️ 片語 at an altitude of + 數字`},
   {id:"h394",en:"ambiguity",ipa:"/͵æmbɪˋgjuətɪ/",pos:"n. (U)",u:"HW3",zh:"模稜兩可、含糊不清",def:`the state of having more than one possible meaning`,eg:`In order to avoid ambiguity, you should write clearly.（為避免意義含糊，你寫作時應明白清晰）`,eg2:`The wording left some ambiguity about the deadline.`,syn:`書上 = vagueness｜形容詞 ambiguous 模稜兩可的｜⚠️ 辨析 ambiguous(可有多種解讀，語意不明) vs vague(籠統、不具體)——很近但不同`},
 
@@ -1178,7 +1198,16 @@ const WORDS = [
   {id:"w2003",en:"raise an issue",ipa:"/reɪz ən ˈɪʃuː/",pos:"phr.",u:"Day24",zh:"提出／反映問題",def:`to mention a subject or problem for people to discuss`,eg:`The issue you raised has been prioritised.`,eg2:"She raised an issue about the new schedule at the meeting.",syn:`「反映問題」標準搭配是 raise an issue；report 偏「通報、舉報」｜同類 raise a question/concern/point`,cam:"raise"},
   {id:"w2004",en:"at the latest",ipa:"/ət ðə ˈleɪtɪst/",pos:"phr.",u:"Day24",zh:"最晚、至遲",def:`no later than the time mentioned`,eg:`We'll get back to you by next Friday at the latest.`,eg2:"Be there by 8 at the latest, or we'll miss the train.",syn:`放句尾：by + 時間 + at the latest｜⇔ at the earliest 最早｜漏掉它承諾強度會不一樣`,cam:"latest"},
   {id:"w2005",en:"well-intentioned",ipa:"/ˌwel ɪnˈtenʃənd/",pos:"adj.",u:"Day24",zh:"立意良善的、出於好意的",def:`intended to be helpful, even if not actually helpful`,eg:`Although the policy is well-intentioned, it lacks the corresponding measures.`,eg2:"His advice was well-intentioned but not very useful.",syn:`⚠️ 語感：常帶「出發點好、但效果不彰」的暗示（後面通常接轉折）｜同義 well-meaning`,cam:"well-intentioned"},
-  {id:"w2006",en:"corresponding / supporting measures",ipa:"/ˌkɒrɪˈspɒndɪŋ ˈmeʒəz/",pos:"phr.",u:"Day24",zh:"配套措施",def:`additional actions taken alongside a policy to make it work`,eg:`It lacks the corresponding measures to make the policy work.`,eg2:"The new rule came with supporting measures like extra training.",syn:`⚠️⚠️ 不是 comparison（=比較）！｜📌 corresponding 是 HW3 文章學的字：without corresponding investment in education...｜同義 supporting / complementary / accompanying measures`,cam:"corresponding"}
+  {id:"w2006",en:"corresponding / supporting measures",ipa:"/ˌkɒrɪˈspɒndɪŋ ˈmeʒəz/",pos:"phr.",u:"Day24",zh:"配套措施",def:`additional actions taken alongside a policy to make it work`,eg:`It lacks the corresponding measures to make the policy work.`,eg2:"The new rule came with supporting measures like extra training.",syn:`⚠️⚠️ 不是 comparison（=比較）！｜📌 corresponding 是 HW3 文章學的字：without corresponding investment in education...｜同義 supporting / complementary / accompanying measures`,cam:"corresponding"},
+
+  // Day 25 單字
+  {id:"w2101",en:"check-up",ipa:"/ˈtʃekʌp/",pos:"n.",u:"Day25",zh:"健康檢查",def:`a medical examination to test your general state of health`,eg:`I finally had the health check-up I'd been putting off.`,eg2:"You should have an annual check-up.",co:`have / go for a check-up；a routine/annual check-up`,syn:`⚠️ ✗ health inspection——inspection 是檢查「東西/場所」（建築安檢、工廠稽查），不用於人的健康｜同義 medical examination`,cam:"check-up"},
+  {id:"w2102",en:"put off",ipa:"/pʊt ɒf/",pos:"phr. v.",u:"Day25",zh:"拖延、延後",def:`to delay doing something, especially because you do not want to do it`,eg:`the health check-up I'd been putting off for three months`,eg2:"I keep putting off going to the dentist.",co:`put off + V-ing／名詞；put sth off FOR + 一段時間`,syn:`⚠️ 介係詞：postpone/put off FOR 三個月(一段時間) vs TO next Friday(時間點)｜「一直拖著」用 had been putting off`,cam:"put-off"},
+  {id:"w2103",en:"come back normal",ipa:"/kʌm bæk ˈnɔːməl/",pos:"phr.",u:"Day25",zh:"（檢查報告）結果正常",def:`(of test results) to be returned showing nothing wrong`,eg:`The results came back normal.`,eg2:"My blood test came back normal, thankfully.",co:`the results came back + normal/clear/positive/negative`,syn:`⭐ 這裡 normal 才是對的字！醫學檢查的「正常」=normal(沒有異常)｜⚠️ 對比 Day21：「餐點普通」✗ normal(那是「平庸」)——同一個字換場合就對了｜報告習慣用複數 results`,cam:"normal"},
+  {id:"w2104",en:"original (vs ordinary)",ipa:"/əˈrɪdʒənəl/ /ˈɔːdənəri/",pos:"adj.",u:"Day25",zh:"original 原本的／ordinary 普通的",def:`original = existing from the beginning; ordinary = not special or unusual`,eg:`the payment will be returned to your original payment account`,eg2:"This is the original receipt. ／ It was just an ordinary day.",syn:`⚠️⚠️ 兩個字差一點、意思天差地遠：「原付款帳戶」是 original（原本的）｜ordinary=普通、平凡`,cam:"original"},
+  {id:"w2105",en:"lately (≠ at the latest)",ipa:"/ˈleɪtli/",pos:"adv.",u:"Day25",zh:"最近（不是「最晚」！）",def:`recently`,eg:`She's been feeling tired lately.（她最近覺得很累）`,eg2:"Have you seen him lately?",syn:`⚠️⚠️ lately = recently 最近（Cambridge 文法頁明訂）｜「最晚」是 at the latest：by Friday at the latest｜兩者完全不同，別搞混`,cam:"lately"},
+  {id:"w2106",en:"contend (vs acclaim)",ipa:"/kənˈtend/ /əˈkleɪm/",pos:"v.",u:"Day25",zh:"contend 主張／acclaim 公開讚揚",def:`contend = to say something is true, especially in an argument; acclaim = to give public praise`,eg:`Many small business owners contend that the help came too late.`,eg2:"He contends the rules are unfair. ／ The film was widely acclaimed.",syn:`⚠️⚠️ 意思相反！acclaim=讚揚、喝采（critical acclaim 好評）｜「主張」用 contend / argue / maintain｜📌 contend 是 HW3 文章學的字`,cam:"contend"},
+  {id:"w2107",en:"relief measures",ipa:"/rɪˈliːf ˈmeʒəz/",pos:"n.",u:"Day25",zh:"紓困措施",def:`actions taken by a government to help people in financial difficulty`,eg:`the government has introduced many relief measures`,eg2:"The council announced relief measures for flood victims.",co:`introduce / roll out / launch + measures`,syn:`⚠️ 「推出措施」✗ publish（=出版、發表文章）｜用 introduce / roll out / launch`,cam:"relief"}
 ];
 for(const w of WORDS){
   const link = `<a href='${C}${(w.cam||w.en).replace(/ /g,'-')}' target='_blank'>Cambridge</a>`;
@@ -1513,6 +1542,7 @@ document.getElementById('btnExport').onclick=()=>{
     const payload={
       app:"ce-srs", format:1, key:KEY,
       exportedAt: now.toISOString(),
+      device: deviceTag(),
       totalCards: DECK.length,
       studied: studiedCount(STATE),
       state: STATE
@@ -1523,10 +1553,34 @@ document.getElementById('btnExport').onclick=()=>{
     a.href=url; a.download=`英文複習備份_${stamp}.json`;
     document.body.appendChild(a); a.click();
     setTimeout(()=>{ URL.revokeObjectURL(url); a.remove(); }, 1000);
+    saveLastBackup('file');
     bkSay(`已匯出備份（${payload.studied} 張卡的進度）`, true);
   }catch(e){ bkSay('匯出失敗：'+e.message, false); }
 };
 document.getElementById('btnImport').onclick=()=>{ document.getElementById('fileImport').click(); };
+
+// ---- 裝置判斷 / 上次備份紀錄 ----
+const BK_LAST="ce-srs-lastbk";
+function deviceTag(){
+  try{
+    const ua=(navigator && navigator.userAgent) ? navigator.userAgent : "";
+    return /iPhone|iPad|iPod|Android|Mobile|Tablet/i.test(ua) ? "M" : "D";
+  }catch(e){ return "D"; }
+}
+function deviceName(tag){ return tag==="M" ? "手機／平板" : (tag==="D" ? "電腦" : "未知裝置"); }
+function saveLastBackup(kind){
+  try{ localStorage.setItem(BK_LAST, JSON.stringify({t:new Date().toISOString(), d:deviceTag(), k:kind})); }catch(e){}
+  renderLastBackup();
+}
+function renderLastBackup(){
+  const el=document.getElementById('lastBk'); if(!el) return;
+  let info=null;
+  try{ info=JSON.parse(localStorage.getItem(BK_LAST)||"null"); }catch(e){}
+  if(!info){ el.textContent="（這個裝置還沒備份過）"; return; }
+  const d=new Date(info.t);
+  const pad=(x)=>String(x).padStart(2,'0');
+  el.textContent=`上次備份：${d.getFullYear()}/${pad(d.getMonth()+1)}/${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}　於${deviceName(info.d)}${info.k==='file'?'（下載檔案）':'（文字）'}`;
+}
 
 // ---- 精簡備份格式 CESRS2 ----
 // 只匯出「有進度」的卡；未動過的卡還原時自動補預設值
@@ -1547,7 +1601,7 @@ function encodeBackup(st){
     parts.push(f.join(":"));
   }
   const nb=[]; for(const d in (st.newByDate||{})) nb.push(toD6(d)+":"+st.newByDate[d]);
-  return "CESRS2|"+toD6(TODAY)+"|"+parts.join(",")+"|"+nb.join(",");
+  return "CESRS2|"+toD6(TODAY)+"."+deviceTag()+"|"+parts.join(",")+"|"+nb.join(",");
 }
 function decodeBackup(txt){
   txt=(txt||"").trim();
@@ -1558,6 +1612,8 @@ function decodeBackup(txt){
   const seg=txt.split("|");
   if(seg.length<3) return null;
   const st={cards:{}, newByDate:{}};
+  const head=(seg[1]||"").split(".");
+  st.__meta={ date: fromD6(head[0]||""), device: head[1]||"" };
   for(const e of (seg[2]||"").split(",")){
     if(!e) continue;
     const f=e.split(":");
@@ -1618,7 +1674,10 @@ function applyBackupData(data){
     bkSay('這不是有效的備份內容', false); return false;
   }
   const incoming=studiedCount(st), current=studiedCount(STATE);
-  if(!confirm(`還原備份會覆蓋目前的進度。\n\n備份：${incoming} 張卡有進度${data && data.exportedAt?`（${data.exportedAt.slice(0,10)}）`:''}\n目前：${current} 張卡有進度\n\n確定要還原嗎？`)){ bkSay(''); return false; }
+  const meta = st.__meta || {};
+  const src = meta.date ? `（${meta.date}${meta.device?('，來自'+deviceName(meta.device)):''}）`
+            : (data && data.exportedAt ? `（${data.exportedAt.slice(0,10)}）` : '');
+  if(!confirm(`還原備份會覆蓋目前的進度。\n\n備份：${incoming} 張卡有進度${src}\n目前：${current} 張卡有進度\n\n確定要還原嗎？`)){ bkSay(''); return false; }
   const merged={ cards:{}, newByDate: st.newByDate || {} };
   for(const c of DECK){ merged.cards[c.id] = st.cards[c.id] || {ef:2.5,interval:0,reps:0,due:null,introduced:false}; }
   STATE=merged; saveState(STATE); buildQueue(); render();
@@ -1627,6 +1686,7 @@ function applyBackupData(data){
 }
 document.getElementById('btnText').onclick=()=>{
   document.getElementById('textPanel').classList.toggle('hide');
+  renderLastBackup();
 };
 document.getElementById('btnCloseText').onclick=()=>{
   document.getElementById('textPanel').classList.add('hide');
@@ -1640,6 +1700,7 @@ document.getElementById('btnGenText').onclick=async ()=>{
     try{ if(navigator.clipboard && navigator.clipboard.writeText){ await navigator.clipboard.writeText(txt); copied=true; } }catch(e){}
     if(!copied){ try{ ta.focus(); ta.select(); copied=document.execCommand('copy'); }catch(e){} }
     const n=studiedCount(STATE);
+    saveLastBackup('text');
     bkSay(copied?`已複製（${n} 張卡的進度，${txt.length} 字）`:`已產生備份文字，請長按全選複製（${n} 張卡，${txt.length} 字）`, true);
   }catch(e){ bkSay('產生失敗：'+e.message, false); }
 };
