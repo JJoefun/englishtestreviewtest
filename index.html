@@ -110,7 +110,7 @@
 <body>
 <div class="wrap">
   <header>
-    <h1>中翻英複習<small>Spaced Review · Day 1–26 ＋ 單字表</small></h1>
+    <h1>中翻英複習<small>Spaced Review · Day 1–27 ＋ 單字表</small></h1>
     <div class="counts">
       <span><span class="dot r"></span>複習 <b id="c-rev">0</b></span>
       <span><span class="dot n"></span>新卡 <b id="c-new">0</b></span>
@@ -139,6 +139,13 @@
       <span class="daylabel">英文課回家複習：</span>
       <select id="hwModeSelect" class="dropdown">
         <option value="all" selected>全部作業</option>
+      </select>
+    </div>
+    <div class="daybar" id="orderbar">
+      <span class="daylabel">新卡順序：</span>
+      <select id="newOrderSelect" class="dropdown">
+        <option value="old">由舊到新（Day1 開始）</option>
+        <option value="new">由新到舊（最新的先複習）</option>
       </select>
     </div>
     <div class="topicbar" id="topicbarWrap" style="display:none;">
@@ -210,7 +217,7 @@ const DECK = [
   { id:"g1", type:"grammar", tags:["文法","D1"], qlabel:"文法",
     front:"as a result 的標點怎麼放？（前後）",
     answer:`後面幾乎一定接逗號：<mark>As a result,</mark> ...`,
-    analysis:[["句首","前面不用標點 → As a result, sales fell."],["連兩句","前面用句號或分號（只用逗號是 comma splice）→ Sales fell. As a result, we cut costs."],["對比 so","so 是對等連接詞：前逗號、後不加 → Sales fell, so we cut costs."]]},
+    analysis:[["句首","前面不用標點 → As a result, sales fell."],["連兩句","前面用句號或分號（只用逗號是 comma splice）→ Sales fell. As a result, we cut costs."],["對比 so","so 是對等連接詞：前逗號、後不加 → Sales fell, so we cut costs."],["⚠️ 同類的副詞（都不能只用逗號接兩句）","therefore、however、moreover、nevertheless、in addition、for example ✗ It was closed, therefore, I went home. → ✅ ...closed; therefore, I went home.／...closed. Therefore, I went home.／...closed, so I went home."],["📌 判斷法 FANBOYS","能用逗號直接連兩個完整句的只有 for, and, nor, but, or, yet, so；其餘（therefore/however…）一律要分號或句號"]]},
   { id:"d1", type:"vocab", tags:["辨析","D1"], qlabel:"辨析",
     front:"spending habits 與 consumption habits 差在哪？",
     answer:`兩個都對，差在<mark>語感</mark>`,
@@ -845,7 +852,21 @@ const DECK = [
   { id:"d14", type:"vocab", tags:["辨析","D26"], qlabel:"辨析",
     front:"end up 和 turn out 差在哪？",
     answer:`end up＝我最後<mark>做了</mark>什麼(動作)；turn out＝結果<mark>是</mark>怎樣(狀態/發現)`,
-    analysis:[["end up + V-ing（動作）","你最後做了什麼，而且原本沒打算：I ended up scrolling through my phone all day.／He ended up living in New Zealand.（📌 s55 用過）"],["end up 其他句型","end up in/at + 地點或處境：We ended up at a cheap motel.｜end up + 名詞：He ended up a thief."],["turn out 的三種句型（都是狀態）","① + 形容詞/副詞：Everything turned out well.② turn out TO BE + 形容詞/名詞：It turned out to be cheaper than I expected.（📌 s67 用過）③ turn out THAT + 子句：It turned out that we'd met before."],["⚠️ 為什麼不能互換","✗ I turned out to scroll through my phone — scroll 是你主動做的動作，不是「被發現的狀態」｜Oxford 註明 turn out 要搭副詞或形容詞；接不定詞時幾乎都是 to be"],["但這樣可以（意思會變）","✅ It turned out that I spent the whole day on my phone.＝後來才發現（像是看了螢幕使用時間統計才驚覺），跟「不知不覺滑了一整天」語感不同"],["一句話","end up → 我最後做了什麼（我是主角，動作）｜turn out → 結果是怎樣（事情是主角，狀態）"]]}
+    analysis:[["end up + V-ing（動作）","你最後做了什麼，而且原本沒打算：I ended up scrolling through my phone all day.／He ended up living in New Zealand.（📌 s55 用過）"],["end up 其他句型","end up in/at + 地點或處境：We ended up at a cheap motel.｜end up + 名詞：He ended up a thief."],["turn out 的三種句型（都是狀態）","① + 形容詞/副詞：Everything turned out well.② turn out TO BE + 形容詞/名詞：It turned out to be cheaper than I expected.（📌 s67 用過）③ turn out THAT + 子句：It turned out that we'd met before."],["⚠️ 為什麼不能互換","✗ I turned out to scroll through my phone — scroll 是你主動做的動作，不是「被發現的狀態」｜Oxford 註明 turn out 要搭副詞或形容詞；接不定詞時幾乎都是 to be"],["但這樣可以（意思會變）","✅ It turned out that I spent the whole day on my phone.＝後來才發現（像是看了螢幕使用時間統計才驚覺），跟「不知不覺滑了一整天」語感不同"],["一句話","end up → 我最後做了什麼（我是主角，動作）｜turn out → 結果是怎樣（事情是主角，狀態）"]]},
+
+  // ---------- Day 27 ----------
+  { id:"s79", type:"sentence", tags:["句子","日常","D27"], qlabel:"中譯英",
+    front:"這家餐廳我上週訂過一次，結果那天他們臨時公休，讓我白跑一趟。",
+    answer:`I <mark>booked a table at this restaurant</mark> last week, but <mark>they were closed that day</mark>, <mark>so it was a wasted trip</mark>.`,
+    analysis:[["✅ booked","Day26 學的 booking 用在餐廳，記住了"],["🔸 book a table AT","book the restaurant 聽起來像「包下整間」；訂位是 book a table at"],["were closed（非 didn't open）","didn't open 語感偏「從未開張」；公休用 were closed（狀態）｜🔸 it 或 they 都可以：it was closed（指那個地方）／they were closed（指店家，較口語）——英式常把 restaurant/company/team 這類集合名詞當複數"],["⚠️⚠️ therefore 造成 comma splice（第五次）","therefore 是副詞不是連接詞！三種修法：① so it was...（連接詞）② closed that day; therefore,...（分號）③ closed that day. Therefore,...（句號）｜見 g1、g15"],["a wasted trip","⚠️ 只錯在介係詞：✗ waste time TO there｜🔸 兩種都對：so I wasted my time going there（waste time V-ing ✅）／so it was a wasted trip（固定說法，更精簡）"],["🔄 換句話說","I'd reserved a table here last week, only to find they'd shut for the day — a completely wasted journey.（only to find=結果卻發現；shut for the day；wasted journey）"]]},
+  { id:"s80", type:"sentence", tags:["句子","職場","D27"], qlabel:"中譯英",
+    front:"附件是修改後的合約草稿，若您同意內容，請於本週三前回簽。",
+    answer:`Attached <mark>is the revised draft contract</mark>. If you <mark>agree to the terms</mark>, please <mark>sign and return it</mark> <mark>by this Wednesday</mark>.`,
+    analysis:[["✅✅ Attached are/is...","句型用對，而且 are 配複數 drafts，主詞動詞一致也對"],["✅✅ revised","Day16 學的（文件修訂用 revised）用對了"],["🔸 draft contract（單數）","原文是一份草稿；順序上 draft contract 比 contract draft 常見"],["agree TO the terms","⚠️ agree 要加 to（Cambridge: agreed to the terms of the peace treaty）｜合約內容慣稱 the terms 條款"],["sign and return（非 sign back）","⚠️ sign back 不是英文片語"],["by（非 before）this Wednesday","⚠️ 差一天！by Wednesday＝週三當天仍可；before Wednesday＝週二就得交。設期限幾乎都用 by"],["🔄 換句話說","Please find the revised draft contract attached. If the terms are acceptable, kindly sign and send it back to us by Wednesday.（Please find...attached；the terms are acceptable；kindly）"]]},
+  { id:"s81", type:"sentence", tags:["句子","財經","D27"], qlabel:"中譯英",
+    front:"這家公司連續三季虧損，但執行長仍堅稱轉型策略正在發揮效果。",
+    answer:`The company <mark>has made a loss for three consecutive quarters</mark>, but its CEO <mark>maintains</mark> that the <mark>turnaround strategy</mark> is working.`,
+    analysis:[["✅✅ made a loss","Day19 學的財經固定搭配，用對了"],["✅ is working","「正在發揮效果」用對"],["for three consecutive quarters","⚠️ continuely 這個字不存在；「連續」＝consecutive；介係詞 for；時態用現在完成式 has made（虧到現在）"],["⚠️ maintains（主詞動詞一致）","CEO 是第三人稱單數，動詞要加 -s"],["maintain（非 affirm/contend）","語感：maintain＝不顧反對仍堅持(最貼「堅稱」)｜contend＝論辯中主張｜affirm＝基於證據確認為真"],["turnaround / transformation strategy","⚠️ transformative＝「帶來重大改變的」，形容效果不是類型（HW2 h262）；「轉型策略」用 transformation／turnaround strategy"],["🔄 換句話說","Despite three straight quarters in the red, the CEO insists the turnaround plan is starting to pay off.（three straight quarters；in the red=虧損中；pay off=開始見效）"]]}
 ];
 
 // ---------- Bulk vocabulary (bidirectional 中↔英) ----------
@@ -1057,6 +1078,45 @@ const WORDS = [
   {id:"h394",en:"ambiguity",ipa:"/͵æmbɪˋgjuətɪ/",pos:"n. (U)",u:"HW3",zh:"模稜兩可、含糊不清",def:`the state of having more than one possible meaning`,eg:`In order to avoid ambiguity, you should write clearly.（為避免意義含糊，你寫作時應明白清晰）`,eg2:`The wording left some ambiguity about the deadline.`,syn:`書上 = vagueness｜形容詞 ambiguous 模稜兩可的｜⚠️ 辨析 ambiguous(可有多種解讀，語意不明) vs vague(籠統、不具體)——很近但不同`},
 
 
+  // ---------- HW4：單字書《3000 More Essential Words》A（ambiguous→arm，音標照書 KK） ----------
+  {id:"h401",en:"ambiguous",ipa:"/æmˋbɪgjuəs/",pos:"adj.",u:"HW4",zh:"不明確的、模稜兩可的",def:`having more than one possible meaning, so not clear`,eg:`She takes an ambiguous attitude toward abortion.（她對墮胎問題的態度不明確）`,eg2:`His answer was ambiguous — I still don't know if he agreed.`,co:`an ambiguous attitude / answer / statement`,syn:`書上 = vague, equivocal ⇔ obvious｜名詞 ambiguity（HW3 學過）`,ex:`⚠️ 書上例句有誤：原文印成 an ambiguous attitude**s**，a/an 後面要用單數 attitude`},
+  {id:"h402",en:"ambush",ipa:"/ˋæmbʊʃ/",pos:"n. (U) / v. (vt)",u:"HW4",zh:"埋伏；伏擊",def:`a surprise attack from a hidden position; to make such an attack`,eg:`Several masked men were lying in ambush for the police chief.（幾個蒙面人埋伏等警察局長出現）／ Several masked men ambushed the police chief.（幾個蒙面人伏擊了警察局長）`,eg2:`The cat lay in ambush behind the sofa, waiting for the toy mouse.`,co:`lie in ambush（埋伏等待）／ambush + 受詞（伏擊某人）`},
+  {id:"h403",en:"amend",ipa:"/əˋmɛnd/",pos:"v. (vt)",u:"HW4",zh:"修改（法律、文件）",def:`to change the words of a law or document slightly, usually to improve it`,eg:`The constitution has been amended several times.（憲法已幾經修改）`,eg2:`We had to amend the contract before signing.`,co:`amend a law / constitution / contract`,syn:`書上 = revise｜書上同尾字 mend(修理)、commend(稱讚)、recommend(推薦)`,ex:`⚠️ amend 專指「修改條文」；一般的修改用 change / revise（Day16 學過 revised 用於文件）`},
+  {id:"h404",en:"amendment",ipa:"/əˋmɛndmənt/",pos:"n. (C)",u:"HW4",zh:"修正、修正案",def:`a change made to a law or document`,eg:`Congressmen have made several amendments to the constitution.（國會議員們已將憲法作了幾處修正）`,eg2:`The committee proposed a small amendment to the rules.`,co:`make / propose an amendment TO sth`,syn:`動詞 amend｜書上補充 Congress 國會`},
+  {id:"h405",en:"amiable",ipa:"/ˋemɪəbl/",pos:"adj.",u:"HW4",zh:"和藹可親的",def:`friendly and pleasant`,eg:`The taxi driver is an amiable middle-aged man.（計程車司機是位和藹可親的中年人）`,eg2:`Our new neighbour is an amiable guy — he helped us move the sofa.`,co:`an amiable person / manner / smile`,syn:`書上 = friendly`},
+  {id:"h406",en:"ample",ipa:"/ˋæmpl/",pos:"adj.",u:"HW4",zh:"充足的",def:`more than enough`,eg:`The students were given ample time to prepare for the exam.（學生有充足的時間準備考試）`,eg2:`There's ample space in the car for all our luggage.`,co:`ample time / space / opportunity / evidence`,syn:`書上 = sufficient`},
+  {id:"h407",en:"amplify",ipa:"/ˋæmpləˌfaɪ/",pos:"v. (vt)",u:"HW4",zh:"放大（聲音）；詳述",def:`to make a sound louder; to add detail to something`,eg:`The sounds of the guitar were amplified and sent through the speakers.（吉他的樂聲被放大並通過擴音器播出）`,eg2:`The microphone amplifies your voice so everyone can hear.`,co:`amplify a sound / signal`,syn:`名詞 amplifier 擴大機`,ex:`另一義：詳細說明 — Could you amplify on that point?（可以再詳述那一點嗎）`},
+  {id:"h408",en:"analogy",ipa:"/əˋnælədʒɪ/",pos:"n. (C)",u:"HW4",zh:"類比、比方",def:`a comparison between two things that are similar in some way`,eg:`Our teacher drew an analogy between life and the candle.（我們的老師將生命和蠟燭作了個類比）`,eg2:`He explained the internet using an analogy with a postal system.`,co:`draw / make an analogy BETWEEN A and B｜by analogy with sth`,syn:`書上 = similarity ⇔ difference｜* analogous (adj) 類似的`},
+  {id:"h409",en:"analyst",ipa:"/ˋænlˌɪst/",pos:"n. (C)",u:"HW4",zh:"分析師、化驗員",def:`a person whose job is to examine something carefully`,eg:`King is a food analyst.（金是個食品化驗員）`,eg2:`Analysts expect the stock to keep rising.`,co:`a food / financial / political / systems analyst`,syn:`書上 * analyze (vt)、* analysis (C)`},
+  {id:"h410",en:"analytic(al)",ipa:"/ˌænlˋɪtɪk(l)/",pos:"adj.",u:"HW4",zh:"分析的",def:`using careful examination to understand something`,eg:`We adopted an analytic approach to grammar.（我們對語法採用分析的方法）`,eg2:`She has a very analytical mind — she spots patterns fast.`,co:`an analytical approach / mind / skills`,syn:`analytic 與 analytical 通用，analytical 較常見`},
+  {id:"h411",en:"anchor",ipa:"/ˋæŋkɚ/",pos:"n. (C) / v.",u:"HW4",zh:"錨；拋錨；（新聞）主播；精神支柱",def:`a heavy object that keeps a ship in place; to drop anchor; a news presenter; someone who gives you stability`,eg:`Several ships anchored in the harbor.（幾艘船拋錨停泊在港灣）／ We dropped/cast (the) anchor a few yards offshore.（我們在岸邊數碼處拋錨）`,eg2:`We anchored the boat and swam to the beach.`,co:`drop / cast anchor（拋錨）`,ex:`另兩個常見義｜① 新聞主播：Julia anchored the evening news.（茱莉亞擔任夜間新聞主持人）／An anchor reads the news on TV.｜② 精神支柱：In times of distress my mother is my anchor.`},
+  {id:"h412",en:"anecdote",ipa:"/ˋænɪkˌdot/",pos:"n. (C)",u:"HW4",zh:"軼事、趣聞",def:`a short interesting story about a real person or event`,eg:`I like to read anecdotes.（我喜歡讀軼事趣聞）`,eg2:`He told a funny anecdote about his first day at work.`,co:`tell / share an anecdote ABOUT sth`,syn:`形容詞 anecdotal（傳聞的）：anecdotal evidence 傳聞證據（非正式研究得來）`},
+  {id:"h413",sp:[{label:"動詞 /ˋænəˌmet/：Laughter animated her face.",text:"Laughter animated her face."},{label:"形容詞 /ˋænəmɪt/：They are animate objects.",text:"They are animate objects."}],en:"animate",ipa:"/ˋænəˌmet/",pos:"v. (vt)",u:"HW4",zh:"使有生氣、使活躍",def:`to make something lively or full of energy`,eg:`Laughter animated Cindy's face for a moment.（開顏一笑使辛蒂的臉上一時有了生氣）`,eg2:`A good teacher can animate even a dull subject.`,co:`animate + 受詞（使…有生氣）`,syn:`書上 * animation (U) 動畫／生氣`,ex:`形容詞 /ˋænəmɪt/ 活的、有生命的：The seabed is full of animate objects.（海底有許多活的生物）⇔ inanimate 無生命的`},
+  {id:"h414",en:"annoyance",ipa:"/əˋnɔɪəns/",pos:"n. (U/C)",u:"HW4",zh:"惱怒；煩人的事",def:`the feeling of being annoyed; something that annoys you`,eg:`"Go away!" Maggie replied with annoyance.（瑪姬惱怒地回答道）／ The noisy traffic is a continual annoyance.（交通噪音是令人不斷感到煩惱的事）`,eg2:`The dripping tap is a minor annoyance, but it keeps me awake.`,co:`with annoyance（惱怒地）／a constant / minor annoyance`,syn:`書上 = irritation（惱怒）／= nuisance（煩人的事）｜* annoy (vt)`,ex:`⚠️ 兩種用法：(U) 情緒「惱怒」／(C) 具體「煩人的事」`},
+  {id:"h415",en:"anonymous",ipa:"/əˋnɑnəməs/",pos:"adj.",u:"HW4",zh:"匿名的",def:`with a name that is not known or made public`,eg:`The blood donor wishes to remain anonymous.（捐血者希望匿名）`,eg2:`I got an anonymous message — no idea who sent it.`,co:`remain / stay anonymous｜an anonymous donor / letter / tip`,syn:`書上 * anonymity (U) 匿名（狀態）`},
+  {id:"h416",en:"Antarctic",ipa:"/æntˋɑrktɪk/",pos:"n. / adj.",u:"HW4",zh:"南極（地區）；南極的",def:`the very cold area around the South Pole`,eg:`The Antarctic is the most southern part of the world.（南極處於世界的最南端）／ We went on an Antarctic expedition last year.（去年我們去南極探險了一次）`,eg2:`Antarctic ice is melting faster than expected.`,co:`the Antarctic（加 the）｜an Antarctic expedition`,syn:`書上 ⇔ Arctic 北極`,ex:`⚠️ 拼字：Ant-arctic 中間有 c（容易漏寫成 Antartic）`},
+  {id:"h417",en:"antenna",ipa:"/ænˋtɛnə/",pos:"n. (C)",u:"HW4",zh:"天線；（昆蟲）觸角；直覺",def:`a device for receiving signals; an insect's feeler`,eg:`I installed an antenna on my roof to receive TV signals.（我在屋頂上安裝了一根天線來接收電視信號）`,eg2:`The car's radio antenna snapped off in the storm.`,co:`install / put up an antenna`,syn:`複數 antennas（天線）／antennae（昆蟲觸角）｜英式天線多用 aerial`,ex:`比喻用法：直覺、觸覺 — Mr. Church is famous for his acute political antenna.（丘奇先生以其極其敏銳的政治觸覺聞名）`},
+  {id:"h418",en:"anthem",ipa:"/ˋænθəm/",pos:"n. (C)",u:"HW4",zh:"（國）歌、頌歌",def:`a song that has special importance for a country or group`,eg:`The band began to strike up/play the national anthem.（樂隊開始奏國歌）`,eg2:`Everyone stood up when the national anthem started.`,co:`the national anthem｜strike up / play / sing an anthem`,syn:`書上片語 strike up＝開始演奏`},
+  {id:"h419",en:"antibiotic",ipa:"/ˌæntɪbaɪˋɑtɪk/",pos:"n. (C)",u:"HW4",zh:"抗生素",def:`a medicine that kills bacteria and cures infections`,eg:`Many scientists have voiced concern about the abuse of antibiotics.（許多科學家表示對濫用抗生素的擔憂）`,eg2:`The doctor put me on antibiotics for a week.`,co:`take / be on antibiotics｜a course of antibiotics`,syn:`拆解 anti-（反）+ bio（生命）｜書上片語 voice concern about＝對…表示擔憂`},
+  {id:"h420",en:"antibody",ipa:"/ˋæntɪˌbɑdɪ/",pos:"n. (C)",u:"HW4",zh:"抗體",def:`a substance produced in the blood to fight disease`,eg:`The body can produce antibodies to fight diseases.（人體能夠產生抗體來抵抗許多疾病）`,eg2:`A blood test can show whether you have antibodies.`,co:`produce / develop antibodies`,syn:`拆解 anti-（反）+ body（身體）`},
+  {id:"h421",en:"anticipate",ipa:"/ænˋtɪsəˌpet/",pos:"v. (vt)",u:"HW4",zh:"預料、預期",def:`to expect something to happen and be ready for it`,eg:`It is anticipated that share prices will fall after the terrorist attack.（我們預料當恐佈分子發動攻擊後股票價格就會下滑）／ I didn't anticipate having to do the cooking and laundry myself!（我可沒料到竟然會自己做飯洗衣服！）`,eg2:`We didn't anticipate the traffic being this bad.`,co:`⚠️ anticipate + V-ing（不接 to V）｜It is anticipated that...`,syn:`書上 = expect（預料）／= foresee（預見）｜書上同尾字 participate(參加)｜📌 接法見 g23（expect + to V vs anticipate + V-ing）`},
+  {id:"h422",en:"anticipation",ipa:"/ænˌtɪsəˋpeʃən/",pos:"n. (U)",u:"HW4",zh:"預期、期待",def:`the feeling of expecting something to happen`,eg:`We secured the doors and windows with locks and bars in anticipation of the typhoon.（我們估計有颱風，就把門窗都牢靠地鎖好栓牢了）`,eg2:`The kids waited in anticipation of the fireworks.`,co:`in anticipation OF sth（預期到…而先做準備）`,syn:`書上 = expectation`},
+  {id:"h423",en:"antique",ipa:"/ænˋtik/",pos:"n. (C) / adj.",u:"HW4",zh:"古董；古董的",def:`an old object that is valuable because of its age`,eg:`He established his own business dealing in antiques.（他創下一份事業，專做古董生意）／ This antique table costs ten thousand dollars.（這張古玩桌子價值一萬美金）`,eg2:`We found an antique clock at the flea market.`,co:`deal in antiques（做古董生意）｜an antique shop / table`,syn:`⚠️ 發音 /ænˋtik/ 尾音像 -teek，不是 -tique`},
+  {id:"h424",en:"antonym",ipa:"/ˋæntəˌnɪm/",pos:"n. (C)",u:"HW4",zh:"反義詞",def:`a word that means the opposite of another word`,eg:`"War" is the antonym of "peace".（「戰爭」是「和平」的反義詞）`,eg2:`The antonym of "hot" is "cold".`,co:`the antonym OF sth`,syn:`書上 ⇔ synonym 同義詞｜書上同尾字 pseudonym(假名)、homonym(同音同形異義詞)、acronym(首字母縮略詞)`},
+  {id:"h425",en:"applaud",ipa:"/əˋplɔd/",pos:"v. (vt)",u:"HW4",zh:"鼓掌；讚賞",def:`to clap to show approval; to praise a decision or action`,eg:`The audience rose to applaud the performer.（觀眾起立對表演者報以掌聲）／ I applauded Ted for having the courage to say no to his boss.（我對泰德表示讚賞，因為他有勇氣對老闆說「不」）`,eg2:`Everyone applauded when she finished her speech.`,co:`applaud sb FOR doing sth（因某事讚賞某人）`,syn:`書上 = give sb a (big) hand（鼓掌）／= praise, laud（讚賞）`},
+  {id:"h426",en:"applause",ipa:"/əˋplɔz/",pos:"n. (U)",u:"HW4",zh:"掌聲",def:`the sound of people clapping to show approval`,eg:`The audience gave the speaker a big round of applause.（聽眾們對演講人報以全場熱烈的掌聲）`,eg2:`There was loud applause when the band came on stage.`,co:`a round of applause｜loud / thunderous applause`,syn:`動詞 applaud｜⚠️ 不可數，不說 an applause`},
+  {id:"h427",en:"applicable",ipa:"/ˋæplɪkəbl/",pos:"adj.",u:"HW4",zh:"適用的",def:`affecting or relating to a particular person or situation`,eg:`The income tax law is not applicable to people who live at or below the poverty line.（所得稅條款對在貧困線或更低生活水準的人們是不適用的）`,eg2:`Write "N/A" if the question is not applicable to you.`,co:`applicable TO sb/sth`,syn:`書上 * apply (vt)、* application (U)、* applicant (C) 申請人`},
+  {id:"h428",en:"apprentice",ipa:"/əˋprɛntɪs/",pos:"n. (C)",u:"HW4",zh:"學徒",def:`someone who works for a skilled person to learn their job`,eg:`Al works as an apprentice chef.（愛爾以學徒的身份在做廚師工作）`,eg2:`He started as an apprentice and now runs the workshop.`,co:`work as an apprentice｜an apprentice chef / electrician`,syn:`名詞 apprenticeship 學徒期／建教合作`},
+  {id:"h429",sp:[{label:"形容詞 /əˋprɑksəmɪt/：This is the approximate cost.",text:"This is the approximate cost."},{label:"動詞 /əˋprɑksəˌmet/：It approximates the real thing.",text:"It approximates the real thing."}],en:"approximate",ipa:"/əˋprɑksəmɪt/",pos:"adj.",u:"HW4",zh:"大約的、近似的",def:`close to a particular number or time but not exact`,eg:`The approximate cost of a computer is now twenty thousand NT dollars.（現在一台電腦的價格大約在台幣二萬元左右）`,eg2:`Can you give me an approximate time you'll arrive?`,co:`an approximate cost / figure / time`,syn:`書上 = approximately (adv) 大約`,ex:`動詞 /əˋprɑksəˌmet/ 近似於（= be close to）：The nursery gives the children food that approximates what they would eat in their homes.`},
+  {id:"h430",en:"apt",ipa:"/æpt/",pos:"adj.",u:"HW4",zh:"可能的、傾向於…的",def:`likely to do something or to often do something`,eg:`If your kitchen is clean, you're less apt to attract cockroaches.（假如你的廚房很整潔，就不大可能引來蟑螂）／ Some of the staff are apt to work overtime.（有些員工常常會加班）`,eg2:`I'm apt to forget names, so I write them down.`,co:`be apt TO + 原形動詞`,syn:`書上 = likely（可能的）／= inclined（傾向於）`,ex:`另一義：恰當的、貼切的 — an apt comment（貼切的評論）`},
+  {id:"h431",en:"aptitude",ipa:"/ˋæptəˌtjud/",pos:"n. (C)",u:"HW4",zh:"天賦、性向",def:`a natural ability to do something well`,eg:`Tina seems to have a real aptitude for music.（蒂娜看來具有很高的音樂天賦）`,eg2:`She has an aptitude for languages — she picked up Spanish in months.`,co:`an aptitude FOR sth｜an aptitude test 性向測驗`,syn:`書上同尾字：請參見 altitude（HW3 h393 有完整 -tude 家族）`},
+  {id:"h432",en:"architect",ipa:"/ˋɑrkəˌtɛkt/",pos:"n. (C)",u:"HW4",zh:"建築師；（比喻）設計者、擘劃者",def:`a person who designs buildings; the person who creates a plan or system`,eg:`Architects develop detailed plans of their ideas for building projects.（建築師為建築的案子勾劃他們詳細的計劃）／ Some people regard Mr. Lee as the architect of Taiwan's democratization.（有些人認為李先生是台灣政治民主化的設計師）`,eg2:`My cousin is an architect — she designed this library.`,co:`the architect OF sth（某事的擘劃者）`,ex:`⚠️ 書上例句有誤：原文印成 regard Mr. Lee **is** the architect｜正確是 **regard sb AS sth**（Oxford 明訂 as 不能省略，也不能用 to be 或 that 子句）`},
+  {id:"h433",en:"architecture",ipa:"/ˋɑrkəˌtɛktʃɚ/",pos:"n. (U)",u:"HW4",zh:"建築（學）、建築風格",def:`the art of designing buildings; the style of buildings`,eg:`I studied architecture in university.（我在大學時學的是建築）`,eg2:`I love the old architecture in this part of town.`,co:`study architecture｜modern / Gothic architecture`,syn:`architect（人）→ architecture（學科/風格）`},
+  {id:"h434",en:"Arctic",ipa:"/ˋɑrktɪk/",pos:"n. / adj.",u:"HW4",zh:"北極（區）；北極的",def:`the very cold area around the North Pole`,eg:`The Arctic is the large area surrounding the North Pole.（北極區是環繞北極的一大片地區）／ It is very cold in the arctic region.（北極地區極為寒冷）`,eg2:`Arctic temperatures can drop below minus 40.`,co:`the Arctic（加 the）｜the arctic region`,syn:`書上 ⇔ Antarctic 南極`,ex:`⚠️ 拼字：Arc-tic 有兩個 c 都要發音 /ˋɑrktɪk/`},
+  {id:"h435",en:"arena",ipa:"/əˋrinə/",pos:"n. (C)",u:"HW4",zh:"競技場；（比喻）舞台、領域",def:`a large area used for sports or entertainment; an area of activity`,eg:`When the bull was led into the arena, the bullfighter was on full alert.（牛被引進競技場時，鬥牛士全神戒備）／ In the political arena foul play is the rule.（在政壇上流行的是不擇手段）`,eg2:`The concert was held at a huge indoor arena.`,co:`in the political / international arena（在政壇／國際舞台上）`,syn:`書上片語 on full alert＝全神戒備；foul play＝不擇手段/犯規`},
+  {id:"h436",en:"arm",ipa:"/ɑrm/",pos:"v. (vt)",u:"HW4",zh:"武裝；使有…可用",def:`to provide weapons; to provide something useful such as facts`,eg:`Billy armed himself with a pistol/the facts before he went to the meeting.（比利去參加會議前準備好了一把手槍／一些事實依據）`,eg2:`I armed myself with a coffee before the long meeting.`,co:`arm oneself WITH sth（帶著…作準備）`,syn:`名詞 arms 武器（複數）｜形容詞 armed 武裝的`},
+
+
 
   // Crime & Safety（音標為 IPA）
   {id:"c01",en:"escape",ipa:"/ɪˈskeɪp/",pos:"v.",u:"Crime",zh:"逃跑；逃脫",def:`to get away from a place or situation`,eg:`The prisoner escaped through a window.`,co:`搭配 escape from prison, narrow escape`},
@@ -1238,7 +1298,17 @@ const WORDS = [
   {id:"w2203",en:"has been shipped",ipa:"/hæz bɪn ʃɪpt/",pos:"phr.",u:"Day26",zh:"已出貨",def:`has left the warehouse and been handed to the carrier`,eg:`Your order has been shipped.`,eg2:"My parcel has been shipped but hasn't arrived yet.",co:`order/parcel + has been shipped / dispatched / delivered`,syn:`⚠️⚠️ 出貨 ≠ 送達！shipped/dispatched=離開倉庫交給物流(出貨)；delivered=買家已收到(送達)｜⚠️ 別漏 been：訂單是「被」出貨`,cam:"ship"},
   {id:"w2204",en:"tracking number",ipa:"/ˈtrækɪŋ ˈnʌmbə/",pos:"n.",u:"Day26",zh:"追蹤號碼、物流單號",def:`a unique code assigned to a package so it can be tracked`,eg:`The tracking number will be sent to you by the end of the day.`,eg2:"Can you send me the tracking number?",syn:`⚠️ 固定是 tracking（✗ track number）｜相關 tracking information / track a parcel(動詞)`,cam:"tracking"},
   {id:"w2205",en:"borrowing costs",ipa:"/ˈbɒrəʊɪŋ kɒsts/",pos:"n.",u:"Day26",zh:"借貸成本",def:`the amount it costs to borrow money, mainly interest`,eg:`With rising borrowing costs, many buyers have postponed their plans.`,eg2:"Higher interest rates mean higher borrowing costs for everyone.",co:`rising / higher / lower borrowing costs（習慣用複數）`,syn:`財經標準用語（比 loan cost 常見）｜📌 「成本上升」寫法：rising borrowing costs（最簡潔）／the rise in borrowing costs（名詞化）／As borrowing costs rise（子句）——✗ the rising of`,cam:"borrowing"},
-  {id:"w2206",en:"hold off on",ipa:"/həʊld ɒf ɒn/",pos:"phr. v.",u:"Day26",zh:"暫緩、先不做",def:`to delay doing something until later`,eg:`Many buyers are holding off on buying a home.`,eg2:"Let's hold off on booking flights until prices drop.",co:`hold off on + V-ing／名詞`,syn:`同義 put off / delay / postpone｜語感：hold off 帶「先觀望、等時機」的意味`,cam:"hold-off"}
+  {id:"w2206",en:"hold off on",ipa:"/həʊld ɒf ɒn/",pos:"phr. v.",u:"Day26",zh:"暫緩、先不做",def:`to delay doing something until later`,eg:`Many buyers are holding off on buying a home.`,eg2:"Let's hold off on booking flights until prices drop.",co:`hold off on + V-ing／名詞`,syn:`同義 put off / delay / postpone｜語感：hold off 帶「先觀望、等時機」的意味`,cam:"hold-off"},
+
+  // Day 27 單字
+  {id:"w2301",en:"book a table",ipa:"/bʊk ə ˈteɪbl/",pos:"phr.",u:"Day27",zh:"訂位（餐廳）",def:`to reserve a table at a restaurant`,eg:`I booked a table at this restaurant last week.`,eg2:"Shall I book a table for four on Saturday?",co:`book a table AT + 餐廳／FOR + 人數或時間`,syn:`🔸 book the restaurant 聽起來像「包下整間」；訂位用 book a table at｜美式常用 make a reservation`,cam:"book"},
+  {id:"w2302",en:"a wasted trip",ipa:"/ə ˈweɪstɪd trɪp/",pos:"phr.",u:"Day27",zh:"白跑一趟",def:`a journey that achieved nothing`,eg:`They were closed that day, so it was a wasted trip.`,eg2:"The shop had already sold out — a completely wasted trip.",co:`it was a wasted trip／have a wasted journey`,syn:`⚠️ 你原句只錯在介係詞 to：✗ waste time TO there｜✅ waste time V-ing：I wasted (my) time going there.（Cambridge 例：Don\u0027t waste time worrying about it.）✅ waste time ON sth｜兩種都對：wasted time going there 強調「浪費了時間」；a wasted trip 是「白跑一趟」的固定說法，更精簡｜同義 go all that way for nothing`,cam:"wasted"},
+  {id:"w2303",en:"agree to sth",ipa:"/əˈɡriː tuː/",pos:"phr.",u:"Day27",zh:"同意、接受（提議、條款）",def:`to accept something such as terms, a plan, or a suggestion`,eg:`If you agree to the terms, please sign and return it.`,eg2:"He agreed to my suggestion straight away.",co:`agree TO + 事物(接受)｜agree WITH + 人/看法(同意某人)｜agree ON + 共同決定`,syn:`⚠️ 合約的「內容」慣稱 the terms（條款）｜Cambridge 例：agreed to the terms of the peace treaty`,cam:"agree-to"},
+  {id:"w2304",en:"sign and return",ipa:"/saɪn ənd rɪˈtɜːn/",pos:"phr.",u:"Day27",zh:"簽署後寄回、回簽",def:`to sign a document and send it back`,eg:`Please sign and return it by this Wednesday.`,eg2:"Just sign and return the form in the envelope provided.",syn:`⚠️ ✗ sign back（不是英文片語）`,cam:"return"},
+  {id:"w2305",en:"by vs before (deadline)",ipa:"/baɪ/ /bɪˈfɔː/",pos:"prep.",u:"Day27",zh:"by 到當天為止／before 當天之前",def:`by = on or before that day; before = not including that day`,eg:`Please sign and return it by this Wednesday.（週三當天還可以）`,eg2:"Submit it by Friday.（週五可交）／ Submit it before Friday.（週四就得交）",syn:`⚠️ 差一天！設期限幾乎都用 by｜by Wednesday＝週三當天仍可；before Wednesday＝週二就得交完`,cam:"by"},
+  {id:"w2306",en:"consecutive",ipa:"/kənˈsekjətɪv/",pos:"adj.",u:"Day27",zh:"連續的（一個接一個）",def:`following one after another without an interruption`,eg:`The company has made a loss for three consecutive quarters.`,eg2:"It rained for five consecutive days.",co:`FOR + 數字 + consecutive + 期間名詞`,syn:`⚠️ ✗ continuely（不存在的字）｜同義 in a row（口語）：three quarters in a row`,cam:"consecutive"},
+  {id:"w2307",en:"maintain (堅稱)",ipa:"/meɪnˈteɪn/",pos:"v.",u:"Day27",zh:"堅稱、仍然主張（不顧反對）",def:`to continue to say that something is true, even though others disagree`,eg:`Its CEO maintains that the turnaround strategy is working.`,eg2:"He still maintains he did nothing wrong.",syn:`⚠️ 語感差異：maintain＝不顧反對仍堅持(最貼「堅稱」)｜contend＝在論辯中主張(HW3)｜affirm＝基於證據確認為真｜insist＝強硬要求/堅持`,cam:"maintain"},
+  {id:"w2308",en:"turnaround strategy",ipa:"/ˈtɜːnəraʊnd ˈstrætədʒi/",pos:"n.",u:"Day27",zh:"轉型策略、扭轉頹勢的策略",def:`a plan to change a failing business into a successful one`,eg:`Its CEO maintains that the turnaround strategy is working.`,eg2:"The new CEO announced a three-year turnaround plan.",syn:`⚠️ 「轉型策略」＝ transformation / turnaround strategy（名詞當形容詞）｜✗ transformative strategy — transformative 是「帶來重大改變的」，形容「效果」不是「類型」（HW2 h262）`,cam:"turnaround"}
 ];
 for(const w of WORDS){
   const link = `<a href='${C}${(w.cam||w.en).replace(/ /g,'-')}' target='_blank'>Cambridge</a>`;
@@ -1410,12 +1480,30 @@ function shuffle(arr){ const a=[...arr]; for(let i=a.length-1;i>0;i--){ const j=
 // ---------- Session ----------
 let STATE, queue=[], extraToday=0, MODE="srs";
 const BATCH=15;
+// 每批作業是在「第幾個 Day 之後」加入的（決定它在時間軸上的位置）
+// 新增 HW 批次時要在這裡補一筆；沒登記的批次會被視為最新
+const HW_ADDED_AFTER_DAY={1:8, 2:21, 3:25, 4:27};
+function maxDay(){ let m=0; for(const c of DECK){ const d=dayOf(c); if(d!==null && d>m) m=d; } return m; }
+const NEWORDER_KEY="ce-srs-neworder";
+let NEW_ORDER=(function(){ try{ return localStorage.getItem(NEWORDER_KEY)||"old"; }catch(e){ return "old"; } })();
 function buildQueue(){
   if(MODE==="free"){ queue=shuffle(DECK.filter(matchesFilter).map(c=>c.id)); return; }
   const pool=DECK.filter(matchesFilter);
   const rev=[],news=[];
   for(const c of pool){ const cs=STATE.cards[c.id];
     if(cs.introduced){ if(cs.due && cs.due<=TODAY) rev.push(c.id); } else news.push(c.id); }
+  if(NEW_ORDER==="new"){
+    // 由新到舊：依「真正加入的時間」排序，Day 卡和 HW 卡混在同一條時間軸上
+    const rank=(id)=>{ const c=DECK.find(x=>x.id===id);
+      const h=hwOf(c);
+      if(h!==null){                                     // 作業批次：排在它被加入時的那個 Day 之後
+        const anchor=HW_ADDED_AFTER_DAY[h];
+        return (anchor!==undefined ? anchor : maxDay()) + 0.5;
+      }
+      const d=dayOf(c); if(d!==null) return d;          // 每日練習：Day 越大越新
+      return 0; };                                      // 字表等無編號的：最後
+    news.sort((a,b)=>rank(b)-rank(a));
+  }
   const allow=Math.max(0,NEW_PER_DAY-(STATE.newByDate[TODAY]||0))+extraToday;
   queue=[...rev,...news.slice(0,allow)];
 }
@@ -1552,6 +1640,15 @@ initTopics(); renderTopicBar();
   if(nums.length===0){ document.getElementById('hwbar').style.display='none'; return; }
   sel.innerHTML='<option value="all">全部作業</option>'+nums.map(n=>`<option value="${n}">HW${n}</option>`).join('');
   sel.value=HW_MODE;
+})();
+(function initNewOrder(){
+  const el=document.getElementById('newOrderSelect');
+  el.value=NEW_ORDER;
+  el.onchange=(e)=>{
+    NEW_ORDER=e.target.value;
+    try{ localStorage.setItem(NEWORDER_KEY, NEW_ORDER); }catch(err){}
+    buildQueue(); render();
+  };
 })();
 STATE=loadState(); buildQueue(); render();
 
