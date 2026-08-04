@@ -110,7 +110,7 @@
 <body>
 <div class="wrap">
   <header>
-    <h1>中翻英複習<small>Spaced Review · Day 1–28 ＋ 單字表</small></h1>
+    <h1>中翻英複習<small>Spaced Review · Day 1–29 ＋ 單字表</small></h1>
     <div class="counts">
       <span><span class="dot r"></span>複習 <b id="c-rev">0</b></span>
       <span><span class="dot n"></span>新卡 <b id="c-new">0</b></span>
@@ -605,7 +605,7 @@ const DECK = [
   { id:"g28", type:"grammar", tags:["文法","辨析"], qlabel:"文法",
     front:"have + p.p. 和 had + p.p. 差在哪？（現在完成 vs 過去完成）",
     answer:`have＝連到<mark>現在</mark>(before now)；had＝在<mark>另一個過去動作之前</mark>(before another past action)`,
-    analysis:[["have + p.p.（現在完成）","過去做的動作，結果連到現在：I have summarised it（文件現在就附在下面給你看）"],["had + p.p.（過去完成）","發生在另一個過去時間點「之前」：By the time the meeting ended, I had summarised the notes."],["判斷訣竅","問「有沒有另一個過去時間點當參照？」有→had；沒有、只連到現在→have"],["提醒","have had / had had 看第一個字：have had=現在完成；had had=過去完成"]]},
+    analysis:[["have + p.p.（現在完成）","過去做的動作，結果連到現在：I have summarised it（文件現在就附在下面給你看）"],["had + p.p.（過去完成）","發生在另一個過去時間點「之前」：By the time the meeting ended, I had summarised the notes."],["判斷訣竅","問「有沒有另一個過去時間點當參照？」有→had；沒有、只連到現在→have"],["提醒","have had / had had 看第一個字：have had=現在完成；had had=過去完成"],["📌 常見情境：關係子句","主要動詞是過去式時，形容「更早發生」的關係子句要用 had：I cleared out the clutter that HAD been piling up.（囤積在清掉之前）｜✗ that has been piling up"],["⚠️ 別忘了同時檢查語態","東西不會自己做動作：that had been stored（被動）／that had been piling up（不及物，不用被動）——兩個都對，但 ✗ that had stored"]]},
 
   // ---------- Day 16 ----------
   { id:"s46", type:"sentence", tags:["句子","日常","D16"], qlabel:"中譯英",
@@ -884,7 +884,21 @@ const DECK = [
   { id:"g43", type:"grammar", tags:["文法","D28"], qlabel:"文法",
     front:"時間介係詞：at / on / in 怎麼分？",
     answer:`<mark>at</mark> 時刻｜<mark>on</mark> 日期星期｜<mark>in</mark> 月年季節（範圍由小到大）`,
-    analysis:[["at + 精確時刻","at 3 o'clock／at noon／at midnight／at the moment｜特例：at night、at the weekend(英式)、at Christmas"],["on + 日期、星期、特定的某一天","on Monday／on 3 July／on my birthday／on the last day／on Christmas Day｜⚠️ ✗ at the last day"],["in + 月、年、季節、較長的時段","in July／in 2026／in summer／in the morning／in the 1990s"],["記憶法","範圍由小到大：at（一個點）→ on（一天）→ in（一段期間）"],["⚠️ 不加介係詞","this/last/next/every + 時間：this Monday（✗ on this Monday）／last week／next year"]]}
+    analysis:[["at + 精確時刻","at 3 o'clock／at noon／at midnight／at the moment｜特例：at night、at the weekend(英式)、at Christmas"],["on + 日期、星期、特定的某一天","on Monday／on 3 July／on my birthday／on the last day／on Christmas Day｜⚠️ ✗ at the last day"],["in + 月、年、季節、較長的時段","in July／in 2026／in summer／in the morning／in the 1990s"],["記憶法","範圍由小到大：at（一個點）→ on（一天）→ in（一段期間）"],["⚠️ 不加介係詞","this/last/next/every + 時間：this Monday（✗ on this Monday）／last week／next year"]]},
+
+  // ---------- Day 29 ----------
+  { id:"s85", type:"sentence", tags:["句子","日常","D29"], qlabel:"中譯英",
+    front:"我昨天終於把囤了半年的雜物清掉，房間看起來寬敞多了。",
+    answer:`I finally <mark>cleared out the clutter that had been piling up for half a year</mark>, so my room looks <mark>much more spacious</mark>.`,
+    analysis:[["✅✅ I finally cleaned（簡單過去式）","Day25 你在這裡用過 had done 是錯的，這次用對了"],["⚪ so my room looks bigger 也完全正確","much more spacious 只是更精準的字，你原本沒問題"],["the clutter（非 the messy things）","⚠️ clutter 就是「雜物」(不可數)；messy 是形容詞「髒亂的」，形容狀態，不能指東西本身"],["⚠️⚠️ had been piling up（非 which has stored）","兩個問題：①語態——東西不會自己 store，要嘛被動 had been stored，要嘛用不及物的 pile up ②時態——囤積發生在清掉「之前」，用過去完成式（見 g28）"],["for half a year","⚠️ 需要冠詞 a：half A year／half AN hour"],["🔸 cleared out（非 cleaned）","clean＝弄乾淨；「清掉」雜物用 clear out（丟掉、清空）"],["🔄 換句話說","I finally got rid of six months' worth of junk yesterday, and the room feels a lot roomier now.（get rid of；six months' worth of＝累積了六個月份的；junk；roomier）"]]},
+  { id:"s86", type:"sentence", tags:["句子","職場","D29"], qlabel:"中譯英",
+    front:"由於系統升級，本週六上午八點至十二點暫停服務，造成不便敬請見諒。",
+    answer:`Due to <mark>a system upgrade</mark>, we'll suspend the service from 8 a.m. to <mark>12 noon</mark> this Saturday. <mark>We apologise for any inconvenience caused.</mark>`,
+    analysis:[["✅✅ this Saturday（沒加介係詞）","g43 昨天才做的卡，今天就用對了——this／last／next + 時間不加介係詞"],["✅ from 8 a.m. to...","正確"],["⚪ we'll suspend the service","主動語態完全正確——主詞是「我們(公司)」，本來就是我們去暫停它"],["a system upgrade（非 the update of system）","⚠️ ①名詞疊名詞(g42)：system upgrade ②「升級」是 upgrade，update 是較小的「更新」"],["🔸 12 noon（非 12 p.m.）","實用提醒：12 p.m. 容易被誤讀成午夜，正式文件寫 12 noon 或 midday 最清楚"],["🔸 We apologise for any inconvenience caused","正式 email 較得體；Sorry for the inconvenience 正確但偏口語"],["🔄 換句話說","The service will be unavailable between 8 a.m. and midday this Saturday while we upgrade our systems. We're sorry for any disruption.（be unavailable；between A and B；while 子句；disruption）"]]},
+  { id:"s87", type:"sentence", tags:["句子","財經","D29"], qlabel:"中譯英",
+    front:"這家新創雖然還沒獲利，但投資人仍願意押注它的長期潛力。",
+    answer:`Although the startup <mark>has yet to turn a profit</mark>, <mark>investors</mark> are still willing to <mark>bet on</mark> its long-term potential.`,
+    analysis:[["✅✅ Although 沒有加 but","Day24 疊過一次，這次乾淨"],["✅ the startup / hasn't made a profit","Day17、Day19 學的字都用對了"],["investors（非 the investors）","⚠️ 泛指「投資人這個群體」用複數不加 the（g27）"],["bet on / back（非 trust）","⚠️ trust 是「信任(人)」，不跟 potential 搭配｜押注＝bet on／back；相信其潛力＝believe in"],["🔸 has yet to turn a profit","你的寫法正確；has yet to（Day17）語氣更貼「還沒」"],["🔄 換句話說","The startup is not profitable yet, but investors remain willing to back its long-term prospects.（not profitable yet；remain willing to；back；prospects — Day19 學的字）"]]}
 ];
 
 // ---------- Bulk vocabulary (bidirectional 中↔英) ----------
@@ -1335,7 +1349,17 @@ const WORDS = [
   {id:"w2404",en:"financial forecast / guidance",ipa:"/faɪˈnænʃəl ˈfɔːkɑːst/ /ˈɡaɪdəns/",pos:"n.",u:"Day28",zh:"財測、財務預測",def:`a company's own prediction of its future earnings`,eg:`The bank has lowered its financial forecast for two consecutive years.`,eg2:"The company raised its forecast after a strong quarter.",co:`lower / cut / raise a forecast｜lower / cut / raise guidance`,syn:`⚠️ ✗ prospection（那是罕見的探勘用語，不是「預測」）｜財經媒體也常用 guidance（財測指引）：management has lowered guidance`,cam:"forecast"},
   {id:"w2405",en:"management (vs administration)",ipa:"/ˈmænɪdʒmənt/ /ədˌmɪnɪˈstreɪʃən/",pos:"n.",u:"Day28",zh:"management 管理層／administration 行政、政府",def:`management = the people who control a company; administration = the work of managing, or a government`,eg:`Its management still maintains that the fundamentals remain unchanged.`,eg2:"The management announced a pay rise. ／ She works in hospital administration.",co:`the management of a company｜senior / top management`,syn:`⚠️ 「管理層」是 management｜administration＝行政工作，或(美)政府：the Reagan administration（HW3 h351 學過）`,cam:"management"},
   {id:"w2406",en:"the fundamentals",ipa:"/ˌfʌndəˈmentəlz/",pos:"n. (pl.)",u:"Day28",zh:"基本面（財經）",def:`the basic financial facts of a company or economy, such as earnings and debt`,eg:`Its management maintains that the fundamentals remain unchanged.`,eg2:"Analysts say the company's fundamentals are still solid.",co:`the fundamentals REMAIN unchanged／look solid／are strong｜⚠️ 恆用複數，動詞跟著用複數`,syn:`⚠️ ✗ foundation（＝地基、基金會）｜也可指「基本原則」：the fundamentals of grammar`,cam:"fundamental"},
-  {id:"w2407",en:"lower / cut a forecast",ipa:"/ˈləʊə ə ˈfɔːkɑːst/",pos:"phr.",u:"Day28",zh:"下修（財測）",def:`to reduce a previously announced prediction`,eg:`The bank has lowered its financial forecast for two consecutive years.`,eg2:"They cut their sales forecast after a weak quarter.",co:`lower / cut / trim / revise down a forecast｜⇔ raise / lift a forecast（上修）`,syn:`📌 revise 是 Day16 學的字（文件修訂），revise down＝下修，兩者同源`,cam:"lower"}
+  {id:"w2407",en:"lower / cut a forecast",ipa:"/ˈləʊə ə ˈfɔːkɑːst/",pos:"phr.",u:"Day28",zh:"下修（財測）",def:`to reduce a previously announced prediction`,eg:`The bank has lowered its financial forecast for two consecutive years.`,eg2:"They cut their sales forecast after a weak quarter.",co:`lower / cut / trim / revise down a forecast｜⇔ raise / lift a forecast（上修）`,syn:`📌 revise 是 Day16 學的字（文件修訂），revise down＝下修，兩者同源`,cam:"lower"},
+
+  // Day 29 單字
+  {id:"w2501",en:"clutter",ipa:"/ˈklʌtə/",pos:"n. (U)",u:"Day29",zh:"雜物（一堆用不到的東西）",def:`a lot of things in an untidy state, especially things that are not necessary or not being used`,eg:`I finally cleared out the clutter that had been piling up.`,eg2:"There's always so much clutter on my desk.",co:`clear out / get rid of / reduce clutter｜be cluttered WITH sth`,syn:`⚠️ 不可數（✗ clutters）｜✗ messy things — messy 是形容詞「髒亂的」，形容狀態，不能指東西本身｜動詞 clutter (up)＝把…堆得亂七八糟`,cam:"clutter"},
+  {id:"w2502",en:"clear out",ipa:"/klɪər aʊt/",pos:"phr. v.",u:"Day29",zh:"清掉、清空（丟掉不要的）",def:`to make a place tidy by removing things you do not want`,eg:`I finally cleared out the clutter in my room.`,eg2:"We cleared out the garage last weekend.",co:`clear out + 地方／東西`,syn:`⚠️ 辨析 clean＝把東西弄乾淨；clear out＝把東西清掉、丟掉（雜物用這個）`,cam:"clear-out"},
+  {id:"w2503",en:"pile up",ipa:"/paɪl ʌp/",pos:"phr. v.",u:"Day29",zh:"堆積、囤積",def:`to increase in amount and form a pile`,eg:`the clutter that had been piling up for half a year`,eg2:"Dishes pile up fast when I'm busy.",co:`不及物：sth piles up（東西自己堆起來，不用被動）`,syn:`⚠️ 東西不會自己 store，要嘛被動 be stored，要嘛用不及物的 pile up／accumulate｜Collins 例：We let clutter pile up on our desks.`,cam:"pile-up"},
+  {id:"w2504",en:"half a year",ipa:"/hɑːf ə jɪə/",pos:"phr.",u:"Day29",zh:"半年",def:`six months`,eg:`the clutter that had been piling up for half a year`,eg2:"It took half an hour to get there.",co:`half A year／half AN hour／half A day — 中間要加冠詞`,syn:`⚠️ ✗ for half year（缺冠詞）｜也可直接說 six months`,cam:"half"},
+  {id:"w2505",en:"system upgrade",ipa:"/ˈsɪstəm ˈʌpɡreɪd/",pos:"n.",u:"Day29",zh:"系統升級",def:`the process of improving a system to a newer version`,eg:`Due to a system upgrade, the service will be suspended.`,eg2:"The app is down for a system upgrade tonight.",co:`名詞疊名詞（g42）：system upgrade｜✗ the update of system`,syn:`⚠️ upgrade＝升級（變得更好/更新版）；update＝更新（較小的修補）｜動詞 upgrade the system`,cam:"upgrade"},
+  {id:"w2506",en:"apologise for any inconvenience",ipa:"/əˈpɒlədʒaɪz/",pos:"phr.",u:"Day29",zh:"造成不便敬請見諒",def:`a formal way to say sorry for causing trouble`,eg:`We apologise for any inconvenience caused.`,eg2:"Sorry for the inconvenience — the lift is out of order.",co:`We apologise for any inconvenience (caused)｜口語 Sorry for the inconvenience`,syn:`正式 email 用 We apologise for any inconvenience caused；Sorry for... 較口語但也正確｜英式 apologise／美式 apologize`,cam:"inconvenience"},
+  {id:"w2507",en:"bet on / back",ipa:"/bet ɒn/ /bæk/",pos:"v.",u:"Day29",zh:"押注、看好並支持",def:`to risk money or support on something you believe will succeed`,eg:`Investors are still willing to bet on its long-term potential.`,eg2:"I'd bet on him finishing first.",co:`bet ON sth／back sth（及物，直接接）｜believe IN sth（相信其價值）`,syn:`⚠️ ✗ trust its potential — trust 是「信任(人)」，不跟 potential 搭配`,cam:"bet"},
+  {id:"w2508",en:"12 noon (not 12 p.m.)",ipa:"/twelv nuːn/",pos:"phr.",u:"Day29",zh:"中午十二點",def:`midday, 12:00`,eg:`from 8 a.m. to 12 noon this Saturday`,eg2:"The deadline is 12 noon on Friday.",co:`寫 12 noon／midday 最清楚；午夜寫 12 midnight`,syn:`⚠️ 12 p.m. 容易被誤讀成午夜，正式文件避免使用`,cam:"noon"}
 ];
 for(const w of WORDS){
   const link = `<a href='${C}${(w.cam||w.en).replace(/ /g,'-')}' target='_blank'>Cambridge</a>`;
