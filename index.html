@@ -110,7 +110,7 @@
 <body>
 <div class="wrap">
   <header>
-    <h1>中翻英複習<small>Spaced Review · Day 1–32 ＋ 單字表</small></h1>
+    <h1>中翻英複習<small>Spaced Review · Day 1–33 ＋ 單字表</small></h1>
     <div class="counts">
       <span><span class="dot r"></span>複習 <b id="c-rev">0</b></span>
       <span><span class="dot n"></span>新卡 <b id="c-new">0</b></span>
@@ -182,7 +182,8 @@ const C = "https://dictionary.cambridge.org/dictionary/english-chinese-tradition
 // Day1 的日期來自匯出檔檔名 anki_day1_2026-06-25.txt，可靠。
 // Day2~Day8 目前沒有可靠依據，先留空；之後每加一個新 Day，會補上當天的真實日期。
 const DAY_DATES = {
-  1: "2026-06-25"
+  1: "2026-06-25",
+  33: "2026-08-10"
 };
 const DECK = [
   // ---------- Day 1 ----------
@@ -949,6 +950,24 @@ const DECK = [
     front:"這波漲勢主要由散戶推動，而非法人買盤，因此分析師認為它比上一次更難持續。",
     answer:`The rally is mainly driven by <mark>retail investors</mark> rather than <mark>institutional buying</mark>. Thus, analysts think <mark>it will be harder to sustain than the last one</mark>.`,
     analysis:[["✅✅ is mainly driven by","被動語態用對了，driven by 是「由…推動」的標準搭配"],["✅✅ rather than + 名詞（對稱）","昨天才釐清的對稱規則今天就用對——名詞對名詞"],["✅✅ Thus 前面用句號","g1 的 FANBOYS 規則：thus 是副詞不是連接詞，你正確斷成兩句"],["retail investors（非 normal investors）","⚠️ normal 又出現了（Day21 的假朋友）｜散戶＝retail investors（為自己帳戶投資的個人）"],["institutional（非 companies）","法人＝銀行、保險、退休基金等代客操作的機構"],["will BE harder","⚠️ 漏了 be——will／would 後面接形容詞一定要有 be"],["⚠️ 真正的錯只有 compare to","已經有 harder(比較級)，比較對象就要用 than，不能再疊一套 compared to｜✅ than last time（Ludwig 實例：it will be harder to deliver than last time）｜順帶：真要用也是 compared to（過去分詞）"],["⚪ last time 本身沒問題","than last time（不加 the）＝比上一次那時候，完全正確且常見｜than the last one＝比上一波漲勢(one＝rally)，也對｜△ than THE last time 稍彆扭——the last time 通常後面要接子句(the last time it happened)，單獨用會像話沒說完"],["🔸 to sustain","漲勢「持續」財經常用 sustain（Day22 的 be unlikely to be sustained）"],["🔄 換句話說","With small investors rather than institutions behind the gains, analysts doubt this run can last as long as the previous one.（small investors；behind the gains；doubt；run＝一波行情；as long as）"]]}
+
+  // ---------- Day 33 ----------
+  ,{ id:"s97", type:"sentence", tags:["句子","日常","D33"], qlabel:"中譯英",
+    front:"我原本以為這件外套只是看起來比較厚，穿了一整天才發現，它其實比我舊的那件輕很多。",
+    answer:`I thought <mark>this coat</mark> just <mark>looked thicker</mark>, but after wearing <mark>it</mark> all day, it turned out to be <mark>much lighter</mark> than my old one.`,
+    analysis:[["使用者原句","I thought the coat just looks heavier but after wearing all day, it turned out to be lighter than my old one."],["⚠️ 🔴 looks heavier → looked thicker","looks 要配合 I thought 的過去視角改為 looked；中文是「較厚」而非「較重」，外觀厚度用 thick／thicker，重量才用 heavy／heavier。"],["⚠️ 🔴 wearing → wearing it","這裡 wear 是及物動詞，必須說明穿什麼；after wearing it all day 才完整。"],["⚠️ 🔴 lighter → much lighter","原文有「輕很多」；much 可放在比較級前加強程度。只寫 lighter 會漏掉程度。"],["⚪ the coat 可接受","若前文已明確提過這件外套，the coat 完全成立；主答案用 this coat 只是更直接對應中文「這件外套」，不是文法糾錯。"],["✅ turned out to be／my old one","turn out to be 很自然地表達「結果發現」；one 代替 coat，兩邊比較對象一致。"],["🔄 換句話說","I expected this coat to be bulkier, but after a full day in it, I discovered that it was far lighter than my old coat.（expect；bulkier；a full day in it；far lighter）"]]},
+  { id:"s98", type:"sentence", tags:["句子","職場","D33"], qlabel:"中譯英",
+    front:"我們已依照您上週的意見修改報價內容；若沒有其他問題，請於本週五前確認，以便我們安排後續作業。",
+    answer:`We have amended the quotation <mark>in line with the feedback you gave last week</mark>. If you don't have any further questions, please <mark>confirm it</mark> by this Friday so that we can <mark>make the necessary arrangements for the next steps</mark>.`,
+    analysis:[["使用者原句","We have amended the quotation according to your feedback last week. If you don't have any further questions, please conform it by this Friday so that we can arrange other processes."],["⚠️ 🔴 conform → confirm","confirm 是「確認」；conform to 是「符合規則／標準」。本句要請對方確認報價，因此用 confirm it。"],["⚠️ 🔴 arrange other processes → make the necessary arrangements for the next steps","arrange other processes 不自然，也容易變成「安排其他流程」。商務語境的「安排後續作業」可說 make the necessary arrangements for the next steps。"],["🔸 according to your feedback last week","能理解，但 last week 的修飾範圍不夠清楚，而且 according to 用於意見時較生硬。in line with the feedback you gave last week 更清楚自然；based on the feedback you gave last week 也可。"],["✅ We have amended／no further questions／by this Friday","現在完成式可表達已完成且與目前相關的修改；further questions 很自然；by Friday 包含星期五當天，適合截止日。"],["📌 既有卡連結","in line with 已有 w2807；confirm／conform 已有 g22 與 w1002，不另建重複卡。"],["🔄 換句話說","We have revised the quotation based on last week's feedback. Unless you have any more questions, please approve it by Friday so that we can proceed with the next steps.（revise；based on；unless；proceed with）"]]},
+  { id:"s99", type:"sentence", tags:["句子","財經","D33"], qlabel:"中譯英",
+    front:"這家公司雖然營收仍在成長，但分析師認為，目前最大的問題不是需求不足，而是成本上升得太快。",
+    answer:`Although the company's revenue is still growing, analysts think that the biggest problem now is <mark>not that demand is too weak, but that costs are rising too quickly</mark>.`,
+    analysis:[["使用者原句","Although the company's revenue is still growing, analysts think that the biggest problem now is that the cost rising too fast not that it lacks demands."],["⚠️ 🔴 that the cost rising → that costs are rising","子句需要限定動詞，故補 are；這裡泛指企業的多項成本，複數 costs 最自然。the cost 可用於某一項已知的特定成本，但仍須寫 the cost is rising。"],["⚠️ 🔴 demands → demand","表示市場整體「需求」時 demand 通常不可數：weak demand／demand is weak。demands 較常指多項明確要求，不是本句意思。"],["⚠️ 🔴 對比順序與結構","中文是「不是需求不足，而是成本上升太快」；原句把 not that 放在成本之後，對比順序顛倒。is not that A, but that B 讓兩個 that 子句保持對稱。"],["✅ Although...still growing／analysts think that","讓步子句與主要陳述都正確；although 與 still 可以並用，still 強調營收持續成長。"],["🔸 too fast／too quickly","兩者都可修飾 rise；quickly 較中性正式，fast 並非錯誤。"],["🔄 換句話說","Despite continued revenue growth, analysts say the company's main challenge is rapidly rising costs rather than weak demand.（despite；continued growth；main challenge；rather than）"]]},
+  { id:"d15", type:"vocab", tags:["辨析","D33"], qlabel:"辨析",
+    front:"thick／heavy 用來形容外套時，差在哪？",
+    answer:`<mark>thick</mark>＝厚度大；<mark>heavy</mark>＝重量大`,
+    analysis:[["thick／thicker","談布料、外套或物體的厚度：This coat looks thicker than my old one."],["heavy／heavier","談實際重量：This coat is heavier than my old one."],["可以同時成立","A thick coat may be light, and a thin coat may be heavy. 厚不必然等於重。"],["本題","中文「看起來比較厚」要用 looks／looked thicker；heavier 會改成「看起來比較重」。"],["🔄 換句話說","The jacket is bulky but surprisingly lightweight.（bulky＝體積厚重；lightweight＝重量輕）"]]}
 ];
 
 // ---------- Bulk vocabulary (bidirectional 中↔英) ----------
