@@ -110,7 +110,7 @@
 <body>
 <div class="wrap">
   <header>
-    <h1>中翻英複習<small>Spaced Review · Day 1–33 ＋ 單字表</small></h1>
+    <h1>中翻英複習<small>Spaced Review · Day 1–34 ＋ 單字表</small></h1>
     <div class="counts">
       <span><span class="dot r"></span>複習 <b id="c-rev">0</b></span>
       <span><span class="dot n"></span>新卡 <b id="c-new">0</b></span>
@@ -183,7 +183,8 @@ const C = "https://dictionary.cambridge.org/dictionary/english-chinese-tradition
 // Day2~Day8 目前沒有可靠依據，先留空；之後每加一個新 Day，會補上當天的真實日期。
 const DAY_DATES = {
   1: "2026-06-25",
-  33: "2026-08-10"
+  33: "2026-08-10",
+  34: "2026-08-11"
 };
 const DECK = [
   // ---------- Day 1 ----------
@@ -967,7 +968,25 @@ const DECK = [
   { id:"d15", type:"vocab", tags:["辨析","D33"], qlabel:"辨析",
     front:"thick／heavy 用來形容外套時，差在哪？",
     answer:`<mark>thick</mark>＝厚度大；<mark>heavy</mark>＝重量大`,
-    analysis:[["thick／thicker","談布料、外套或物體的厚度：This coat looks thicker than my old one."],["heavy／heavier","談實際重量：This coat is heavier than my old one."],["可以同時成立","A thick coat may be light, and a thin coat may be heavy. 厚不必然等於重。"],["本題","中文「看起來比較厚」要用 looks／looked thicker；heavier 會改成「看起來比較重」。"],["🔄 換句話說","The jacket is bulky but surprisingly lightweight.（bulky＝體積厚重；lightweight＝重量輕）"]]}
+    analysis:[["thick／thicker","談布料、外套或物體的厚度：This coat looks thicker than my old one."],["heavy／heavier","談實際重量：This coat is heavier than my old one."],["可以同時成立","A thick coat may be light, and a thin coat may be heavy. 厚不必然等於重。"],["本題","中文「看起來比較厚」要用 looks／looked thicker；heavier 會改成「看起來比較重」。"],["🔄 換句話說","The jacket is bulky but surprisingly lightweight.（bulky＝體積厚重；lightweight＝重量輕）"]]},
+
+  // ---------- Day 34 ----------
+  { id:"s100", type:"sentence", tags:["句子","日常","D34"], qlabel:"中譯英",
+    front:"我本來以為這雙鞋只是看起來比較重，穿出去走了兩個小時後才發現，它其實比我平常穿的那雙舒服很多。",
+    answer:`I thought the pair of shoes just looked heavier, but after <mark>walking in them for two hours</mark>, it turned out to be much more comfortable than <mark>my usual pair</mark>.`,
+    analysis:[["使用者原句","I thought the pair of shoes just looked heavier, but after wearing it to walk for two hours, it turned out to be much more comfortable than my normal one."],["⚠️ 🔴 wearing it to walk → walking in them","鞋通常以複數 shoes／them 指稱；walking in them 直接表達「穿著它們走路」，比 wearing it to walk 自然。"],["⚠️ 🔴 normal one → usual pair","normal 偏「正常、沒有異常」；中文「平常穿的那雙」用 usual。pair 明確指一雙鞋。"],["⚪ my usual ones 也正確","ones 可代替複數 shoes：These shoes are more comfortable than my usual ones. 這是自然的口語變體，不能判錯；主答案保留 my usual pair 只是較明確。"],["✅ I thought...looked heavier","過去視角一致，而且中文本來就是「看起來比較重」，所以 heavier 正確。"],["✅ much more comfortable than","much 正確保留「舒服很多」的程度；比較兩邊都是鞋，對象一致。"],["🔄 換句話說","These shoes looked rather heavy, but after two hours on foot, I found them far more comfortable than the ones I normally wear.（rather；on foot；find + 受詞 + 形容詞；far more）"]]},
+  { id:"s101", type:"sentence", tags:["句子","職場","D34"], qlabel:"中譯英",
+    front:"我們已依照最新規定修改合約內容；若您確認沒有其他問題，我們將於本週五前完成後續安排。",
+    answer:`We have amended the contract <mark>to conform to the latest regulations</mark>. If you have no further questions, we will <mark>complete the necessary arrangements for the next steps</mark> by this Friday.`,
+    analysis:[["使用者原句","We have amended the contract conform to the latest rules. If you have no further questions, we will finish arranging next steps by this Friday."],["⚠️ 🔴 conform to → to conform to","conform to 的選字方向正確，因為 regulations 是規範；真正缺的是表示目的的不定詞 to：amend A to conform to B＝修改 A，使其符合 B。"],["🔸 rules → regulations","rules 並非錯誤；正式合約或主管機關制定的規定，用 regulations 更精準。"],["🔸 finish arranging next steps","可以理解，但商務搭配較不自然。complete the necessary arrangements for the next steps 較正式；finalize the next steps 也可。"],["✅ If you have no further questions／by this Friday","兩者都正確；by 包含星期五當天，符合截止日語意。"],["📌 與 Day33 的差別","客戶意見 → in line with the feedback；法規或標準 → conform to the regulations。Cambridge 也將 conform to／with 定義為遵守規則或達到標準。"],["🔄 換句話說","We have revised the contract to comply with the latest regulations. Unless you have any further questions, we will finalize the remaining arrangements by Friday.（comply with；unless；finalize；remaining）"]]},
+  { id:"s102", type:"sentence", tags:["句子","財經","D34"], qlabel:"中譯英",
+    front:"雖然市場需求仍然強勁，但這家公司今年的獲利可能不會明顯成長，主要是因為人力成本持續上升。",
+    answer:`Although <mark>market demand</mark> is still strong, the company's <mark>profits this year</mark> may not grow significantly, mainly because of <mark>continuously rising labor costs</mark>.`,
+    analysis:[["使用者原句","Although the market's demand is still strong, the company's profit may not grow significantly, mainly because of the continual rising labor costs."],["⚠️ 🔴 the market's demand → market demand","財經語境慣用複合名詞 market demand，不需要所有格。"],["⚠️ 🔴 補 this year","原文限定「今年的獲利」，不能省略。profits this year 最自然。"],["🔸 profit → profits","單數 profit 並非一定錯；談公司一段期間的整體獲利表現時，profits 很常見，因此主答案採複數。"],["⚠️ 🔴 continual rising → continuously rising","此結構中 rising 是修飾 labor costs 的分詞，前面用副詞 continuously 修飾：continuously rising labor costs。"],["⚪ continual／continuous 都可修飾名詞 rise","the continual rise in labor costs 與 the continuous rise in labor costs 都正確。continual 偏一再發生、可能有間隔；continuous 偏不中斷。剛才確認的兩種變體都保留。"],["✅ Although／may not grow significantly／because of","Although 後沒有多加 but；may not grow significantly 自然；because of 後接名詞片語也正確。"],["🔄 換句話說","Despite robust market demand, the company's earnings may show little growth this year as labor costs continue to climb.（robust；earnings；show little growth；continue to climb）"]]},
+  { id:"d16", type:"vocab", tags:["辨析","D34"], qlabel:"辨析",
+    front:"continual／continuous 與 continually／continuously，如何搭配 rise／rising？",
+    answer:`形容詞 + 名詞：a <mark>continual／continuous rise</mark><br>副詞 + 分詞：<mark>continually／continuously rising</mark> costs`,
+    analysis:[["continual rise","一再出現的上升，可能有短暫停頓或波動。"],["continuous rise","連續不中斷的上升。兩者都能修飾名詞 rise，不能把 continual rise 判錯。"],["continuously rising costs","rising 在這裡是分詞，修飾 costs；副詞 continuously 再修飾 rising。"],["continually rising costs","文法也成立，偏成本一次又一次上升；若強調一路持續攀升，continuously 較直接。"],["⚠️ 不自然","continual rising labor costs：continual 不能直接用這種方式修飾具有動詞性質的 rising。改為 continually／continuously rising，或 the continual／continuous rise in。"],["🔄 換句話說","Labor costs have kept climbing, with no sustained pause.（keep climbing；with no sustained pause）"]]}
 ];
 
 // ---------- Bulk vocabulary (bidirectional 中↔英) ----------
