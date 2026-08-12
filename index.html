@@ -110,7 +110,7 @@
 <body>
 <div class="wrap">
   <header>
-    <h1>中翻英複習<small>Spaced Review · Day 1–34 ＋ 單字表</small></h1>
+    <h1>中翻英複習<small>Spaced Review · Day 1–35 ＋ 單字表</small></h1>
     <div class="counts">
       <span><span class="dot r"></span>複習 <b id="c-rev">0</b></span>
       <span><span class="dot n"></span>新卡 <b id="c-new">0</b></span>
@@ -184,7 +184,8 @@ const C = "https://dictionary.cambridge.org/dictionary/english-chinese-tradition
 const DAY_DATES = {
   1: "2026-06-25",
   33: "2026-08-10",
-  34: "2026-08-11"
+  34: "2026-08-11",
+  35: "2026-08-12"
 };
 const DECK = [
   // ---------- Day 1 ----------
@@ -986,7 +987,21 @@ const DECK = [
   { id:"d16", type:"vocab", tags:["辨析","D34"], qlabel:"辨析",
     front:"continual／continuous 與 continually／continuously，如何搭配 rise／rising？",
     answer:`形容詞 + 名詞：a <mark>continual／continuous rise</mark><br>副詞 + 分詞：<mark>continually／continuously rising</mark> costs`,
-    analysis:[["continual rise","一再出現的上升，可能有短暫停頓或波動。"],["continuous rise","連續不中斷的上升。兩者都能修飾名詞 rise，不能把 continual rise 判錯。"],["continuously rising costs","rising 在這裡是分詞，修飾 costs；副詞 continuously 再修飾 rising。"],["continually rising costs","文法也成立，偏成本一次又一次上升；若強調一路持續攀升，continuously 較直接。"],["⚠️ 不自然","continual rising labor costs：continual 不能直接用這種方式修飾具有動詞性質的 rising。改為 continually／continuously rising，或 the continual／continuous rise in。"],["🔄 換句話說","Labor costs have kept climbing, with no sustained pause.（keep climbing；with no sustained pause）"]]}
+    analysis:[["continual rise","一再出現的上升，可能有短暫停頓或波動。"],["continuous rise","連續不中斷的上升。兩者都能修飾名詞 rise，不能把 continual rise 判錯。"],["continuously rising costs","rising 在這裡是分詞，修飾 costs；副詞 continuously 再修飾 rising。"],["continually rising costs","文法也成立，偏成本一次又一次上升；若強調一路持續攀升，continuously 較直接。"],["⚠️ 不自然","continual rising labor costs：continual 不能直接用這種方式修飾具有動詞性質的 rising。改為 continually／continuously rising，或 the continual／continuous rise in。"],["🔄 換句話說","Labor costs have kept climbing, with no sustained pause.（keep climbing；with no sustained pause）"]]},
+
+  // ---------- Day 35 ----------
+  { id:"s103", type:"sentence", tags:["句子","日常","D35"], qlabel:"中譯英",
+    front:"這家咖啡店外觀看起來很普通，但我昨天第一次進去後才發現，甜點其實比我原本預期的好很多，所以我下次還會再去。",
+    answer:`The café looks <mark>ordinary</mark>, but when I went inside <mark>for the first time yesterday</mark>, I found that its desserts were much better than I expected, so <mark>I'll go back next time</mark>.`,
+    analysis:[["使用者原句","The cafe looks normal, but after my first time going inside, it turned out that its desserts were much better than I expected, so I'm willing to go there next time."],["⚪ normal → ordinary（語意精準度）","looks normal 文法成立，可表示「看起來正常、沒有異常」；若中文的「普通」重點是外觀平凡、沒特色，ordinary／unremarkable 更精準。Cambridge 將 ordinary 解作 not special，而 normal 偏符合通常或預期狀態，因此不能把 normal 一概判成文法錯。"],["🔸 after my first time going inside","能理解，但結構不自然，而且漏了 yesterday。when I went inside for the first time yesterday 更直接。"],["✅ much better than I expected","比較結構與程度副詞 much 都正確，完整表達「好很多」。"],["⚠️ 🔴 I'm willing to go there → I'll go back","be willing to 表示「願意」，中文是在預告下次仍會再訪。will go back／will come back 才準確保留未來行動與「再」。"],["🔸 it turned out that／I found that","it turned out that 並非錯誤；在明確主詞是「我第一次進去後才發現」時，I found that 更貼中文視角。"],["📌 既有卡","ordinary／normal 的核心辨析已在 w1702、w2103、w2104，不重複新增字彙卡。"],["🔄 換句話說","The café looked unremarkable from the outside, but its desserts exceeded my expectations, so I plan to return.（unremarkable；from the outside；exceed expectations；return）"]]},
+  { id:"s104", type:"sentence", tags:["句子","職場","D35"], qlabel:"中譯英",
+    front:"我們昨天已將申請送交財務部。如果款項最晚到週四仍未退回您的帳戶，請通知我，我會立即確認處理進度。",
+    answer:`We sent the application to the <mark>finance department</mark> yesterday. If the refund <mark>has not yet been returned</mark> to your account by Thursday, please contact me, and I will check <mark>the status</mark> right away.`,
+    analysis:[["使用者原句","We sent the application to the Financial administration yesterday. If the refund has yet to returned to your account by Thursday lately, please contact me, and I will check and deal with it right away."],["🔸 Financial administration → finance department","Financial administration 不是純文法錯，但通常指財務管理活動；公司內部的「財務部」慣用 finance department。"],["⚠️ 🔴 has yet to returned → has not yet been returned","款項是「被退回」，需要現在完成式被動 has + been + returned。也可保留原結構寫 has yet to be returned；錯誤核心是漏掉 be 且 returned 不能直接接在 to 後。"],["⚠️ 🔴 by Thursday lately → by Thursday","lately 是「最近」，不是「最晚」。by Thursday 本身就表示不晚於週四，並包含週四當天。"],["✅ please contact me／right away","兩者都自然，分別對應「請通知我」與「立即」。"],["🔸 check and deal with it → check the status","原句會增加「處理它」的意思；中文只說確認處理進度，因此 check the status／check on its progress 更準確。"],["📌 既有卡","現在完成式被動已在 g41；退款被退回與 at the latest／lately 已在 Day25 s76、w2104 等卡，不重做。"],["🔄 換句話說","We forwarded the application to Finance yesterday. If the funds have not reached your account by Thursday, please let me know and I'll follow up immediately.（forward；Finance；reach an account；follow up）"]]},
+  { id:"s105", type:"sentence", tags:["句子","財經","D35"], qlabel:"中譯英",
+    front:"雖然通膨最近有所緩和，但許多家庭仍感受不到明顯的改善；分析師認為，主要問題不是商品短缺，而是服務價格仍然太高。",
+    answer:`Although inflation <mark>has eased recently</mark>, many households still <mark>haven't felt much improvement</mark>. Analysts think that the main problem is <mark>not that goods are in short supply, but that service prices are still too high</mark>.`,
+    analysis:[["使用者原句","Although inflation is slowing recently, many households still couldn't feel significant improvement. Analysts think that the main problem isn't store shortage, but the high service price."],["🔸 is slowing recently → has eased recently","is slowing 可描述目前趨勢，但與 recently 搭配時 has eased／has been slowing 較自然地涵蓋近期到現在的變化；不是單憑 recently 就能斷定原句完全不合文法。"],["⚠️ 🔴 couldn't feel → haven't felt","中文是截至目前仍未感受到，應用現在完成式；couldn't feel 會落在已結束的過去時間。"],["⚪ significant improvement 可保留","significant improvement 文法與語意都成立；much improvement 是較自然、簡潔的表達，不能把使用者版本判錯。"],["⚠️ 🔴 store shortage → goods are in short supply","store shortage 會理解成「商店數量短缺」。商品短缺可用 a shortage of goods 或 goods are in short supply。"],["⚠️ 🔴 the high service price → service prices are still too high","這裡泛指各類服務價格，使用複數 prices；也不能漏掉 still 與 too 所表達的「仍然太高」。"],["⚠️ 參考答案也需修正","isn't a shortage of goods, but that service prices... 是名詞片語對 that 子句，不平行。本卡改用 not that + 子句, but that + 子句，真正符合既有 g38／w2707 的對稱規則。"],["📌 既有卡","shortage 已有 w401；通膨緩和已有 Day12、Day21相關卡；not that 對稱規則已有 g38／w2707，因此不新增重複卡。"],["🔄 換句話說","Despite easing inflation, households have seen little tangible improvement because the real pressure comes from persistently high service prices rather than goods shortages.（tangible；pressure；persistently；rather than）"]]}
 ];
 
 // ---------- Bulk vocabulary (bidirectional 中↔英) ----------
