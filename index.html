@@ -1990,6 +1990,7 @@ for(const c of DECK){
 // ---------- Storage (localStorage) ----------
 const KEY="ce-srs-v1";
 const NEW_PER_DAY=30;
+const REVIEW_PER_DAY=60;
 function loadRaw(){ try{ return JSON.parse(localStorage.getItem(KEY)||"null"); }catch(e){ return null; } }
 function saveRaw(s){ try{ localStorage.setItem(KEY, JSON.stringify(s)); }catch(e){} }
 
@@ -2000,8 +2001,19 @@ const TODAY=dstr(today());
 
 function loadState(){
   let s=loadRaw();
-  if(!s){ s={cards:{}, newByDate:{}}; }
-  for(const c of DECK){ if(!s.cards[c.id]) s.cards[c.id]={ef:2.5,interval:0,reps:0,due:null,introduced:false}; }
+  if(!s){ s={cards:{}, newByDate:{}, reviewsByDate:{}}; }
+  if(!s.cards) s.cards={};
+  if(!s.newByDate) s.newByDate={};
+  if(!s.reviewsByDate) s.reviewsByDate={};
+  for(const c of DECK){
+    if(!s.cards[c.id]) s.cards[c.id]={ef:2.5,interval:0,reps:0,due:null,introduced:false};
+    const cs=s.cards[c.id];
+    if(cs.ef===undefined) cs.ef=2.5;
+    if(cs.interval===undefined) cs.interval=0;
+    if(cs.reps===undefined) cs.reps=0;
+    if(cs.due===undefined) cs.due=null;
+    if(cs.introduced===undefined) cs.introduced=false;
+  }
   return s;
 }
 function saveState(s){ saveRaw(s); }
@@ -2035,9 +2047,22 @@ function preview(cs,q){
   return nextInterval(cs,q)+"天";
 }
 function applyGrade(s,c,q){ const cs=s.cards[c.id];
-  if(!cs.introduced){ cs.introduced=true; s.newByDate[TODAY]=(s.newByDate[TODAY]||0)+1; }
+  const wasIntroduced=!!cs.introduced;
+  if(!wasIntroduced){ cs.introduced=true; s.newByDate[TODAY]=(s.newByDate[TODAY]||0)+1; }
+  if(wasIntroduced && cs.reps>0 && cs.lastReviewed!==TODAY){
+    if(!s.reviewsByDate) s.reviewsByDate={};
+    s.reviewsByDate[TODAY]=(s.reviewsByDate[TODAY]||0)+1;
+  }
   const iv = nextInterval(cs,q);
-  if(q==="again"){ cs.reps=0; cs.interval=0; cs.ef=Math.max(1.3,cs.ef-0.2); cs.due=TODAY; return "again"; }
+  cs.lastGrade=q; cs.lastReviewed=TODAY;
+  if(q==="again"){
+    cs.lapses=(cs.lapses||0)+1;
+    cs.ef=Math.max(1.3,cs.ef-0.2);
+    // 已學過的卡只縮短間隔，不清除 reps／學習身分；首次新卡則維持學習階段。
+    if(wasIntroduced && cs.reps>0) cs.interval=Math.max(1,Math.round(Math.max(1,cs.interval)*0.25));
+    cs.due=TODAY;
+    return "again";
+  }
   if(q==="hard") cs.ef=Math.max(1.3,cs.ef-0.15);
   if(q==="easy") cs.ef=cs.ef+0.15;
   cs.reps+=1; cs.interval=iv; cs.due=addDays(iv);
@@ -2124,6 +2149,16 @@ function buildQueue(){
   const rev=[],news=[];
   for(const c of pool){ const cs=STATE.cards[c.id];
     if(cs.introduced){ if(cs.due && cs.due<=TODAY) rev.push(c.id); } else news.push(c.id); }
+  // 到期舊卡固定先按逾期日排序；同一天再讓最近 Again／Hard 的卡優先。
+  const reviewPriority=(id)=>{
+    const cs=STATE.cards[id];
+    const difficult=cs.lastGrade==="again"?0:(cs.lastGrade==="hard"?1:2);
+    return {due:cs.due||TODAY,difficult,last:cs.lastReviewed||""};
+  };
+  rev.sort((a,b)=>{
+    const x=reviewPriority(a), y=reviewPriority(b);
+    return x.due.localeCompare(y.due) || x.difficult-y.difficult || y.last.localeCompare(x.last);
+  });
   if(NEW_ORDER==="new"){
     // 由新到舊：依「真正加入的時間」排序，Day 卡和 HW 卡混在同一條時間軸上
     // 複習卡與新卡都套用（複習卡仍整體排在新卡前面）
@@ -2136,10 +2171,10 @@ function buildQueue(){
       const d=dayOf(c); if(d!==null) return d;          // 每日練習：Day 越大越新
       return 0; };                                      // 字表等無編號的：最後
     news.sort((a,b)=>rank(b)-rank(a));
-    rev.sort((a,b)=>rank(b)-rank(a));
   }
+  const reviewAllow=Math.max(0,REVIEW_PER_DAY-((STATE.reviewsByDate&&STATE.reviewsByDate[TODAY])||0));
   const allow=Math.max(0,NEW_PER_DAY-(STATE.newByDate[TODAY]||0))+extraToday;
-  queue=[...rev,...news.slice(0,allow)];
+  queue=[...rev.slice(0,reviewAllow),...news.slice(0,allow)];
 }
 function counts(){
   if(MODE==="free"){ document.getElementById("c-rev").textContent=queue.length; document.getElementById("c-new").textContent="—"; return; }
@@ -2358,12 +2393,16 @@ function encodeBackup(st){
       v.interval ? String(v.interval) : "",
       v.reps ? String(v.reps) : "",
       toD6(v.due),
-      v.introduced ? "1" : "" ];
+      v.introduced ? "1" : "",
+      v.lastGrade ? v.lastGrade[0] : "",
+      toD6(v.lastReviewed),
+      v.lapses ? String(v.lapses) : "" ];
     while(f.length>1 && f[f.length-1]==="") f.pop();
     parts.push(f.join(":"));
   }
   const nb=[]; for(const d in (st.newByDate||{})) nb.push(toD6(d)+":"+st.newByDate[d]);
-  return "CESRS2|"+toD6(TODAY)+"."+deviceTag()+"|"+parts.join(",")+"|"+nb.join(",");
+  const rb=[]; for(const d in (st.reviewsByDate||{})) rb.push(toD6(d)+":"+st.reviewsByDate[d]);
+  return "CESRS2|"+toD6(TODAY)+"."+deviceTag()+"|"+parts.join(",")+"|"+nb.join(",")+"|"+rb.join(",");
 }
 function decodeBackup(txt){
   txt=(txt||"").trim();
@@ -2373,7 +2412,7 @@ function decodeBackup(txt){
   if(!txt.startsWith("CESRS2|")) return null;
   const seg=txt.split("|");
   if(seg.length<3) return null;
-  const st={cards:{}, newByDate:{}};
+  const st={cards:{}, newByDate:{}, reviewsByDate:{}};
   const head=(seg[1]||"").split(".");
   st.__meta={ date: fromD6(head[0]||""), device: head[1]||"" };
   for(const e of (seg[2]||"").split(",")){
@@ -2385,13 +2424,21 @@ function decodeBackup(txt){
       interval: f[2] ? parseInt(f[2],10) : 0,
       reps: f[3] ? parseInt(f[3],10) : 0,
       due: fromD6(f[4]||""),
-      introduced: f[5]==="1"
+      introduced: f[5]==="1",
+      lastGrade: ({a:"again",h:"hard",g:"good",e:"easy"})[f[6]] || undefined,
+      lastReviewed: fromD6(f[7]||""),
+      lapses: f[8] ? parseInt(f[8],10) : 0
     };
   }
   for(const e of (seg[3]||"").split(",")){
     if(!e) continue;
     const f=e.split(":");
     const d=fromD6(f[0]||""); if(d) st.newByDate[d]=parseInt(f[1],10)||0;
+  }
+  for(const e of (seg[4]||"").split(",")){
+    if(!e) continue;
+    const f=e.split(":");
+    const d=fromD6(f[0]||""); if(d) st.reviewsByDate[d]=parseInt(f[1],10)||0;
   }
   return st;
 }
@@ -2440,7 +2487,7 @@ function applyBackupData(data){
   const src = meta.date ? `（${meta.date}${meta.device?('，來自'+deviceName(meta.device)):''}）`
             : (data && data.exportedAt ? `（${data.exportedAt.slice(0,10)}）` : '');
   if(!confirm(`還原備份會覆蓋目前的進度。\n\n備份：${incoming} 張卡有進度${src}\n目前：${current} 張卡有進度\n\n確定要還原嗎？`)){ bkSay(''); return false; }
-  const merged={ cards:{}, newByDate: st.newByDate || {} };
+  const merged={ cards:{}, newByDate: st.newByDate || {}, reviewsByDate: st.reviewsByDate || {} };
   for(const c of DECK){ merged.cards[c.id] = st.cards[c.id] || {ef:2.5,interval:0,reps:0,due:null,introduced:false}; }
   STATE=merged; saveState(STATE); buildQueue(); render();
   bkSay(`已還原備份（${incoming} 張卡的進度）`, true);
