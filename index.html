@@ -79,6 +79,7 @@
   .choice-stack span{position:relative; display:block; min-width:100%; white-space:nowrap; line-height:1.55;}
   .choice-stack span::before{content:""; position:absolute; left:-13px; top:50%; width:11px; height:2px; background:var(--pine); transform:translateY(-50%);}
   .choice-stack small{color:var(--muted); font-size:.88em;}
+  .choice-mobile-meaning{display:none;}
   .branch-phrase{display:inline-grid; grid-template-columns:auto auto auto auto; align-items:center; gap:4px; max-width:100%;}
   .branch-meanings{display:grid; gap:3px; color:var(--muted); font-size:.88em;}
   .branch-meanings span{white-space:nowrap; line-height:1.55;}
@@ -121,6 +122,21 @@
   #bkMsg{margin-top:8px; font-size:12px; text-align:right; min-height:16px;}
   #bkMsg.ok{color:var(--good);} #bkMsg.err{color:var(--again);}
   .hide{display:none;}
+  @media (max-width:520px){
+    .front{padding:22px 18px;}
+    .back{padding:18px 18px 4px;}
+    .controls{padding:16px 18px 20px;}
+    .analysis{font-size:14px;}
+    .branch-phrase{
+      display:grid; width:100%; grid-template-columns:auto minmax(0,1fr) auto;
+      align-items:center; column-gap:5px;
+    }
+    .branch-meanings{display:none;}
+    .choice-stack{min-width:0; max-width:100%; margin-inline:2px; padding-right:4px;}
+    .choice-stack span{min-width:0; white-space:normal; overflow-wrap:anywhere; line-height:1.4;}
+    .choice-mobile-meaning{display:block; margin-top:1px; line-height:1.35; white-space:normal; overflow-wrap:anywhere;}
+    .branch-common{min-width:0; white-space:normal; overflow-wrap:anywhere;}
+  }
   @media (max-width:430px){ .prompt{font-size:19px;} .answer{font-size:16.5px;} }
 </style>
 </head>
@@ -1671,8 +1687,13 @@ function coChoices(items,showWordGloss=true){
   }).join("")}</span>`;
 }
 function coBranch(prefix,items,suffix=""){
-  const hasFullMeanings=items.some(Array.isArray);
-  return `<span class="branch-phrase"><span class="branch-common">${prefix}</span>${coChoices(items.map(x=>Array.isArray(x)?x[0]:x),!hasFullMeanings)}<span class="branch-common">${suffix}</span><span class="branch-meanings">${items.map(x=>`<span>${Array.isArray(x)?`（${x[1]}）`:""}</span>`).join("")}</span></span>`;
+  const choices=items.map(x=>{
+    const word=Array.isArray(x)?x[0]:x;
+    const zh=Array.isArray(x)?x[1]:CO_ZH[word];
+    const meaningClass=Array.isArray(x)?"choice-mobile-meaning":"choice-inline-meaning";
+    return `<span>${word}${zh?` <small class="${meaningClass}">（${zh}）</small>`:""}</span>`;
+  }).join("");
+  return `<span class="branch-phrase"><span class="branch-common">${prefix}</span><span class="choice-stack">${choices}</span><span class="branch-common">${suffix}</span><span class="branch-meanings">${items.map(x=>`<span>${Array.isArray(x)?`（${x[1]}）`:""}</span>`).join("")}</span></span>`;
 }
 const CO_LAYOUTS={
   v17:[coBranch("",[["long","續航力長"],["short","續航力短"],["poor","續航力差"]],"battery life")],
