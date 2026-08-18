@@ -132,6 +132,13 @@
   .cloud-primary{background:var(--pine); color:#fff; border-color:var(--pine);}
   .cloud-primary:hover{color:#fff; border-color:var(--pine-d); background:var(--pine-d);}
   .cloud-danger{color:var(--again);}
+  .cloud-toggle{display:flex; align-items:center; gap:7px; margin-top:9px; font-size:12px; color:var(--ink); cursor:pointer;}
+  .cloud-toggle input{width:16px; height:16px; accent-color:var(--pine);}
+  .cloud-badge{display:inline-flex; align-items:center; padding:3px 8px; margin-left:6px; border:1px solid var(--line); border-radius:999px; font-size:11px; white-space:nowrap;}
+  .cloud-badge.syncing{color:var(--pine); border-color:var(--pine);}
+  .cloud-badge.ok{color:var(--good); border-color:var(--good);}
+  .cloud-badge.warn{color:var(--hard); border-color:var(--hard);}
+  .cloud-badge.err{color:var(--again); border-color:var(--again);}
   #cloudInfo{font-size:11.5px; line-height:1.55; color:var(--muted); margin-top:8px; min-height:18px; white-space:pre-line;}
   #cloudInfo.ok{color:var(--good);} #cloudInfo.err{color:var(--again);}
   .hide{display:none;}
@@ -204,7 +211,7 @@
     </div>
   </div>
   <footer>
-    <span id="foot">FSRS-6 · 進度自動保存在這個瀏覽器</span>
+    <span id="foot">FSRS-6 · 進度自動保存在這個瀏覽器 <span id="cloudBadge" class="cloud-badge">☁️ 未連接</span></span>
     <span class="bkbar">
       <button class="bkbtn" id="btnText">📋 文字備份</button>
       <button class="bkbtn" id="btnExport">⬇️ 下載檔案</button>
@@ -238,6 +245,7 @@
       <button class="bkbtn" id="btnCloudRestore">載入雲端進度</button>
       <button class="bkbtn cloud-danger" id="btnCloudDisconnect">中斷連線</button>
     </div>
+    <label class="cloud-toggle"><input type="checkbox" id="cloudAuto" checked> 答題後自動同步（建議開啟）</label>
     <div id="cloudInfo">尚未連接 Google Drive。</div>
   </div>
   <div id="bkMsg"></div>
@@ -4449,7 +4457,7 @@ function render(){
       if(MODE==="free"){
         queue.shift(); if(q==="again") queue.push(c.id); render(); return; // 不寫回 STATE，不影響正式進度
       }
-      applyGrade(STATE,c,q,Date.now()-cardShownAt); saveState(STATE);
+      applyGrade(STATE,c,q,Date.now()-cardShownAt); saveState(STATE); scheduleAutoSync(6000,'答題');
       queue.shift(); render();
     };
   });
@@ -4673,7 +4681,7 @@ async function unpackBackup(txt){
 }
 
 // 文字備份（不用下載檔案，直接複製/貼上）
-function applyBackupData(data){
+function applyBackupData(data,options={}){
   const raw = (data && data.state) ? data.state : data;
   const st = normalizeProgressState(raw);
   if(!st){
@@ -4683,12 +4691,12 @@ function applyBackupData(data){
   const meta = raw.__meta || {};
   const src = meta.date ? `（${meta.date}${meta.device?('，來自'+deviceName(meta.device)):''}）`
             : (data && data.exportedAt ? `（${data.exportedAt.slice(0,10)}）` : '');
-  if(!confirm(`還原備份會覆蓋目前的進度。\n\n備份：${incoming} 張卡有進度${src}\n目前：${current} 張卡有進度\n\n確定要還原嗎？`)){ bkSay(''); return false; }
+  if(!options.skipConfirm&&!confirm(`還原備份會覆蓋目前的進度。\n\n備份：${incoming} 張卡有進度${src}\n目前：${current} 張卡有進度\n\n確定要還原嗎？`)){ bkSay(''); return false; }
   const merged={ cards:{}, newByDate: st.newByDate || {}, reviewsByDate: st.reviewsByDate || {},
     reviewLog:st.reviewLog || [], schedulerVersion:st.schedulerVersion || FSRS_ENGINE_VERSION };
   for(const c of DECK){ merged.cards[c.id] = st.cards[c.id] || {ef:2.5,interval:0,reps:0,due:null,introduced:false}; }
   STATE=merged; saveState(STATE); buildQueue(); render();
-  bkSay(`已還原備份（${incoming} 張卡的進度）`, true);
+  if(!options.silent) bkSay(`已還原備份（${incoming} 張卡的進度）`, true);
   return true;
 }
 document.getElementById('btnText').onclick=()=>{
@@ -4741,17 +4749,25 @@ document.getElementById('fileImport').onchange=(e)=>{
 const GOOGLE_CLIENT_ID_KEY="ce-srs-google-client-id";
 const GOOGLE_GRANTED_KEY="ce-srs-google-granted";
 const CLOUD_SYNC_META_KEY="ce-srs-cloud-sync-v1";
+const CLOUD_AUTO_KEY="ce-srs-cloud-auto-v1";
 const GOOGLE_DRIVE_SCOPE="https://www.googleapis.com/auth/drive.file";
 const CLOUD_FOLDER_NAME="英文 SRS 備份";
 const CLOUD_KEEP_VERSIONS=5;
 const CLOUD_MAX_BYTES=8*1024*1024;
 let googleAccessToken="", googleTokenExpiresAt=0, googleTokenClient=null, googleTokenPromise=null;
 let cloudFolderId="", googleIdentityPromise=null;
+let cloudAutoTimer=0,cloudSyncRunning=false,cloudSyncQueued=false,cloudOperationBusy=false;
 
 function cloudSay(msg,ok){
   const el=document.getElementById('cloudInfo');
   el.textContent=msg;
   el.className=ok===false?'err':(ok===true?'ok':'');
+}
+function cloudAutoEnabled(){ try{ return localStorage.getItem(CLOUD_AUTO_KEY)!=='0'; }catch(e){ return true; } }
+function tokenIsFresh(){ return !!googleAccessToken&&Date.now()<googleTokenExpiresAt-90000; }
+function setCloudBadge(text,state=''){
+  const el=document.getElementById('cloudBadge'); if(!el) return;
+  el.textContent='☁️ '+text; el.className='cloud-badge'+(state?' '+state:'');
 }
 function cloudClientId(){
   try{ return (localStorage.getItem(GOOGLE_CLIENT_ID_KEY)||'').trim(); }catch(e){ return ''; }
@@ -4763,7 +4779,9 @@ function renderCloudConfig(){
   const input=document.getElementById('googleClientId');
   const id=cloudClientId();
   if(input && document.activeElement!==input) input.value=id;
+  const auto=document.getElementById('cloudAuto'); if(auto) auto.checked=cloudAutoEnabled();
   if(!id) cloudSay('請先貼上 Google OAuth Client ID；不要貼 Client Secret。');
+  setCloudBadge(tokenIsFresh()?'已連接':(id?'需要連接':'未設定'),tokenIsFresh()?'ok':(id?'warn':''));
 }
 function cloudOriginAllowed(){
   return location.protocol==='https:' || (location.protocol==='http:' && /^(localhost|127\.0\.0\.1)$/.test(location.hostname));
@@ -4843,6 +4861,15 @@ async function listCloudBackups(folderId){
   if(!folderId) return [];
   const q=`'${driveEscape(folderId)}' in parents and trashed=false and appProperties has { key='ceSrsRole' and value='progressBackup' }`;
   const data=await driveList(q); return data.files||[];
+}
+async function listCloudSyncFiles(folderId){
+  if(!folderId) return [];
+  const q=`'${driveEscape(folderId)}' in parents and trashed=false`;
+  const data=await driveList(q),files=(data.files||[]).filter(f=>{
+    const role=f.appProperties&&f.appProperties.ceSrsRole;
+    return role==='progressCurrent'||role==='progressBackup';
+  });
+  return files.sort((a,b)=>String(b.modifiedTime||b.createdTime||'').localeCompare(String(a.modifiedTime||a.createdTime||'')));
 }
 function stableValue(v,depth=0){
   if(depth>20) throw new Error('進度資料層級異常');
@@ -4948,6 +4975,25 @@ async function createCloudFile(folderId,envelope){
     method:'POST',body});
   return res.json();
 }
+async function upsertCloudCurrent(folderId,envelope){
+  const content=JSON.stringify(envelope);
+  if(new Blob([content]).size>CLOUD_MAX_BYTES) throw new Error('進度檔超過安全大小限制，請先使用下載檔案備份');
+  const files=await listCloudSyncFiles(folderId);
+  const current=files.find(f=>f.appProperties&&f.appProperties.ceSrsRole==='progressCurrent');
+  if(current){
+    const res=await driveFetch(`https://www.googleapis.com/upload/drive/v3/files/${encodeURIComponent(current.id)}?uploadType=media&fields=id,name,createdTime,modifiedTime,size,appProperties`,{
+      method:'PATCH',headers:{'Content-Type':'application/json; charset=UTF-8'},body:content
+    });
+    const out=await res.json(); out.appProperties=current.appProperties; return out;
+  }
+  const boundary='ce_srs_'+Math.random().toString(36).slice(2);
+  const metadata={name:'英文複習進度_自動同步.json',parents:[folderId],appProperties:{ceSrsRole:'progressCurrent',ceSrsFormat:'1'}};
+  const body=new Blob([`--${boundary}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n`,JSON.stringify(metadata),
+    `\r\n--${boundary}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n`,content,`\r\n--${boundary}--`],
+    {type:`multipart/related; boundary=${boundary}`});
+  const res=await driveFetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,name,createdTime,modifiedTime,size,appProperties',{method:'POST',body});
+  return res.json();
+}
 async function readCloudFile(file){
   if(Number(file.size)>CLOUD_MAX_BYTES) throw new Error('雲端備份超過安全大小限制');
   const res=await driveFetch(`https://www.googleapis.com/drive/v3/files/${encodeURIComponent(file.id)}?alt=media`);
@@ -4960,12 +5006,67 @@ async function readCloudFile(file){
 }
 async function latestCloudBackup(){
   const folder=await findCloudFolder(false); if(!folder) return null;
-  const files=await listCloudBackups(folder); if(!files.length) return null;
+  const files=await listCloudSyncFiles(folder); if(!files.length) return null;
   return {file:files[0],envelope:await readCloudFile(files[0]),files};
 }
 async function pruneCloudBackups(folderId){
   const files=await listCloudBackups(folderId),old=files.slice(CLOUD_KEEP_VERSIONS);
   for(const f of old){ try{ await driveFetch(`https://www.googleapis.com/drive/v3/files/${encodeURIComponent(f.id)}`,{method:'DELETE'}); }catch(e){} }
+}
+async function applyCloudEnvelope(remote){
+  const r=remote.envelope;
+  r.state.__meta={date:(r.exportedAt||'').slice(0,10),device:r.device||''};
+  if(!applyBackupData(r.state,{skipConfirm:true,silent:true})) throw new Error('雲端進度無法套用');
+  const hash=await progressHash(STATE); saveSyncMeta(hash,remote.file); saveLastBackup('cloud');
+  return hash;
+}
+async function reconcileCloud(reason='自動同步'){
+  setCloudBadge('同步中','syncing');
+  const local=await makeCloudEnvelope(),base=readSyncMeta(),remote=await latestCloudBackup();
+  if(!remote){
+    const folder=await findCloudFolder(true),file=await upsertCloudCurrent(folder,local);
+    saveSyncMeta(local.stateHash,file); saveLastBackup('cloud');
+    setCloudBadge('已同步','ok'); cloudSay(`已建立雲端同步：${local.summary.studied} 張卡有進度。`,true); return 'uploaded';
+  }
+  const r=remote.envelope;
+  if(r.stateHash===local.stateHash){
+    saveSyncMeta(local.stateHash,remote.file); setCloudBadge('已同步','ok'); cloudSay('本機與雲端進度一致。',true); return 'same';
+  }
+  if(base){
+    const localChanged=base.hash!==local.stateHash,cloudChanged=base.hash!==r.stateHash;
+    if(localChanged&&cloudChanged){
+      setCloudBadge('發現衝突','err');
+      throw new Error('手機與電腦兩邊都有新進度，已停止自動覆蓋。請先下載本機備份，再決定保留哪一邊。');
+    }
+    if(cloudChanged&&!localChanged){
+      await applyCloudEnvelope(remote); setCloudBadge('已同步','ok'); cloudSay('已自動載入另一裝置的較新進度。',true); return 'downloaded';
+    }
+    if(localChanged&&!cloudChanged){
+      const folder=await findCloudFolder(true),file=await upsertCloudCurrent(folder,local);
+      saveSyncMeta(local.stateHash,file); saveLastBackup('cloud'); setCloudBadge('已同步','ok'); cloudSay('答題進度已自動同步到 Google Drive。',true); return 'uploaded';
+    }
+  }else if(local.summary.studied===0){
+    await applyCloudEnvelope(remote); setCloudBadge('已同步','ok'); cloudSay('已自動載入雲端進度。',true); return 'downloaded';
+  }
+  setCloudBadge('需要確認','err');
+  throw new Error('這台裝置和雲端都有不同進度，且尚無共同同步點。為避免誤蓋，請先下載本機備份，再用「立即備份」或「載入雲端進度」決定。');
+}
+function scheduleAutoSync(delay=6000,reason='進度變更'){
+  if(!cloudAutoEnabled()||!validGoogleClientId(cloudClientId())) return;
+  clearTimeout(cloudAutoTimer); cloudAutoTimer=setTimeout(()=>runAutoSync(reason),Math.max(0,delay));
+}
+async function runAutoSync(reason='自動同步'){
+  if(!cloudAutoEnabled()) return;
+  if(navigator.onLine===false){ setCloudBadge('等待網路','warn'); return; }
+  if(!tokenIsFresh()){ setCloudBadge('需要連接','warn'); return; }
+  if(cloudOperationBusy||cloudSyncRunning){ cloudSyncQueued=true; return; }
+  cloudSyncRunning=true;
+  try{ await reconcileCloud(reason); }
+  catch(e){ cloudSay(e&&e.message?e.message:'自動同步失敗',false); if(!/衝突|不同進度|共同同步點/.test(e&&e.message||'')) setCloudBadge('同步失敗','err'); }
+  finally{
+    cloudSyncRunning=false;
+    if(cloudSyncQueued){ cloudSyncQueued=false; scheduleAutoSync(1000,'排隊同步'); }
+  }
 }
 async function cloudBackup(){
   cloudSay('正在比較本機與雲端進度…');
@@ -4973,16 +5074,23 @@ async function cloudBackup(){
   const local=await makeCloudEnvelope(),base=readSyncMeta(),remote=await latestCloudBackup();
   if(remote){
     const r=remote.envelope;
-    if(r.stateHash===local.stateHash){ saveSyncMeta(local.stateHash,remote.file); cloudSay('本機與雲端已經一致，不需要重複備份。',true); return; }
-    if(!base){ throw new Error('雲端已有另一份進度。為避免覆蓋，請先按「載入雲端進度」比較；若本機更重要，先下載檔案留存。'); }
-    const localChanged=base.hash!==local.stateHash,cloudChanged=base.hash!==r.stateHash;
-    if(localChanged&&cloudChanged) throw new Error('手機與電腦兩邊都有新進度，已停止覆蓋。請先下載本機備份，再到另一裝置完成同步。');
-    if(cloudChanged&&!localChanged) throw new Error('雲端有較新的進度，請先載入雲端進度。');
-    if(compareProgress(r.summary,local.summary)>0) throw new Error('雲端進度較新，已停止用較舊的本機資料覆蓋。');
+    if(r.stateHash===local.stateHash){
+      saveSyncMeta(local.stateHash,remote.file);
+      if(remote.file.appProperties&&remote.file.appProperties.ceSrsRole==='progressBackup'){
+        setCloudBadge('已同步','ok'); cloudSay('本機與最新手動備份已經一致，不需要重複建立。',true); return;
+      }
+    }else{
+      if(!base){ throw new Error('雲端已有另一份進度。為避免覆蓋，請先按「載入雲端進度」比較；若本機更重要，先下載檔案留存。'); }
+      const localChanged=base.hash!==local.stateHash,cloudChanged=base.hash!==r.stateHash;
+      if(localChanged&&cloudChanged) throw new Error('手機與電腦兩邊都有新進度，已停止覆蓋。請先下載本機備份，再到另一裝置完成同步。');
+      if(cloudChanged&&!localChanged) throw new Error('雲端有較新的進度，請先載入雲端進度。');
+      if(compareProgress(r.summary,local.summary)>0) throw new Error('雲端進度較新，已停止用較舊的本機資料覆蓋。');
+    }
   }
   const folder=await findCloudFolder(true),file=await createCloudFile(folder,local);
   saveSyncMeta(local.stateHash,file); saveLastBackup('cloud');
   await pruneCloudBackups(folder);
+  setCloudBadge('已同步','ok');
   cloudSay(`備份完成：${local.summary.studied} 張卡有進度。雲端保留最近 ${CLOUD_KEEP_VERSIONS} 份版本。`,true);
 }
 async function cloudRestore(){
@@ -4990,7 +5098,7 @@ async function cloudRestore(){
   await ensureGoogleToken(false);
   const remote=await latestCloudBackup(); if(!remote) throw new Error('Google Drive 裡還沒有這個程式建立的備份');
   const r=remote.envelope,localState=normalizeProgressState(progressSnapshot(STATE)),localHash=await progressHash(localState),localSummary=progressSummary(localState);
-  if(r.stateHash===localHash){ saveSyncMeta(localHash,remote.file); cloudSay('本機與雲端已經一致。',true); return; }
+  if(r.stateHash===localHash){ saveSyncMeta(localHash,remote.file); setCloudBadge('已同步','ok'); cloudSay('本機與雲端已經一致。',true); return; }
   const base=readSyncMeta();
   if(base){
     const localChanged=base.hash!==localHash,cloudChanged=base.hash!==r.stateHash;
@@ -5004,14 +5112,15 @@ async function cloudRestore(){
   r.state.__meta={date:(r.exportedAt||'').slice(0,10),device:r.device||''};
   if(applyBackupData(r.state)){
     const appliedHash=await progressHash(STATE); saveSyncMeta(appliedHash,remote.file); saveLastBackup('cloud');
+    setCloudBadge('已同步','ok');
     cloudSay(`已載入雲端進度：${r.summary.studied} 張卡有進度。`,true);
   }
 }
 async function cloudAction(fn){
   const buttons=['btnCloudConnect','btnCloudBackup','btnCloudRestore','btnCloudDisconnect'].map(id=>document.getElementById(id));
-  buttons.forEach(b=>b.disabled=true);
+  buttons.forEach(b=>b.disabled=true); cloudOperationBusy=true;
   try{ await fn(); }catch(e){ cloudSay(e&&e.message?e.message:'雲端操作失敗',false); }
-  finally{ buttons.forEach(b=>b.disabled=false); }
+  finally{ cloudOperationBusy=false; buttons.forEach(b=>b.disabled=false); if(cloudSyncQueued){ cloudSyncQueued=false; scheduleAutoSync(1000,'排隊同步'); } }
 }
 
 document.getElementById('btnCloud').onclick=()=>{ document.getElementById('cloudPanel').classList.toggle('hide'); renderCloudConfig(); };
@@ -5024,8 +5133,12 @@ document.getElementById('btnSaveGoogleId').onclick=()=>{
   cloudSay('Client ID 已存於這個瀏覽器。下一步請按「連接 Google Drive」。',true);
 };
 document.getElementById('btnCloudConnect').onclick=()=>cloudAction(async()=>{
-  await ensureGoogleToken(false); const latest=await latestCloudBackup();
-  cloudSay(latest?`已連接。最新雲端備份：${new Date(latest.envelope.exportedAt).toLocaleString('zh-TW')}，${latest.envelope.summary.studied} 張卡有進度。`:'已連接。雲端尚無備份，按「立即備份」即可建立。',true);
+  await ensureGoogleToken(false);
+  if(cloudAutoEnabled()) await reconcileCloud('連接');
+  else{
+    const latest=await latestCloudBackup(); setCloudBadge('已連接','ok');
+    cloudSay(latest?`已連接。最新雲端進度：${new Date(latest.envelope.exportedAt).toLocaleString('zh-TW')}，${latest.envelope.summary.studied} 張卡有進度。`:'已連接。雲端尚無備份。',true);
+  }
 });
 document.getElementById('btnCloudBackup').onclick=()=>cloudAction(cloudBackup);
 document.getElementById('btnCloudRestore').onclick=()=>cloudAction(cloudRestore);
@@ -5036,8 +5149,21 @@ document.getElementById('btnCloudDisconnect').onclick=()=>cloudAction(async()=>{
   }
   googleAccessToken=''; googleTokenExpiresAt=0; googleTokenClient=null; cloudFolderId='';
   try{ localStorage.removeItem(GOOGLE_GRANTED_KEY); }catch(e){}
+  setCloudBadge('未連接','');
   cloudSay('已中斷 Google Drive 連線；本機進度沒有刪除。',true);
 });
+document.getElementById('cloudAuto').onchange=(e)=>{
+  try{ localStorage.setItem(CLOUD_AUTO_KEY,e.target.checked?'1':'0'); }catch(err){}
+  if(e.target.checked){ cloudSay('自動同步已開啟；連接後會安全比較兩邊進度。',true); scheduleAutoSync(0,'開啟自動同步'); }
+  else{ clearTimeout(cloudAutoTimer); setCloudBadge(tokenIsFresh()?'自動同步關閉':'需要連接','warn'); cloudSay('自動同步已關閉；仍可使用立即備份與載入。',true); }
+};
+if(window.addEventListener){
+  window.addEventListener('online',()=>scheduleAutoSync(1000,'恢復網路'));
+}
+if(document.addEventListener){
+  document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible') scheduleAutoSync(1000,'回到頁面'); });
+}
+if(typeof setInterval==='function') setInterval(()=>{ if(!document.hidden) scheduleAutoSync(0,'定期檢查'); },5*60*1000);
 renderCloudConfig();
 </script>
 </body>
