@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer">
 <title>中翻英複習　Spaced Review</title>
 <style>
   :root{
@@ -121,6 +122,18 @@
   #lastBk{font-size:11.5px; color:var(--muted); margin-bottom:8px;}
   #bkMsg{margin-top:8px; font-size:12px; text-align:right; min-height:16px;}
   #bkMsg.ok{color:var(--good);} #bkMsg.err{color:var(--again);}
+  #cloudPanel{margin-top:10px; padding:12px; border:1px solid var(--line); border-radius:10px; background:var(--panel);}
+  .cloud-head{display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:8px;}
+  .cloud-title{font-size:14px; font-weight:700; color:var(--pine);}
+  .cloud-note{font-size:11.5px; line-height:1.55; color:var(--muted); margin:6px 0;}
+  .cloud-config{display:grid; grid-template-columns:minmax(0,1fr) auto; gap:6px; margin:8px 0;}
+  #googleClientId{min-width:0; padding:7px 9px; border:1px solid var(--line); border-radius:8px; background:#fff; color:var(--ink); font:11.5px ui-monospace,Menlo,Consolas,monospace;}
+  .cloud-actions{display:flex; gap:6px; flex-wrap:wrap; margin-top:8px;}
+  .cloud-primary{background:var(--pine); color:#fff; border-color:var(--pine);}
+  .cloud-primary:hover{color:#fff; border-color:var(--pine-d); background:var(--pine-d);}
+  .cloud-danger{color:var(--again);}
+  #cloudInfo{font-size:11.5px; line-height:1.55; color:var(--muted); margin-top:8px; min-height:18px; white-space:pre-line;}
+  #cloudInfo.ok{color:var(--good);} #cloudInfo.err{color:var(--again);}
   .hide{display:none;}
   @media (max-width:520px){
     .front{padding:22px 18px;}
@@ -136,6 +149,8 @@
     .choice-stack span{min-width:0; white-space:normal; overflow-wrap:anywhere; line-height:1.4;}
     .choice-mobile-meaning{display:block; margin-top:1px; line-height:1.35; white-space:normal; overflow-wrap:anywhere;}
     .branch-common{min-width:0; white-space:normal; overflow-wrap:anywhere;}
+    .cloud-config{grid-template-columns:1fr;}
+    .cloud-actions .bkbtn{flex:1 1 calc(50% - 6px); min-height:36px;}
   }
   @media (max-width:430px){ .prompt{font-size:19px;} .answer{font-size:16.5px;} }
 </style>
@@ -194,6 +209,7 @@
       <button class="bkbtn" id="btnText">📋 文字備份</button>
       <button class="bkbtn" id="btnExport">⬇️ 下載檔案</button>
       <button class="bkbtn" id="btnImport">⬆️ 讀取檔案</button>
+      <button class="bkbtn" id="btnCloud">☁️ Google Drive</button>
       <input type="file" id="fileImport" accept=".json,.txt,application/json,text/plain" style="display:none">
     </span>
   </footer>
@@ -205,6 +221,24 @@
     </div>
     <div id="lastBk"></div>
     <textarea id="bkText" placeholder="按「產生備份文字並複製」→ 貼到備忘錄/記事本存起來（只含有進度的卡，字數已壓到最短）。&#10;要還原時，把存好的文字整段貼回這裡，再按「從下方文字還原」。"></textarea>
+  </div>
+  <div id="cloudPanel" class="hide">
+    <div class="cloud-head">
+      <span class="cloud-title">☁️ Google Drive 雲端進度</span>
+      <button class="bkbtn" id="btnCloseCloud">關閉</button>
+    </div>
+    <div class="cloud-note">進度只會寫入這個程式建立的「英文 SRS 備份」資料夾；不會讀取整個雲端硬碟。Google 存取權杖只留在目前頁面的記憶體，關閉頁面後即清除。</div>
+    <div class="cloud-config" id="cloudConfig">
+      <input id="googleClientId" type="text" inputmode="text" autocomplete="off" spellcheck="false" placeholder="貼上 Google OAuth Client ID（不是 Client Secret）">
+      <button class="bkbtn" id="btnSaveGoogleId">儲存 Client ID</button>
+    </div>
+    <div class="cloud-actions">
+      <button class="bkbtn" id="btnCloudConnect">連接 Google Drive</button>
+      <button class="bkbtn cloud-primary" id="btnCloudBackup">立即備份</button>
+      <button class="bkbtn" id="btnCloudRestore">載入雲端進度</button>
+      <button class="bkbtn cloud-danger" id="btnCloudDisconnect">中斷連線</button>
+    </div>
+    <div id="cloudInfo">尚未連接 Google Drive。</div>
   </div>
   <div id="bkMsg"></div>
 </div>
@@ -4543,7 +4577,8 @@ function renderLastBackup(){
   if(!info){ el.textContent="（這個裝置還沒備份過）"; return; }
   const d=new Date(info.t);
   const pad=(x)=>String(x).padStart(2,'0');
-  el.textContent=`上次備份：${d.getFullYear()}/${pad(d.getMonth()+1)}/${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}　於${deviceName(info.d)}${info.k==='file'?'（下載檔案）':'（文字）'}`;
+  const kind=info.k==='file'?'下載檔案':(info.k==='cloud'?'Google Drive':'文字');
+  el.textContent=`上次備份：${d.getFullYear()}/${pad(d.getMonth()+1)}/${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}　於${deviceName(info.d)}（${kind}）`;
 }
 
 // ---- 精簡備份格式 CESRS3（完整 FSRS 狀態與 review log）----
@@ -4639,12 +4674,13 @@ async function unpackBackup(txt){
 
 // 文字備份（不用下載檔案，直接複製/貼上）
 function applyBackupData(data){
-  const st = (data && data.state) ? data.state : data;
-  if(!st || typeof st!=='object' || !st.cards || typeof st.cards!=='object'){
+  const raw = (data && data.state) ? data.state : data;
+  const st = normalizeProgressState(raw);
+  if(!st){
     bkSay('這不是有效的備份內容', false); return false;
   }
   const incoming=studiedCount(st), current=studiedCount(STATE);
-  const meta = st.__meta || {};
+  const meta = raw.__meta || {};
   const src = meta.date ? `（${meta.date}${meta.device?('，來自'+deviceName(meta.device)):''}）`
             : (data && data.exportedAt ? `（${data.exportedAt.slice(0,10)}）` : '');
   if(!confirm(`還原備份會覆蓋目前的進度。\n\n備份：${incoming} 張卡有進度${src}\n目前：${current} 張卡有進度\n\n確定要還原嗎？`)){ bkSay(''); return false; }
@@ -4699,6 +4735,310 @@ document.getElementById('fileImport').onchange=(e)=>{
   reader.readAsText(f);
   e.target.value='';
 };
+
+// ---------- Google Drive 雲端備份 ----------
+// Client ID 不是密碼，可存在瀏覽器；access token 僅留在記憶體，關閉頁面即清除。
+const GOOGLE_CLIENT_ID_KEY="ce-srs-google-client-id";
+const GOOGLE_GRANTED_KEY="ce-srs-google-granted";
+const CLOUD_SYNC_META_KEY="ce-srs-cloud-sync-v1";
+const GOOGLE_DRIVE_SCOPE="https://www.googleapis.com/auth/drive.file";
+const CLOUD_FOLDER_NAME="英文 SRS 備份";
+const CLOUD_KEEP_VERSIONS=5;
+const CLOUD_MAX_BYTES=8*1024*1024;
+let googleAccessToken="", googleTokenExpiresAt=0, googleTokenClient=null, googleTokenPromise=null;
+let cloudFolderId="", googleIdentityPromise=null;
+
+function cloudSay(msg,ok){
+  const el=document.getElementById('cloudInfo');
+  el.textContent=msg;
+  el.className=ok===false?'err':(ok===true?'ok':'');
+}
+function cloudClientId(){
+  try{ return (localStorage.getItem(GOOGLE_CLIENT_ID_KEY)||'').trim(); }catch(e){ return ''; }
+}
+function validGoogleClientId(id){
+  return /^\d+-[a-z0-9_-]+\.apps\.googleusercontent\.com$/i.test((id||'').trim());
+}
+function renderCloudConfig(){
+  const input=document.getElementById('googleClientId');
+  const id=cloudClientId();
+  if(input && document.activeElement!==input) input.value=id;
+  if(!id) cloudSay('請先貼上 Google OAuth Client ID；不要貼 Client Secret。');
+}
+function cloudOriginAllowed(){
+  return location.protocol==='https:' || (location.protocol==='http:' && /^(localhost|127\.0\.0\.1)$/.test(location.hostname));
+}
+function loadGoogleIdentity(){
+  if(window.google&&window.google.accounts&&window.google.accounts.oauth2) return Promise.resolve();
+  if(googleIdentityPromise) return googleIdentityPromise;
+  googleIdentityPromise=new Promise((resolve,reject)=>{
+    const old=document.querySelector('script[data-ce-google-identity]');
+    if(old){ old.addEventListener('load',resolve,{once:true}); old.addEventListener('error',()=>reject(new Error('Google 登入程式載入失敗')),{once:true}); return; }
+    const s=document.createElement('script');
+    s.src='https://accounts.google.com/gsi/client'; s.async=true; s.defer=true;
+    s.dataset.ceGoogleIdentity='1'; s.referrerPolicy='no-referrer';
+    s.onload=()=>resolve(); s.onerror=()=>{ googleIdentityPromise=null; reject(new Error('Google 登入程式載入失敗，請確認網路連線')); };
+    document.head.appendChild(s);
+  });
+  return googleIdentityPromise;
+}
+async function ensureGoogleToken(forceConsent=false){
+  if(googleAccessToken && Date.now()<googleTokenExpiresAt-60000) return googleAccessToken;
+  if(googleTokenPromise) return googleTokenPromise;
+  const clientId=cloudClientId();
+  if(!validGoogleClientId(clientId)) throw new Error('請先填入有效的 Google OAuth Client ID');
+  if(!cloudOriginAllowed()) throw new Error('Google 登入必須從 GitHub Pages 的 HTTPS 網址開啟；file:// 本機檔不能登入');
+  await loadGoogleIdentity();
+  googleTokenPromise=new Promise((resolve,reject)=>{
+    googleTokenClient=window.google.accounts.oauth2.initTokenClient({
+      client_id:clientId,scope:GOOGLE_DRIVE_SCOPE,
+      callback:(resp)=>{
+        googleTokenPromise=null;
+        if(!resp || resp.error){ reject(new Error('Google 授權未完成'+(resp&&resp.error?`：${resp.error}`:''))); return; }
+        googleAccessToken=resp.access_token||'';
+        googleTokenExpiresAt=Date.now()+(Number(resp.expires_in)||3500)*1000;
+        if(!googleAccessToken){ reject(new Error('Google 沒有傳回存取權杖')); return; }
+        try{ localStorage.setItem(GOOGLE_GRANTED_KEY,'1'); }catch(e){}
+        resolve(googleAccessToken);
+      },
+      error_callback:()=>{ googleTokenPromise=null; reject(new Error('Google 登入視窗已關閉或無法開啟')); }
+    });
+    let granted=false; try{ granted=localStorage.getItem(GOOGLE_GRANTED_KEY)==='1'; }catch(e){}
+    googleTokenClient.requestAccessToken({prompt:(forceConsent||!granted)?'consent':''});
+  });
+  return googleTokenPromise;
+}
+async function driveFetch(url,options={}){
+  const token=await ensureGoogleToken(false);
+  const headers=new Headers(options.headers||{});
+  headers.set('Authorization','Bearer '+token);
+  const res=await fetch(url,{...options,headers,referrerPolicy:'no-referrer',cache:'no-store'});
+  if(res.status===401){ googleAccessToken=''; googleTokenExpiresAt=0; throw new Error('Google 連線已過期，請重新按「連接 Google Drive」'); }
+  if(!res.ok){
+    let detail=''; try{ const e=await res.json(); detail=e&&e.error&&e.error.message?`：${e.error.message}`:''; }catch(e){}
+    throw new Error(`Google Drive 操作失敗（${res.status}）${detail}`);
+  }
+  return res;
+}
+function driveEscape(s){ return String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'"); }
+async function driveList(q,fields='files(id,name,createdTime,modifiedTime,size,appProperties)'){
+  const u=new URL('https://www.googleapis.com/drive/v3/files');
+  u.searchParams.set('q',q); u.searchParams.set('spaces','drive'); u.searchParams.set('pageSize','100');
+  u.searchParams.set('orderBy','modifiedTime desc'); u.searchParams.set('fields',fields);
+  const res=await driveFetch(u.toString()); return res.json();
+}
+async function findCloudFolder(createIfMissing){
+  if(cloudFolderId) return cloudFolderId;
+  const q=`mimeType='application/vnd.google-apps.folder' and trashed=false and appProperties has { key='ceSrsRole' and value='backupFolder' }`;
+  const found=await driveList(q,'files(id,name,createdTime)');
+  if(found.files&&found.files[0]){ cloudFolderId=found.files[0].id; return cloudFolderId; }
+  if(!createIfMissing) return '';
+  const res=await driveFetch('https://www.googleapis.com/drive/v3/files?fields=id,name',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({name:CLOUD_FOLDER_NAME,mimeType:'application/vnd.google-apps.folder',appProperties:{ceSrsRole:'backupFolder'}})
+  });
+  const folder=await res.json(); cloudFolderId=folder.id; return cloudFolderId;
+}
+async function listCloudBackups(folderId){
+  if(!folderId) return [];
+  const q=`'${driveEscape(folderId)}' in parents and trashed=false and appProperties has { key='ceSrsRole' and value='progressBackup' }`;
+  const data=await driveList(q); return data.files||[];
+}
+function stableValue(v,depth=0){
+  if(depth>20) throw new Error('進度資料層級異常');
+  if(Array.isArray(v)) return v.map(x=>stableValue(x,depth+1));
+  if(v&&typeof v==='object'){
+    const out={}; for(const k of Object.keys(v).sort()){ if(v[k]!==undefined) out[k]=stableValue(v[k],depth+1); }
+    return out;
+  }
+  return v;
+}
+function progressSnapshot(st){
+  const cards={};
+  for(const c of DECK){ const v=st.cards&&st.cards[c.id]; if(isTouched(v)) cards[c.id]=v; }
+  return {schedulerVersion:st.schedulerVersion||FSRS_ENGINE_VERSION,cards,
+    newByDate:st.newByDate||{},reviewsByDate:st.reviewsByDate||{},reviewLog:st.reviewLog||[]};
+}
+async function progressHash(st){
+  const text=JSON.stringify(stableValue(progressSnapshot(st)));
+  if(typeof crypto!=='undefined'&&crypto.subtle){
+    const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(text));
+    return Array.from(new Uint8Array(buf),b=>b.toString(16).padStart(2,'0')).join('');
+  }
+  let h=2166136261; for(let i=0;i<text.length;i++){ h^=text.charCodeAt(i); h=Math.imul(h,16777619); }
+  return 'fnv1a-'+(h>>>0).toString(16).padStart(8,'0');
+}
+function progressSummary(st){
+  let last=0,totalReps=0;
+  for(const row of (Array.isArray(st.reviewLog)?st.reviewLog:[])) if(Array.isArray(row)&&Number.isFinite(Number(row[1]))) last=Math.max(last,Number(row[1]));
+  for(const c of DECK){
+    const v=st.cards&&st.cards[c.id]; if(!v) continue;
+    totalReps+=Math.max(0,Number(v.reps)||0);
+    const d=v.fsrs&&v.fsrs.last_review?v.fsrs.last_review:v.lastReviewed;
+    const ms=d?new Date(d).getTime():0; if(Number.isFinite(ms)) last=Math.max(last,ms);
+  }
+  return {studied:studiedCount(st),reviews:Array.isArray(st.reviewLog)?st.reviewLog.length:0,totalReps,lastActivity:last};
+}
+function cleanCount(v,max){ v=Number(v); return Number.isFinite(v)?Math.max(0,Math.min(max,Math.round(v))):0; }
+function cleanDate(v){ return typeof v==='string'&&v.length<=40&&!Number.isNaN(new Date(v).getTime())?v:null; }
+function cleanFsrsCard(v){
+  if(!v||typeof v!=='object'||Array.isArray(v)) return null;
+  const out={};
+  for(const k of ['stability','difficulty','elapsed_days','scheduled_days','learning_steps','reps','lapses','state']){
+    if(v[k]!==undefined&&Number.isFinite(Number(v[k]))) out[k]=Number(v[k]);
+  }
+  if(cleanDate(v.due)) out.due=v.due;
+  if(cleanDate(v.last_review)) out.last_review=v.last_review;
+  return out.due?out:null;
+}
+function cleanDateMap(v){
+  const out={}; if(!v||typeof v!=='object'||Array.isArray(v)) return out;
+  for(const k of Object.keys(v)){ if(/^\d{4}-\d{2}-\d{2}$/.test(k)) out[k]=cleanCount(v[k],1000000); }
+  return out;
+}
+function normalizeProgressState(raw){
+  if(!raw||typeof raw!=='object'||Array.isArray(raw)||!raw.cards||typeof raw.cards!=='object'||Array.isArray(raw.cards)) return null;
+  const known=new Set(DECK.map(c=>c.id)),cards={};
+  for(const id of Object.keys(raw.cards)){
+    if(!known.has(id)) continue;
+    const v=raw.cards[id]; if(!v||typeof v!=='object'||Array.isArray(v)) continue;
+    const c={ef:Number.isFinite(Number(v.ef))?Math.max(0,Math.min(10,Number(v.ef))):2.5,
+      interval:cleanCount(v.interval,36500),reps:cleanCount(v.reps,10000000),due:cleanDate(v.due),introduced:!!v.introduced,
+      lapses:cleanCount(v.lapses,10000000)};
+    if(['again','hard','good','easy'].includes(v.lastGrade)) c.lastGrade=v.lastGrade;
+    if(cleanDate(v.lastReviewed)) c.lastReviewed=v.lastReviewed;
+    if(typeof v.scheduler==='string'&&v.scheduler.length<=100) c.scheduler=v.scheduler;
+    const fsrs=cleanFsrsCard(v.fsrs); if(fsrs) c.fsrs=fsrs;
+    cards[id]=c;
+  }
+  const reviewLog=[];
+  if(Array.isArray(raw.reviewLog)){
+    if(raw.reviewLog.length>500000) return null;
+    for(const row of raw.reviewLog){
+      if(!Array.isArray(row)||row.length<2||row.length>16||!known.has(String(row[0]))||!Number.isFinite(Number(row[1]))) continue;
+      reviewLog.push(row.slice(0,11).map((x,i)=>i===0?String(x):(Number.isFinite(Number(x))?Number(x):0)));
+    }
+  }
+  return {cards,newByDate:cleanDateMap(raw.newByDate),reviewsByDate:cleanDateMap(raw.reviewsByDate),reviewLog,
+    schedulerVersion:typeof raw.schedulerVersion==='string'&&raw.schedulerVersion.length<=100?raw.schedulerVersion:FSRS_ENGINE_VERSION};
+}
+function readSyncMeta(){ try{ const x=JSON.parse(localStorage.getItem(CLOUD_SYNC_META_KEY)||'null'); return x&&typeof x==='object'?x:null; }catch(e){ return null; } }
+function saveSyncMeta(hash,file){
+  try{ localStorage.setItem(CLOUD_SYNC_META_KEY,JSON.stringify({hash,fileId:file&&file.id||'',at:new Date().toISOString()})); }catch(e){}
+}
+function compareProgress(a,b){
+  for(const k of ['lastActivity','reviews','totalReps','studied']){ const d=(Number(a[k])||0)-(Number(b[k])||0); if(d) return d>0?1:-1; }
+  return 0;
+}
+async function makeCloudEnvelope(){
+  const state=normalizeProgressState(progressSnapshot(STATE)),hash=await progressHash(state),now=new Date();
+  return {app:'ce-srs-cloud',format:1,key:KEY,scheduler:FSRS_ENGINE_VERSION,exportedAt:now.toISOString(),
+    device:deviceTag(),totalCards:DECK.length,summary:progressSummary(state),stateHash:hash,state};
+}
+async function createCloudFile(folderId,envelope){
+  const boundary='ce_srs_'+Math.random().toString(36).slice(2),stamp=envelope.exportedAt.replace(/[-:]/g,'').replace(/\.\d{3}Z$/,'Z');
+  const metadata={name:`英文複習進度_${stamp}_${deviceTag()}.json`,parents:[folderId],
+    appProperties:{ceSrsRole:'progressBackup',ceSrsFormat:'1'}};
+  const content=JSON.stringify(envelope);
+  if(new Blob([content]).size>CLOUD_MAX_BYTES) throw new Error('進度檔超過安全大小限制，請先使用下載檔案備份');
+  const body=new Blob([`--${boundary}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n`,JSON.stringify(metadata),
+    `\r\n--${boundary}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n`,content,`\r\n--${boundary}--`],
+    {type:`multipart/related; boundary=${boundary}`});
+  const res=await driveFetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,name,createdTime,modifiedTime,size',{
+    method:'POST',body});
+  return res.json();
+}
+async function readCloudFile(file){
+  if(Number(file.size)>CLOUD_MAX_BYTES) throw new Error('雲端備份超過安全大小限制');
+  const res=await driveFetch(`https://www.googleapis.com/drive/v3/files/${encodeURIComponent(file.id)}?alt=media`);
+  const text=await res.text(); if(new Blob([text]).size>CLOUD_MAX_BYTES) throw new Error('雲端備份超過安全大小限制');
+  let env; try{ env=JSON.parse(text); }catch(e){ throw new Error('雲端備份不是有效的 JSON'); }
+  if(!env||env.app!=='ce-srs-cloud'||env.format!==1||env.key!==KEY) throw new Error('這不是此學習系統的雲端備份');
+  const state=normalizeProgressState(env.state); if(!state) throw new Error('雲端備份內容不完整');
+  const hash=await progressHash(state); if(env.stateHash!==hash) throw new Error('雲端備份校驗失敗，檔案可能不完整');
+  return {...env,state,stateHash:hash,summary:progressSummary(state)};
+}
+async function latestCloudBackup(){
+  const folder=await findCloudFolder(false); if(!folder) return null;
+  const files=await listCloudBackups(folder); if(!files.length) return null;
+  return {file:files[0],envelope:await readCloudFile(files[0]),files};
+}
+async function pruneCloudBackups(folderId){
+  const files=await listCloudBackups(folderId),old=files.slice(CLOUD_KEEP_VERSIONS);
+  for(const f of old){ try{ await driveFetch(`https://www.googleapis.com/drive/v3/files/${encodeURIComponent(f.id)}`,{method:'DELETE'}); }catch(e){} }
+}
+async function cloudBackup(){
+  cloudSay('正在比較本機與雲端進度…');
+  await ensureGoogleToken(false);
+  const local=await makeCloudEnvelope(),base=readSyncMeta(),remote=await latestCloudBackup();
+  if(remote){
+    const r=remote.envelope;
+    if(r.stateHash===local.stateHash){ saveSyncMeta(local.stateHash,remote.file); cloudSay('本機與雲端已經一致，不需要重複備份。',true); return; }
+    if(!base){ throw new Error('雲端已有另一份進度。為避免覆蓋，請先按「載入雲端進度」比較；若本機更重要，先下載檔案留存。'); }
+    const localChanged=base.hash!==local.stateHash,cloudChanged=base.hash!==r.stateHash;
+    if(localChanged&&cloudChanged) throw new Error('手機與電腦兩邊都有新進度，已停止覆蓋。請先下載本機備份，再到另一裝置完成同步。');
+    if(cloudChanged&&!localChanged) throw new Error('雲端有較新的進度，請先載入雲端進度。');
+    if(compareProgress(r.summary,local.summary)>0) throw new Error('雲端進度較新，已停止用較舊的本機資料覆蓋。');
+  }
+  const folder=await findCloudFolder(true),file=await createCloudFile(folder,local);
+  saveSyncMeta(local.stateHash,file); saveLastBackup('cloud');
+  await pruneCloudBackups(folder);
+  cloudSay(`備份完成：${local.summary.studied} 張卡有進度。雲端保留最近 ${CLOUD_KEEP_VERSIONS} 份版本。`,true);
+}
+async function cloudRestore(){
+  cloudSay('正在讀取最新雲端進度…');
+  await ensureGoogleToken(false);
+  const remote=await latestCloudBackup(); if(!remote) throw new Error('Google Drive 裡還沒有這個程式建立的備份');
+  const r=remote.envelope,localState=normalizeProgressState(progressSnapshot(STATE)),localHash=await progressHash(localState),localSummary=progressSummary(localState);
+  if(r.stateHash===localHash){ saveSyncMeta(localHash,remote.file); cloudSay('本機與雲端已經一致。',true); return; }
+  const base=readSyncMeta();
+  if(base){
+    const localChanged=base.hash!==localHash,cloudChanged=base.hash!==r.stateHash;
+    if(localChanged&&cloudChanged) throw new Error('手機與電腦兩邊都有新進度，已停止還原。請先下載本機備份，避免任何一邊遺失。');
+    if(localChanged&&!cloudChanged) throw new Error('本機進度比上次同步更新，已停止載入較舊的雲端資料。');
+  }else{
+    const cmp=compareProgress(r.summary,localSummary);
+    if(cmp<0) throw new Error('雲端看起來比本機舊，已停止覆蓋。請先下載本機備份。');
+    if(cmp===0&&localSummary.studied>0) throw new Error('本機與雲端內容不同但新舊無法可靠判定，已停止覆蓋。請先下載本機備份。');
+  }
+  r.state.__meta={date:(r.exportedAt||'').slice(0,10),device:r.device||''};
+  if(applyBackupData(r.state)){
+    const appliedHash=await progressHash(STATE); saveSyncMeta(appliedHash,remote.file); saveLastBackup('cloud');
+    cloudSay(`已載入雲端進度：${r.summary.studied} 張卡有進度。`,true);
+  }
+}
+async function cloudAction(fn){
+  const buttons=['btnCloudConnect','btnCloudBackup','btnCloudRestore','btnCloudDisconnect'].map(id=>document.getElementById(id));
+  buttons.forEach(b=>b.disabled=true);
+  try{ await fn(); }catch(e){ cloudSay(e&&e.message?e.message:'雲端操作失敗',false); }
+  finally{ buttons.forEach(b=>b.disabled=false); }
+}
+
+document.getElementById('btnCloud').onclick=()=>{ document.getElementById('cloudPanel').classList.toggle('hide'); renderCloudConfig(); };
+document.getElementById('btnCloseCloud').onclick=()=>document.getElementById('cloudPanel').classList.add('hide');
+document.getElementById('btnSaveGoogleId').onclick=()=>{
+  const id=(document.getElementById('googleClientId').value||'').trim();
+  if(!validGoogleClientId(id)){ cloudSay('Client ID 格式不正確；應以 .apps.googleusercontent.com 結尾。',false); return; }
+  try{ localStorage.setItem(GOOGLE_CLIENT_ID_KEY,id); localStorage.removeItem(CLOUD_SYNC_META_KEY); localStorage.removeItem(GOOGLE_GRANTED_KEY); }catch(e){}
+  googleAccessToken=''; googleTokenExpiresAt=0; googleTokenClient=null; cloudFolderId='';
+  cloudSay('Client ID 已存於這個瀏覽器。下一步請按「連接 Google Drive」。',true);
+};
+document.getElementById('btnCloudConnect').onclick=()=>cloudAction(async()=>{
+  await ensureGoogleToken(false); const latest=await latestCloudBackup();
+  cloudSay(latest?`已連接。最新雲端備份：${new Date(latest.envelope.exportedAt).toLocaleString('zh-TW')}，${latest.envelope.summary.studied} 張卡有進度。`:'已連接。雲端尚無備份，按「立即備份」即可建立。',true);
+});
+document.getElementById('btnCloudBackup').onclick=()=>cloudAction(cloudBackup);
+document.getElementById('btnCloudRestore').onclick=()=>cloudAction(cloudRestore);
+document.getElementById('btnCloudDisconnect').onclick=()=>cloudAction(async()=>{
+  const token=googleAccessToken;
+  if(token&&window.google&&window.google.accounts&&window.google.accounts.oauth2){
+    await new Promise(resolve=>window.google.accounts.oauth2.revoke(token,resolve));
+  }
+  googleAccessToken=''; googleTokenExpiresAt=0; googleTokenClient=null; cloudFolderId='';
+  try{ localStorage.removeItem(GOOGLE_GRANTED_KEY); }catch(e){}
+  cloudSay('已中斷 Google Drive 連線；本機進度沒有刪除。',true);
+});
+renderCloudConfig();
 </script>
 </body>
 </html>
