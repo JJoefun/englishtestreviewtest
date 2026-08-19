@@ -141,6 +141,13 @@
   .cloud-badge.err{color:var(--again); border-color:var(--again);}
   #cloudInfo{font-size:11.5px; line-height:1.55; color:var(--muted); margin-top:8px; min-height:18px; white-space:pre-line;}
   #cloudInfo.ok{color:var(--good);} #cloudInfo.err{color:var(--again);}
+  .reconnect-overlay{position:fixed; inset:0; z-index:1000; display:flex; align-items:center; justify-content:center; padding:20px; background:rgba(24,32,29,.46);}
+  .reconnect-overlay.hide{display:none;}
+  .reconnect-dialog{width:min(390px,100%); box-sizing:border-box; padding:20px; border:1px solid var(--line); border-radius:16px; background:#fff; box-shadow:0 18px 55px rgba(0,0,0,.2);}
+  .reconnect-dialog h2{margin:0 0 8px; color:var(--pine); font-size:19px;}
+  .reconnect-dialog p{margin:0; color:var(--ink); font-size:14px; line-height:1.65;}
+  .reconnect-actions{display:flex; gap:8px; margin-top:16px;}
+  .reconnect-actions .bkbtn{min-height:42px; flex:1; font-size:13px;}
   .hide{display:none;}
   @media (max-width:520px){
     .front{padding:22px 18px;}
@@ -247,6 +254,16 @@
     </div>
     <label class="cloud-toggle"><input type="checkbox" id="cloudAuto" checked> 答題後自動同步（建議開啟）</label>
     <div id="cloudInfo">尚未連接 Google Drive。</div>
+  </div>
+  <div id="googleReconnectOverlay" class="reconnect-overlay hide" role="dialog" aria-modal="true" aria-labelledby="googleReconnectTitle" aria-describedby="googleReconnectMessage">
+    <div class="reconnect-dialog">
+      <h2 id="googleReconnectTitle">☁️ Google Drive 需要重新連接</h2>
+      <p id="googleReconnectMessage">Google 的短期連線已到期。本機進度仍安全保留；按一下即可重新連接並繼續同步。</p>
+      <div class="reconnect-actions">
+        <button class="bkbtn cloud-primary" id="btnGoogleReconnect">重新連接並同步</button>
+        <button class="bkbtn" id="btnGoogleReconnectLater">10 分鐘後提醒</button>
+      </div>
+    </div>
   </div>
   <div id="bkMsg"></div>
 </div>
@@ -3424,7 +3441,7 @@ const WORDS = [
   {id:"w402",en:"labor costs",ipa:"/ˈleɪ.bər kɒst/",pos:"n.",u:"Day8",zh:"人力成本、勞動成本",def:`the cost of employing workers, including wages and benefits`,eg:`Labor costs in this industry have been rising in recent years.`,syn:`辨析 labor costs(人力成本) ≠ human resources(人資部門/概念)`,eg2:`Labour costs went up after the minimum wage rose.`},
 
   // Day 9 單字
-  {id:"w501",en:"scroll through",ipa:"/skrəʊl θruː/",pos:"phr. v.",u:"Day9",zh:"滑動瀏覽；滑手機",def:`to move through text, images, or content on a screen by scrolling`,co:`scroll through a document / list / feed｜scroll through your phone｜scroll on your phone`,eg:`I ended up scrolling through my phone all day.`,syn:`✅ scroll through my phone 可以成立：把 phone 轉喻成「手機裡的內容」；若要更精確可說 scroll through my feed／messages／photos；只描述在手機上滑也可說 scroll on my phone｜✗ play the phone 是中式直譯`,eg2:`I scrolled through the messages until I found the address.`},
+  {id:"w501",en:"scroll through",ipa:"/skrəʊl θruː/",pos:"phr. v.",u:"Day9",zh:"滑動瀏覽",def:`to move through text, images, or content on a screen by scrolling`,co:`scroll through a document / list / feed｜scroll through your phone｜scroll on your phone`,eg:`I ended up scrolling through my phone all day.`,syn:`✅ scroll through my phone 可以成立：把 phone 轉喻成「手機裡的內容」；若要更精確可說 scroll through my feed／messages／photos；只描述在手機上滑也可說 scroll on my phone｜✗ play the phone 是中式直譯`,eg2:`I scrolled through the messages until I found the address.`},
   {id:"w502",en:"feedback",ipa:"/ˈfiːd.bæk/",pos:"n. (U)",u:"Day9",zh:"意見、回饋",def:`comments about how well something is working, given so it can be improved`,eg:`Please provide your feedback by Friday.`,syn:`辨析 feedback(針對特定事物的具體回饋) vs opinions(較個人籠統的看法)`,eg2:`Thanks for the feedback on my draft.`},
   {id:"w503",en:"the Fed",ipa:"/ðə fed/",pos:"n.",u:"Day9",zh:"聯準會（美國中央銀行，正式名稱 the Federal Reserve）",def:`the central bank of the United States, responsible for setting US interest rates and monetary policy`,eg:`Tech stocks may see a rally if the Fed cuts rates.`,syn:`辨析 ⚠️ the Fed(美國央行,管美國利率) ≠ IMF(國際貨幣基金組織,管跨國金融穩定與貸款)，職責完全不同`,eg2:`Everyone's watching what the Fed does next.`},
   {id:"w504",en:"rally",ipa:"/ˈræl.i/",pos:"n./v.",u:"Day9",zh:"（股市）反彈、回升",def:`a sudden increase in share prices after a period when they have been falling`,eg:`Tech stocks may see a rally if the Fed cuts rates.`,co:`搭配 a rally in shares/prices；stage/enjoy a rally`,eg2:`Prices rallied after a sharp drop last week.`},
@@ -3699,7 +3716,7 @@ const WORDS = [
   {id:"h579",en:"aviation",ipa:"/ˌeɪ.viˈeɪ.ʃən/",pos:"n. (U)",u:"HW6",zh:"航空、航空業",def:`the activity or industry of flying aircraft`,co:`aviation safety / industry / fuel`,eg:`Aviation safety has been stepped up since the September 11 terrorist attacks.`,eg2:`She hopes to work in the aviation industry.`,syn:`aviation 側重航空活動／產業；airline 是航空公司`},
   {id:"h580",en:"awe",ipa:"/ɔː/",pos:"n. (U)",u:"HW6",zh:"敬畏、驚嘆",def:`a feeling of great respect, wonder, or fear`,co:`be filled WITH awe｜be in awe OF sb/sth｜inspire awe`,eg:`The beauty of the cathedral filled them with awe.`,eg2:`I stood in awe of the night sky.`,syn:`形容詞 awesome／awe-inspiring`},
   {id:"h581",en:"awesome",ipa:"/ˈɔː.səm/",pos:"adj.",u:"HW6",zh:"極好的；令人驚嘆的",def:`extremely good, or causing a feeling of great respect or wonder`,co:`an awesome concert / view｜awesome beauty / power`,eg:`That concert was awesome! ／ We were under the spell of the awesome beauty of the lake.`,eg2:`The view from the top was awesome.`,syn:`日常口語常表示「非常棒」；較正式的「令人敬畏」可用 awe-inspiring`},
-  {id:"h582",en:"awful",ipa:"/ˈɔː.fəl/",pos:"adj.",u:"HW6",zh:"糟糕的、很難受的；難吃的",def:`very bad, unpleasant, or of low quality`,co:`taste / look / feel awful｜an awful smell / day`,eg:`This soup tastes awful! ／ You look awful — what's the matter?`,eg2:`I felt awful after staying up all night.`,syn:`= terrible｜⚠️ 現代常用義不是「充滿敬畏」，而是「很糟」`},
+  {id:"h582",en:"awful",ipa:"/ˈɔː.fəl/",pos:"adj.",u:"HW6",zh:"非常糟糕的／令人難受的",def:`very bad, unpleasant, or of low quality`,co:`taste / look / feel awful｜an awful smell / day`,eg:`This soup tastes awful! ／ You look awful — what's the matter?`,eg2:`I felt awful after staying up all night.`,syn:`= terrible｜⚠️ 現代常用義不是「充滿敬畏」，而是「很糟」`},
   {id:"h583",en:"awhile",ipa:"/əˈwaɪl/",pos:"adv.",u:"HW6",zh:"片刻、暫時",def:`for a short time`,co:`stay / wait / rest awhile`,eg:`Stay awhile. My wife is coming back in a few minutes.`,eg2:`Let's sit awhile before we continue.`,syn:`偏文學／較不常用｜awhile 是副詞；介係詞後用 a while：for a while`},
   {id:"h584",en:"bachelor",ipa:"/ˈbætʃ.əl.ər/",pos:"n. (C)",u:"HW6",zh:"單身漢；學士",def:`an unmarried man; a person who has a bachelor's degree`,co:`remain a bachelor｜a Bachelor OF Arts / Science / Engineering`,eg:`Bob is over 40 and still a bachelor. ／ He has a Bachelor of Arts and is working on a master's degree.`,eg2:`She earned a Bachelor of Science in biology.`,syn:`學位名稱 Bachelor of... 通常大寫；bachelor's degree＝學士學位`},
   {id:"h585",en:"backbone",ipa:"/ˈbæk.bəʊn/",pos:"n. (C/U)",u:"HW6",zh:"脊骨；支柱；骨氣",def:`the spine; the most important supporting part of something; courage and strength of character`,co:`damage your backbone｜the backbone OF sth｜show / have backbone`,eg:`The sugar industry forms the backbone of Cuba's economy. ／ Show some backbone — stand up for your rights!`,eg2:`Small businesses are the backbone of the local economy.`,syn:`身體義 = spine｜比喻 the backbone of...＝…的支柱`},
@@ -3723,21 +3740,21 @@ const WORDS = [
   ,
   // ---------- HW6：The Meaning of Travel（只收文章底色詞） ----------
   {id:"h603",en:"displacement",ipa:"/dɪˈspleɪs.mənt/",pos:"n. (U)",u:"HW6",zh:"移位；脫離原本位置或熟悉環境",def:`the act or state of being moved from a usual or proper place`,eg:`A temporary displacement from familiar routines can change how we see them.`,eg2:`The renovation caused the temporary displacement of several offices.`,co:`temporary displacement（暫時離開原位／熟悉環境）`,syn:`本文標題指離開熟悉環境所造成的心理與觀點變化，不是特指被迫遷徙`},
-  {id:"h604",en:"undertaking",ipa:"/ˌʌn.dəˈteɪ.kɪŋ/",pos:"n. (C)",u:"HW6",zh:"任務；需要投入心力的事情",def:`a job, task, or activity that is important or difficult and requires effort`,eg:`Restoring the old theatre was a major undertaking.`,eg2:`Writing a book is a demanding undertaking.`,co:`a major undertaking（重大的任務）｜a difficult undertaking（困難的任務）`,syn:`本文 a transformative undertaking＝一項能帶來轉變的活動`},
+  {id:"h604",en:"undertaking",ipa:"/ˌʌn.dəˈteɪ.kɪŋ/",pos:"n. (C)",u:"HW6",zh:"（重大或費力的）任務／工作",def:`a job, task, or activity that is important or difficult and requires effort`,eg:`Restoring the old theatre was a major undertaking.`,eg2:`Writing a book is a demanding undertaking.`,co:`a major undertaking（重大的任務）｜a difficult undertaking（困難的任務）`,syn:`本文 a transformative undertaking＝一項能帶來轉變的活動`},
   {id:"h605",en:"transcend",ipa:"/trænˈsend/",pos:"v. (T)",u:"HW6",zh:"超越、跨越（界限）",def:`to go beyond or rise above a limit`,eg:`Great art can transcend cultural boundaries.`,eg2:`Her influence transcends national borders.`,co:`transcend boundaries（跨越界線）｜transcend limits（超越限制）`,syn:`本文 transcending cultural boundaries＝跨越文化界線`},
   {id:"h606",en:"enlightened",ipa:"/ɪnˈlaɪ.tənd/",pos:"adj.",u:"HW6",zh:"開明的；有見識的",def:`showing a modern, reasonable, and well-informed way of thinking`,eg:`The school adopted a more enlightened approach to discipline.`,eg2:`An enlightened leader listens to opposing views.`,co:`an enlightened view（開明的觀點）｜an enlightened approach（開明的做法）`,syn:`動詞 enlighten＝使了解、啟發｜本文 an enlightened version of oneself＝更有見識的自己`},
   {id:"h607",en:"narrative",ipa:"/ˈnær.ə.tɪv/",pos:"n. (C)",u:"HW6",zh:"敘事；用來解釋事情的一套說法",def:`a story or a particular way of presenting and explaining events`,eg:`The documentary challenges the dominant narrative about the city.`,eg2:`That simple narrative leaves out several important facts.`,co:`a familiar narrative（熟悉的敘事）｜a dominant narrative（主流敘事）`,syn:`本文 familiar narrative＝人們熟悉且反覆接受的一套說法`},
   {id:"h608",en:"intellectual",ipa:"/ˌɪn.təlˈek.tʃu.əl/",pos:"adj.",u:"HW6",zh:"智力的；思想上的",def:`relating to the ability to think about and understand ideas`,eg:`The course offers both practical and intellectual challenges.`,eg2:`Reading widely can stimulate intellectual growth.`,co:`intellectual growth（思想成長）｜intellectual curiosity（求知慾）`,syn:`本文 intellectual growth＝思想或理解能力上的成長`},
-  {id:"h609",en:"destabilization",ipa:"/diːˌsteɪ.bəl.aɪˈzeɪ.ʃən/",pos:"n. (U)",u:"HW6",zh:"使失去穩定；動搖",def:`the process of making a system, situation, or belief less stable`,eg:`Rapid change can cause the destabilization of familiar routines.`,eg2:`The policy risked further economic destabilization.`,co:`the destabilization OF sth（對某事物穩定性的動搖）`,syn:`動詞 destabilize＝使不穩定｜本文 temporary destabilization＝暫時動搖原有假設`},
-  {id:"h610",en:"ordinarily",ipa:"/ˈɔː.dɪ.ne.rəl.i/",pos:"adv.",u:"HW6",zh:"通常地；在一般情況下",def:`usually, or under normal circumstances`,eg:`The journey would ordinarily take two hours.`,eg2:`I wouldn't ordinarily mention such a minor problem.`,co:`would ordinarily + verb（一般情況下會…）`,syn:`= normally, usually`},
+  {id:"h609",en:"destabilization",ipa:"/diːˌsteɪ.bəl.aɪˈzeɪ.ʃən/",pos:"n. (U)",u:"HW6",zh:"動搖／不穩定化",def:`the process of making a system, situation, or belief less stable`,eg:`Rapid change can cause the destabilization of familiar routines.`,eg2:`The policy risked further economic destabilization.`,co:`the destabilization OF sth（對某事物穩定性的動搖）`,syn:`動詞 destabilize＝使不穩定｜本文 temporary destabilization＝暫時動搖原有假設`},
+  {id:"h610",en:"ordinarily",ipa:"/ˈɔː.dɪ.ne.rəl.i/",pos:"adv.",u:"HW6",zh:"通常／一般而言",def:`usually, or under normal circumstances`,eg:`The journey would ordinarily take two hours.`,eg2:`I wouldn't ordinarily mention such a minor problem.`,co:`would ordinarily + verb（一般情況下會…）`,syn:`= normally, usually`},
   {id:"h611",en:"intricate",ipa:"/ˈɪn.trɪ.kət/",pos:"adj.",u:"HW6",zh:"錯綜複雜的；精細的",def:`having many small parts or details arranged in a complicated way`,eg:`The researchers uncovered an intricate network of relationships.`,eg2:`The ceiling is covered with intricate patterns.`,co:`an intricate network（錯綜複雜的網絡）｜an intricate pattern（精細的圖案）`,syn:`比 complicated 更強調許多細節彼此交織`},
   {id:"h612",en:"linguistic cue",ipa:"/lɪŋˈɡwɪs.tɪk kjuː/",pos:"n. (C)",u:"HW6",zh:"語言線索",def:`a feature of language that helps someone understand meaning or respond appropriately`,eg:`Listeners use linguistic cues to identify the speaker's attitude.`,eg2:`Word order can provide an important linguistic cue.`,co:`use linguistic cues（使用語言線索）｜rely ON linguistic cues（依賴語言線索）`,syn:`linguistic＝語言的｜cue＝提示、線索`},
-  {id:"h613",en:"constitute",ipa:"/ˈkɒn.stɪ.tjuːt/",pos:"v. (T)",u:"HW6",zh:"構成；等同於、算是",def:`to form or make up something, or to be considered as something`,eg:`These small errors do not constitute a serious problem.`,eg2:`Women constitute nearly half of the workforce.`,co:`constitute a problem（構成問題）｜constitute a threat（構成威脅）`,syn:`本文 what constitutes politeness＝怎樣才算有禮貌`},
+  {id:"h613",en:"constitute",ipa:"/ˈkɒn.stɪ.tjuːt/",pos:"v. (T)",u:"HW6",zh:"構成；算是／被視為",def:`to form or make up something, or to be considered as something`,eg:`These small errors do not constitute a serious problem.`,eg2:`Women constitute nearly half of the workforce.`,co:`constitute a problem（構成問題）｜constitute a threat（構成威脅）`,syn:`本文 what constitutes politeness＝怎樣才算有禮貌`},
   {id:"h614",en:"meal",ipa:"/miːl/",pos:"n. (C)",u:"HW6",zh:"一餐；飯食",def:`an occasion when food is eaten, or the food eaten on that occasion`,eg:`Regular meals help give the day a clear structure.`,eg2:`We shared a simple meal after the meeting.`,co:`a regular meal（規律的一餐）｜a structured meal（安排好的用餐）`,syn:`三餐可說 meals；food 泛指食物，meal 指一次用餐`},
   {id:"h615",en:"punctuality",ipa:"/ˌpʌŋk.tʃuˈæl.ə.ti/",pos:"n. (U)",u:"HW6",zh:"準時、守時",def:`the quality of arriving or doing something at the expected time`,eg:`Punctuality is highly valued in this workplace.`,eg2:`The company is known for the punctuality of its trains.`,co:`value punctuality（重視守時）｜expect punctuality（要求守時）`,syn:`形容詞 punctual＝準時的｜副詞 punctually＝準時地`},
   {id:"h616",en:"norm",ipa:"/nɔːm/",pos:"n. (C)",u:"HW6",zh:"規範；常態",def:`an accepted standard or usual way of behaving`,eg:`Social norms vary across cultures.`,eg2:`Remote work has become the norm in some industries.`,co:`social norms（社會規範）｜cultural norms（文化規範）｜become the norm（成為常態）`,syn:`本文 a different set of norms＝一套不同的行為規範`},
   {id:"h617",en:"defamiliarization",ipa:"/diː.fəˌmɪl.i.ə.raɪˈzeɪ.ʃən/",pos:"n. (U, academic)",u:"HW6",zh:"陌生化；使熟悉事物顯得陌生",def:`the technique or process of making familiar things seem unfamiliar so that they are noticed or understood differently`,eg:`The novel uses defamiliarization to make ordinary routines seem strange.`,eg2:`Travel can produce a form of defamiliarization.`,co:`a form OF defamiliarization（一種陌生化）`,syn:`較學術的文學／文化研究用語；本文指離開原文化框架後重新看見習以為常之事`},
-  {id:"h618",en:"habitually",ipa:"/həˈbɪtʃ.u.ə.li/",pos:"adv.",u:"HW6",zh:"習慣性地；一向",def:`in a way that is usual or repeated regularly`,eg:`He habitually checks his phone during meetings.`,eg2:`We often fail to notice spaces we habitually use.`,co:`habitually + verb（習慣性地做…）`,syn:`形容詞 habitual＝習慣性的｜名詞 habit＝習慣`},
+  {id:"h618",en:"habitually",ipa:"/həˈbɪtʃ.u.ə.li/",pos:"adv.",u:"HW6",zh:"習慣性地",def:`in a way that is usual or repeated regularly`,eg:`He habitually checks his phone during meetings.`,eg2:`We often fail to notice spaces we habitually use.`,co:`habitually + verb（習慣性地做…）`,syn:`形容詞 habitual＝習慣性的｜名詞 habit＝習慣`},
   {id:"h619",en:"inhabit",ipa:"/ɪnˈhæb.ɪt/",pos:"v. (T)",u:"HW6",zh:"居住於；存在於某種環境中",def:`to live in or occupy a place`,eg:`Many species inhabit the wetlands.`,eg2:`The characters inhabit a world shaped by strict rules.`,co:`inhabit a place（居住於某地）｜inhabit a world（存在於某個世界）`,syn:`本文 the cultural frameworks they inhabit＝人們身處其中的文化框架`},
   {id:"h620",en:"incidental",ipa:"/ˌɪn.sɪˈden.təl/",pos:"adj.",u:"HW6",zh:"附帶的；次要的",def:`less important than the main subject or happening as a minor result`,eg:`The extra costs were incidental to the main project.`,eg2:`The scenery is not incidental to the experience.`,co:`be incidental TO sth（對某事而言只是附帶的）`,syn:`本文 not incidental to＝不是無關緊要的附帶現象`},
   {id:"h621",en:"vulnerability",ipa:"/ˌvʌl.nər.əˈbɪl.ə.ti/",pos:"n. (C/U)",u:"HW6",zh:"脆弱；易受傷害的狀態或弱點",def:`the quality of being easily hurt, influenced, or attacked, or a particular weakness`,eg:`Admitting uncertainty can reveal a sense of vulnerability.`,eg2:`The audit exposed vulnerabilities in the system.`,co:`a sense OF vulnerability（脆弱感）｜expose a vulnerability（暴露弱點）`,syn:`形容詞 vulnerable＝脆弱的、易受傷害的`},
@@ -3754,9 +3771,9 @@ const WORDS = [
   {id:"h632",en:"prolonged",ipa:"/prəˈlɒŋd/",pos:"adj.",u:"HW6",zh:"持續很久的、長期的",def:`continuing for a long time or longer than usual`,eg:`Prolonged exposure to noise can affect concentration.`,eg2:`The region suffered a prolonged drought.`,co:`prolonged exposure（長時間接觸）｜a prolonged discussion（冗長的討論）`,syn:`動詞 prolong＝延長`},
   {id:"h633",en:"genuine",ipa:"/ˈdʒen.ju.ɪn/",pos:"adj.",u:"HW6",zh:"真正的；真誠的",def:`real, sincere, and not false or pretended`,eg:`Real dialogue requires genuine curiosity.`,eg2:`She showed genuine concern for the visitors.`,co:`genuine understanding（真正的理解）｜genuine concern（真誠的關心）`,syn:`副詞 genuinely 已在 HW3；本文 genuine understanding＝真正的理解`},
   {id:"h634",en:"insulated",ipa:"/ˈɪn.sjə.leɪ.tɪd/",pos:"adj.",u:"HW6",zh:"與外界隔絕的；受保護而不受影響的",def:`protected or separated from outside influences or conditions`,eg:`Senior managers can become insulated from everyday problems.`,eg2:`The community remained insulated from the wider economy.`,co:`be insulated FROM sth（與某事隔絕／不受其影響）`,syn:`本文 insulated within social and economic structures＝被社經結構隔離在內`},
-  {id:"h635",en:"specifically",ipa:"/spəˈsɪf.ɪ.kəl.i/",pos:"adv.",u:"HW6",zh:"專門地；特別針對地",def:`for a particular purpose, person, or situation`,eg:`The course is designed specifically for new employees.`,eg2:`This tool was developed specifically to detect errors.`,co:`be designed specifically FOR sb/sth（專為某人／某事設計）`,syn:`本文 structures designed specifically for outsiders＝專為外來者設計的結構`},
+  {id:"h635",en:"specifically",ipa:"/spəˈsɪf.ɪ.kəl.i/",pos:"adv.",u:"HW6",zh:"專門地／特意地",def:`for a particular purpose, person, or situation`,eg:`The course is designed specifically for new employees.`,eg2:`This tool was developed specifically to detect errors.`,co:`be designed specifically FOR sb/sth（專為某人／某事設計）`,syn:`本文 structures designed specifically for outsiders＝專為外來者設計的結構`},
   {id:"h636",en:"outsider",ipa:"/ˌaʊtˈsaɪ.dər/",pos:"n. (C)",u:"HW6",zh:"外來者、圈外人",def:`a person who is not part of a particular group or community`,eg:`As an outsider, she noticed details that locals ignored.`,eg2:`The group was suspicious of outsiders.`,co:`be seen AS an outsider（被視為外人）｜be treated AS an outsider（被當作外人）`,syn:`反義 insider＝圈內人`},
-  {id:"h637",en:"remarkably",ipa:"/rɪˈmɑː.kə.bli/",pos:"adv.",u:"HW6",zh:"格外地；非同尋常地",def:`in a way that is unusual or surprising and therefore worth noticing`,eg:`The two accounts are remarkably similar.`,eg2:`She recovered remarkably quickly.`,co:`remarkably similar（格外相似）｜remarkably quickly（快得驚人）`,syn:`形容詞 remarkable＝非凡的、引人注目的｜本文 encounter remarkably little＝接觸到的…少得驚人`},
+  {id:"h637",en:"remarkably",ipa:"/rɪˈmɑː.kə.bli/",pos:"adv.",u:"HW6",zh:"格外地（達到令人驚訝的程度）",def:`in a way that is unusual or surprising and therefore worth noticing`,eg:`The two accounts are remarkably similar.`,eg2:`She recovered remarkably quickly.`,co:`remarkably similar（格外相似）｜remarkably quickly（快得驚人）`,syn:`形容詞 remarkable＝非凡的、引人注目的｜本文 encounter remarkably little＝接觸到的…少得驚人`},
   // ---------- HW6：The Meaning of Travel（續；只收文章底色詞） ----------
   {id:"h638",en:"contradiction",ipa:"/ˌkɒn.trəˈdɪk.ʃən/",pos:"n. (C/U)",u:"HW6",zh:"矛盾；相互衝突的情況",def:`a difference between statements, ideas, or situations that cannot both be true or consistent`,eg:`There is a contradiction between the policy and its actual effects.`,eg2:`His later account was in direct contradiction to his earlier statement.`,co:`a contradiction BETWEEN A and B（A 與 B 之間的矛盾）｜in contradiction TO sth（與某事相矛盾）`,syn:`本文 This contradiction 指旅行宣稱帶來開放，卻也可能強化既有偏見的矛盾`},
   {id:"h639",en:"consumable",ipa:"/kənˈsjuː.mə.bəl/",pos:"adj.",u:"HW6",zh:"可消耗的；被包裝成容易消費的",def:`able to be used up or consumed; figuratively, made easy to experience as a product`,eg:`The exhibition turns a complex history into a readily consumable experience.`,eg2:`The guide presents the information in a short, consumable format.`,co:`a consumable experience（被包裝成容易消費的體驗）｜a consumable product（消耗品）`,syn:`本文是比喻義：旅遊地被改造成方便觀看、拍照與消費的產品；不是「可食用」`},
@@ -3764,11 +3781,11 @@ const WORDS = [
   {id:"h641",en:"spectacle",ipa:"/ˈspek.tə.kəl/",pos:"n. (C)",u:"HW6",zh:"公開展示；壯觀場面",def:`an unusual, impressive, or sometimes shocking public display`,eg:`The ceremony became a spectacle for the cameras.`,eg2:`Thousands gathered to watch the colourful spectacle.`,co:`become a spectacle（變成供人觀看的場面）｜a public spectacle（公開展示）`,syn:`本文 religious practices become spectacles＝宗教實踐被轉化成供外人觀看的表演`},
   {id:"h642",en:"self-curation",ipa:"/ˌself kjʊˈreɪ.ʃən/",pos:"n. (U)",u:"HW6",zh:"自我策展；選擇性塑造公開形象",def:`the deliberate selection and presentation of parts of one's life or identity to create a desired public image`,eg:`Social media often encourages careful self-curation.`,eg2:`Her profile is an exercise in professional self-curation.`,co:`an exercise IN self-curation（一種自我形象策展）`,syn:`self-（自我）+ curation（挑選、組織與呈現內容）｜本文指用旅行照片建構理想的公開身分`},
   {id:"h643",en:"subtly",ipa:"/ˈsʌt.əl.i/",pos:"adv.",u:"HW6",zh:"微妙地；不明顯地",def:`in a way that is not obvious and is difficult to notice`,eg:`The wording subtly changes the focus of the question.`,eg2:`The lighting subtly alters the mood of the room.`,co:`subtly change sth（微妙地改變某事）｜subtly shift the focus（悄然轉移焦點）`,syn:`形容詞 subtle＝細微而不明顯的｜本文 shifts subtly＝問題的焦點悄然轉移`},
-  {id:"h644",en:"problematic",ipa:"/ˌprɒb.ləˈmæt.ɪk/",pos:"adj.",u:"HW6",zh:"有問題的；可能引起困難的",def:`causing or likely to cause problems, doubt, or disagreement`,eg:`That assumption becomes problematic when the evidence is incomplete.`,eg2:`The proposal is ethically problematic.`,co:`become problematic（開始產生問題）｜ethically problematic（在倫理上有問題）`,syn:`本文 authentic travel can become problematic＝追求所謂純正旅行本身也可能產生問題`},
+  {id:"h644",en:"problematic",ipa:"/ˌprɒb.ləˈmæt.ɪk/",pos:"adj.",u:"HW6",zh:"有問題的",def:`causing or likely to cause problems, doubt, or disagreement`,eg:`That assumption becomes problematic when the evidence is incomplete.`,eg2:`The proposal is ethically problematic.`,co:`become problematic（開始產生問題）｜ethically problematic（在倫理上有問題）`,syn:`本文 authentic travel can become problematic＝追求所謂純正旅行本身也可能產生問題`},
   {id:"h645",en:"sophisticated",ipa:"/səˈfɪs.tɪ.keɪ.tɪd/",pos:"adj.",u:"HW6",zh:"老練的；見多識廣的",def:`having a lot of experience, knowledge, or understanding`,eg:`She is a sophisticated traveller who understands local customs.`,eg2:`The audience was sophisticated enough to question the simple explanation.`,co:`a sophisticated traveller（見多識廣的旅人）｜a sophisticated audience（有鑑賞力的觀眾）`,syn:`本文 supposedly sophisticated 帶保留語氣：自認比一般觀光客更有品味、更懂當地`},
   {id:"h646",en:"ethnicity",ipa:"/eθˈnɪs.ə.ti/",pos:"n. (C/U)",u:"HW6",zh:"族群身分；族裔",def:`a person's ethnic background or membership in a group sharing culture, language, or ancestry`,eg:`The survey asks about age, occupation, and ethnicity.`,eg2:`Experiences of the city differ according to class and ethnicity.`,co:`differences in class（階級差異）｜differences in age（年齡差異）｜differences in ethnicity（族群差異）`,syn:`形容詞 ethnic＝族群的、族裔的`},
   {id:"h647",en:"authenticity",ipa:"/ˌɔː.θenˈtɪs.ə.ti/",pos:"n. (U)",u:"HW6",zh:"真實性；道地、正宗的特質",def:`the quality of being real, true, or what something is claimed to be`,eg:`Experts questioned the authenticity of the document.`,eg2:`The restaurant markets itself through claims of authenticity.`,co:`question authenticity（質疑真實性）｜verify authenticity（驗證真實性）｜the search FOR authenticity（對真實性的追求）`,syn:`形容詞 authentic 已在 h568｜本文 cultural authenticity＝文化上的真實／道地性`},
-  {id:"h648",en:"stabilize",ipa:"/ˈsteɪ.bəl.aɪz/",pos:"v. (T/I)",u:"HW6",zh:"使穩定；變得穩定",def:`to make or become steady and unlikely to change`,eg:`Daily routines can help stabilize a person's sense of identity.`,eg2:`Prices began to stabilize after several volatile weeks.`,co:`stabilize identity（使身分認同穩定）｜stabilize prices（使價格穩定）`,syn:`本文 identity is stabilized by routines＝日常慣例使身分認同保持穩定｜反向詞族 destabilization 已在 h609`},
+  {id:"h648",en:"stabilize",ipa:"/ˈsteɪ.bəl.aɪz/",pos:"v. (T/I)",u:"HW6",zh:"(vt.) 使穩定；(vi.) 穩定下來",def:`to make or become steady and unlikely to change`,eg:`Daily routines can help stabilize a person's sense of identity.`,eg2:`Prices began to stabilize after several volatile weeks.`,co:`(vt.) stabilize identity（使身分認同穩定）｜(vt.) stabilize prices（使價格穩定）｜(vi.) prices stabilize（價格穩定下來）`,syn:`本文 identity is stabilized by routines＝日常慣例使身分認同保持穩定｜反向詞族 destabilization 已在 h609`},
   {id:"h649",en:"anonymity",ipa:"/ˌæn.ɒnˈɪm.ə.ti/",pos:"n. (U)",u:"HW6",zh:"匿名；不被辨認的狀態",def:`the state of not being known or identified by name`,eg:`The platform allows users to preserve their anonymity.`,eg2:`Anonymity in a large city can feel freeing to some people.`,co:`preserve anonymity（保持匿名）｜guarantee anonymity（保證匿名）｜a sense OF anonymity（無人認識自己的感覺）`,syn:`形容詞 anonymous 已在 h415｜本文指離開熟悉身分與社會角色後「沒有人認識我是誰」的狀態`},
   {id:"h650",en:"liberation",ipa:"/ˌlɪb.əˈreɪ.ʃən/",pos:"n. (U)",u:"HW6",zh:"解放；擺脫限制的自由感",def:`the act or feeling of becoming free from control, limits, or restrictions`,eg:`Leaving the restrictive role gave her a sense of liberation.`,eg2:`For him, travelling alone felt like liberation.`,co:`liberation FROM sth（擺脫某事的解放）｜a sense OF liberation（解放感）`,syn:`本文 anonymity produces liberation＝暫時不受原有身分限制會帶來自由感`},
   {id:"h651",en:"specific",ipa:"/spəˈsɪf.ɪk/",pos:"adj.",u:"HW6",zh:"特定的；某事物特有的",def:`relating to one particular thing and not others`,eg:`The custom is specific to this region.`,eg2:`Each profession develops its own specific routines.`,co:`be specific TO sth（某事物特有的）｜a specific purpose（特定目的）`,syn:`副詞 specifically 已在 h635｜本文 culturally specific＝某一文化特有的`},
@@ -4757,6 +4774,7 @@ const CLOUD_MAX_BYTES=8*1024*1024;
 let googleAccessToken="", googleTokenExpiresAt=0, googleTokenClient=null, googleTokenPromise=null;
 let cloudFolderId="", googleIdentityPromise=null;
 let cloudAutoTimer=0,cloudSyncRunning=false,cloudSyncQueued=false,cloudOperationBusy=false;
+let googleReconnectTimer=0,googleReconnectReminderTimer=0,googleReconnectVisible=false,googleReconnectSnoozeUntil=0;
 
 function cloudSay(msg,ok){
   const el=document.getElementById('cloudInfo');
@@ -4768,6 +4786,34 @@ function tokenIsFresh(){ return !!googleAccessToken&&Date.now()<googleTokenExpir
 function setCloudBadge(text,state=''){
   const el=document.getElementById('cloudBadge'); if(!el) return;
   el.textContent='☁️ '+text; el.className='cloud-badge'+(state?' '+state:'');
+}
+function googleWasGranted(){
+  try{ return localStorage.getItem(GOOGLE_GRANTED_KEY)==='1'; }catch(e){ return false; }
+}
+function hideGoogleReconnectPrompt(){
+  googleReconnectVisible=false;
+  const el=document.getElementById('googleReconnectOverlay'); if(el) el.classList.add('hide');
+}
+function showGoogleReconnectPrompt(message=''){
+  if(!cloudAutoEnabled()||!validGoogleClientId(cloudClientId())||!googleWasGranted()) return;
+  if(Date.now()<googleReconnectSnoozeUntil) return;
+  const overlay=document.getElementById('googleReconnectOverlay');
+  const msg=document.getElementById('googleReconnectMessage');
+  if(!overlay||!msg) return;
+  if(message) msg.textContent=message;
+  overlay.classList.remove('hide'); googleReconnectVisible=true;
+  const btn=document.getElementById('btnGoogleReconnect');
+  if(btn&&document.visibilityState!=='hidden') setTimeout(()=>btn.focus(),0);
+}
+function scheduleGoogleReconnectPrompt(){
+  clearTimeout(googleReconnectTimer); googleReconnectTimer=0;
+  if(!googleAccessToken||!googleTokenExpiresAt||!cloudAutoEnabled()) return;
+  const delay=Math.max(0,googleTokenExpiresAt-Date.now()+500);
+  googleReconnectTimer=setTimeout(()=>{
+    googleAccessToken=''; googleTokenExpiresAt=0;
+    setCloudBadge('需要重新連接','warn');
+    showGoogleReconnectPrompt('Google 的短期連線已到期。本機進度仍安全保留；按一下即可重新連接並繼續同步。');
+  },Math.min(delay,2147483647));
 }
 function cloudClientId(){
   try{ return (localStorage.getItem(GOOGLE_CLIENT_ID_KEY)||'').trim(); }catch(e){ return ''; }
@@ -4817,6 +4863,8 @@ async function ensureGoogleToken(forceConsent=false){
         googleTokenExpiresAt=Date.now()+(Number(resp.expires_in)||3500)*1000;
         if(!googleAccessToken){ reject(new Error('Google 沒有傳回存取權杖')); return; }
         try{ localStorage.setItem(GOOGLE_GRANTED_KEY,'1'); }catch(e){}
+        googleReconnectSnoozeUntil=0; clearTimeout(googleReconnectReminderTimer);
+        hideGoogleReconnectPrompt(); scheduleGoogleReconnectPrompt(); setCloudBadge('已連接','ok');
         resolve(googleAccessToken);
       },
       error_callback:()=>{ googleTokenPromise=null; reject(new Error('Google 登入視窗已關閉或無法開啟')); }
@@ -4831,7 +4879,12 @@ async function driveFetch(url,options={}){
   const headers=new Headers(options.headers||{});
   headers.set('Authorization','Bearer '+token);
   const res=await fetch(url,{...options,headers,referrerPolicy:'no-referrer',cache:'no-store'});
-  if(res.status===401){ googleAccessToken=''; googleTokenExpiresAt=0; throw new Error('Google 連線已過期，請重新按「連接 Google Drive」'); }
+  if(res.status===401){
+    googleAccessToken=''; googleTokenExpiresAt=0; clearTimeout(googleReconnectTimer); googleReconnectTimer=0;
+    setCloudBadge('需要重新連接','warn');
+    showGoogleReconnectPrompt('Google 提前結束了這次連線。本機進度仍安全保留；按一下即可重新連接並繼續同步。');
+    throw new Error('Google 連線已過期，請在提示視窗按「重新連接並同步」');
+  }
   if(!res.ok){
     let detail=''; try{ const e=await res.json(); detail=e&&e.error&&e.error.message?`：${e.error.message}`:''; }catch(e){}
     throw new Error(`Google Drive 操作失敗（${res.status}）${detail}`);
@@ -5058,7 +5111,11 @@ function scheduleAutoSync(delay=6000,reason='進度變更'){
 async function runAutoSync(reason='自動同步'){
   if(!cloudAutoEnabled()) return;
   if(navigator.onLine===false){ setCloudBadge('等待網路','warn'); return; }
-  if(!tokenIsFresh()){ setCloudBadge('需要連接','warn'); return; }
+  if(!tokenIsFresh()){
+    setCloudBadge('需要重新連接','warn');
+    showGoogleReconnectPrompt('Google Drive 目前沒有有效連線。本機進度仍安全保留；按一下即可重新連接並繼續同步。');
+    return;
+  }
   if(cloudOperationBusy||cloudSyncRunning){ cloudSyncQueued=true; return; }
   cloudSyncRunning=true;
   try{ await reconcileCloud(reason); }
@@ -5129,7 +5186,7 @@ document.getElementById('btnSaveGoogleId').onclick=()=>{
   const id=(document.getElementById('googleClientId').value||'').trim();
   if(!validGoogleClientId(id)){ cloudSay('Client ID 格式不正確；應以 .apps.googleusercontent.com 結尾。',false); return; }
   try{ localStorage.setItem(GOOGLE_CLIENT_ID_KEY,id); localStorage.removeItem(CLOUD_SYNC_META_KEY); localStorage.removeItem(GOOGLE_GRANTED_KEY); }catch(e){}
-  googleAccessToken=''; googleTokenExpiresAt=0; googleTokenClient=null; cloudFolderId='';
+  googleAccessToken=''; googleTokenExpiresAt=0; googleTokenClient=null; cloudFolderId=''; clearTimeout(googleReconnectTimer); clearTimeout(googleReconnectReminderTimer); googleReconnectSnoozeUntil=0; hideGoogleReconnectPrompt();
   cloudSay('Client ID 已存於這個瀏覽器。下一步請按「連接 Google Drive」。',true);
 };
 document.getElementById('btnCloudConnect').onclick=()=>cloudAction(async()=>{
@@ -5142,12 +5199,32 @@ document.getElementById('btnCloudConnect').onclick=()=>cloudAction(async()=>{
 });
 document.getElementById('btnCloudBackup').onclick=()=>cloudAction(cloudBackup);
 document.getElementById('btnCloudRestore').onclick=()=>cloudAction(cloudRestore);
+document.getElementById('btnGoogleReconnect').onclick=async()=>{
+  const btn=document.getElementById('btnGoogleReconnect'); btn.disabled=true;
+  try{
+    await ensureGoogleToken(false);
+    hideGoogleReconnectPrompt();
+    if(cloudAutoEnabled()) await reconcileCloud('重新連接');
+    setCloudBadge('已同步','ok'); cloudSay('已重新連接並完成進度比較。',true);
+  }catch(e){
+    cloudSay(e&&e.message?e.message:'重新連接失敗',false);
+    showGoogleReconnectPrompt('重新連接尚未完成。本機進度仍安全保留；你可以再試一次，或按「稍後」。');
+  }finally{ btn.disabled=false; }
+};
+document.getElementById('btnGoogleReconnectLater').onclick=()=>{
+  hideGoogleReconnectPrompt(); googleReconnectSnoozeUntil=Date.now()+10*60*1000;
+  clearTimeout(googleReconnectReminderTimer);
+  googleReconnectReminderTimer=setTimeout(()=>{
+    googleReconnectSnoozeUntil=0;
+    if(!tokenIsFresh()) showGoogleReconnectPrompt('Google Drive 仍需要重新連接。本機進度持續安全保留；按一下即可重新連接並同步。');
+  },10*60*1000);
+};
 document.getElementById('btnCloudDisconnect').onclick=()=>cloudAction(async()=>{
   const token=googleAccessToken;
   if(token&&window.google&&window.google.accounts&&window.google.accounts.oauth2){
     await new Promise(resolve=>window.google.accounts.oauth2.revoke(token,resolve));
   }
-  googleAccessToken=''; googleTokenExpiresAt=0; googleTokenClient=null; cloudFolderId='';
+  googleAccessToken=''; googleTokenExpiresAt=0; googleTokenClient=null; cloudFolderId=''; clearTimeout(googleReconnectTimer); clearTimeout(googleReconnectReminderTimer); googleReconnectTimer=0; googleReconnectSnoozeUntil=0; hideGoogleReconnectPrompt();
   try{ localStorage.removeItem(GOOGLE_GRANTED_KEY); }catch(e){}
   setCloudBadge('未連接','');
   cloudSay('已中斷 Google Drive 連線；本機進度沒有刪除。',true);
@@ -5155,7 +5232,7 @@ document.getElementById('btnCloudDisconnect').onclick=()=>cloudAction(async()=>{
 document.getElementById('cloudAuto').onchange=(e)=>{
   try{ localStorage.setItem(CLOUD_AUTO_KEY,e.target.checked?'1':'0'); }catch(err){}
   if(e.target.checked){ cloudSay('自動同步已開啟；連接後會安全比較兩邊進度。',true); scheduleAutoSync(0,'開啟自動同步'); }
-  else{ clearTimeout(cloudAutoTimer); setCloudBadge(tokenIsFresh()?'自動同步關閉':'需要連接','warn'); cloudSay('自動同步已關閉；仍可使用立即備份與載入。',true); }
+  else{ clearTimeout(cloudAutoTimer); clearTimeout(googleReconnectTimer); clearTimeout(googleReconnectReminderTimer); googleReconnectSnoozeUntil=0; hideGoogleReconnectPrompt(); setCloudBadge(tokenIsFresh()?'自動同步關閉':'需要連接','warn'); cloudSay('自動同步已關閉；仍可使用立即備份與載入。',true); }
 };
 if(window.addEventListener){
   window.addEventListener('online',()=>scheduleAutoSync(1000,'恢復網路'));
@@ -5165,6 +5242,7 @@ if(document.addEventListener){
 }
 if(typeof setInterval==='function') setInterval(()=>{ if(!document.hidden) scheduleAutoSync(0,'定期檢查'); },5*60*1000);
 renderCloudConfig();
+scheduleAutoSync(1200,'開啟頁面');
 </script>
 </body>
 </html>
