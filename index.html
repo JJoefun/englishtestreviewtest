@@ -4847,33 +4847,55 @@ function loadGoogleIdentity(){
   });
   return googleIdentityPromise;
 }
+function googleIdentityReady(){
+  return !!(window.google&&window.google.accounts&&window.google.accounts.oauth2);
+}
+function googlePopupError(err){
+  const type=err&&err.type?String(err.type):'';
+  if(type==='popup_failed_to_open') return new Error('手機瀏覽器阻擋了 Google 登入視窗。請確認不是用 LINE／Facebook 內建瀏覽器，並允許此網站的彈出式視窗後再按一次');
+  if(type==='popup_closed') return new Error('Google 登入視窗已關閉，尚未完成連接');
+  return new Error('Google 登入視窗無法開啟'+(type?`（${type}）`:'') );
+}
+function requestGoogleTokenNow(clientId,forceConsent=false){
+  if(googleTokenPromise) return googleTokenPromise;
+  let resolveToken,rejectToken;
+  googleTokenPromise=new Promise((resolve,reject)=>{ resolveToken=resolve; rejectToken=reject; });
+  const pendingToken=googleTokenPromise;
+  try{
+    googleTokenClient=window.google.accounts.oauth2.initTokenClient({
+      client_id:clientId,scope:GOOGLE_DRIVE_SCOPE,
+      callback:(resp)=>{
+        googleTokenPromise=null;
+        if(!resp || resp.error){ rejectToken(new Error('Google 授權未完成'+(resp&&resp.error?`：${resp.error}`:''))); return; }
+        googleAccessToken=resp.access_token||'';
+        googleTokenExpiresAt=Date.now()+(Number(resp.expires_in)||3500)*1000;
+        if(!googleAccessToken){ rejectToken(new Error('Google 沒有傳回存取權杖')); return; }
+        try{ localStorage.setItem(GOOGLE_GRANTED_KEY,'1'); }catch(e){}
+        googleReconnectSnoozeUntil=0; clearTimeout(googleReconnectReminderTimer);
+        hideGoogleReconnectPrompt(); scheduleGoogleReconnectPrompt(); setCloudBadge('已連接','ok');
+        resolveToken(googleAccessToken);
+      },
+      error_callback:(err)=>{ googleTokenPromise=null; rejectToken(googlePopupError(err)); }
+    });
+    const granted=googleWasGranted();
+    // 必須留在按鈕點擊的同一個同步呼叫中；iOS Safari 否則可能把登入視窗當成未經允許的彈出視窗。
+    googleTokenClient.requestAccessToken({prompt:(forceConsent||!granted)?'consent':''});
+  }catch(e){
+    googleTokenPromise=null;
+    rejectToken(e instanceof Error?e:new Error('Google 登入視窗無法開啟'));
+  }
+  return pendingToken;
+}
 async function ensureGoogleToken(forceConsent=false){
   if(googleAccessToken && Date.now()<googleTokenExpiresAt-60000) return googleAccessToken;
   if(googleTokenPromise) return googleTokenPromise;
   const clientId=cloudClientId();
   if(!validGoogleClientId(clientId)) throw new Error('請先填入有效的 Google OAuth Client ID');
   if(!cloudOriginAllowed()) throw new Error('Google 登入必須從 GitHub Pages 的 HTTPS 網址開啟；file:// 本機檔不能登入');
+  if(googleIdentityReady()) return requestGoogleTokenNow(clientId,forceConsent);
   await loadGoogleIdentity();
-  googleTokenPromise=new Promise((resolve,reject)=>{
-    googleTokenClient=window.google.accounts.oauth2.initTokenClient({
-      client_id:clientId,scope:GOOGLE_DRIVE_SCOPE,
-      callback:(resp)=>{
-        googleTokenPromise=null;
-        if(!resp || resp.error){ reject(new Error('Google 授權未完成'+(resp&&resp.error?`：${resp.error}`:''))); return; }
-        googleAccessToken=resp.access_token||'';
-        googleTokenExpiresAt=Date.now()+(Number(resp.expires_in)||3500)*1000;
-        if(!googleAccessToken){ reject(new Error('Google 沒有傳回存取權杖')); return; }
-        try{ localStorage.setItem(GOOGLE_GRANTED_KEY,'1'); }catch(e){}
-        googleReconnectSnoozeUntil=0; clearTimeout(googleReconnectReminderTimer);
-        hideGoogleReconnectPrompt(); scheduleGoogleReconnectPrompt(); setCloudBadge('已連接','ok');
-        resolve(googleAccessToken);
-      },
-      error_callback:()=>{ googleTokenPromise=null; reject(new Error('Google 登入視窗已關閉或無法開啟')); }
-    });
-    let granted=false; try{ granted=localStorage.getItem(GOOGLE_GRANTED_KEY)==='1'; }catch(e){}
-    googleTokenClient.requestAccessToken({prompt:(forceConsent||!granted)?'consent':''});
-  });
-  return googleTokenPromise;
+  // 載入期間使用者手勢可能已在 iOS Safari 失效；不冒險自動開窗，請使用者再點一次。
+  throw new Error('Google 登入已準備完成，請再按一次「重新連接並同步」');
 }
 async function driveFetch(url,options={}){
   const token=await ensureGoogleToken(false);
@@ -5188,6 +5210,7 @@ document.getElementById('btnSaveGoogleId').onclick=()=>{
   if(!validGoogleClientId(id)){ cloudSay('Client ID 格式不正確；應以 .apps.googleusercontent.com 結尾。',false); return; }
   try{ localStorage.setItem(GOOGLE_CLIENT_ID_KEY,id); localStorage.removeItem(CLOUD_SYNC_META_KEY); localStorage.removeItem(GOOGLE_GRANTED_KEY); }catch(e){}
   googleAccessToken=''; googleTokenExpiresAt=0; googleTokenClient=null; cloudFolderId=''; clearTimeout(googleReconnectTimer); clearTimeout(googleReconnectReminderTimer); googleReconnectSnoozeUntil=0; hideGoogleReconnectPrompt();
+  if(cloudOriginAllowed()) loadGoogleIdentity().catch(()=>{});
   cloudSay('Client ID 已存於這個瀏覽器。下一步請按「連接 Google Drive」。',true);
 };
 document.getElementById('btnCloudConnect').onclick=()=>cloudAction(async()=>{
@@ -5243,6 +5266,8 @@ if(document.addEventListener){
 }
 if(typeof setInterval==='function') setInterval(()=>{ if(!document.hidden) scheduleAutoSync(0,'定期檢查'); },5*60*1000);
 renderCloudConfig();
+// 預先準備 Google 登入元件，讓手機上的重新連接能在按鈕手勢內直接開啟。
+if(validGoogleClientId(cloudClientId())&&cloudOriginAllowed()) loadGoogleIdentity().catch(()=>{});
 scheduleAutoSync(1200,'開啟頁面');
 </script>
 </body>
