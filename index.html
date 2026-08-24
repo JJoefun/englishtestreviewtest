@@ -5225,14 +5225,16 @@ document.getElementById('btnCloudBackup').onclick=()=>cloudAction(cloudBackup);
 document.getElementById('btnCloudRestore').onclick=()=>cloudAction(cloudRestore);
 document.getElementById('btnGoogleReconnect').onclick=async()=>{
   const btn=document.getElementById('btnGoogleReconnect'); btn.disabled=true;
+  let connected=false;
   try{
     await ensureGoogleToken(false);
+    connected=true;
     hideGoogleReconnectPrompt();
     if(cloudAutoEnabled()) await reconcileCloud('重新連接');
     setCloudBadge('已同步','ok'); cloudSay('已重新連接並完成進度比較。',true);
   }catch(e){
     cloudSay(e&&e.message?e.message:'重新連接失敗',false);
-    showGoogleReconnectPrompt('重新連接尚未完成。本機進度仍安全保留；你可以再試一次，或按「稍後」。');
+    if(!connected) showGoogleReconnectPrompt('重新連接尚未完成。本機進度仍安全保留；你可以再試一次，或按「稍後」。');
   }finally{ btn.disabled=false; }
 };
 document.getElementById('btnGoogleReconnectLater').onclick=()=>{
