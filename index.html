@@ -4856,7 +4856,7 @@ function googlePopupError(err){
   if(type==='popup_closed') return new Error('Google 登入視窗已關閉，尚未完成連接');
   return new Error('Google 登入視窗無法開啟'+(type?`（${type}）`:'') );
 }
-function requestGoogleTokenNow(clientId,forceConsent=false){
+function requestGoogleTokenNow(clientId,forceConsent=false,forceAccount=false){
   if(googleTokenPromise) return googleTokenPromise;
   let resolveToken,rejectToken;
   googleTokenPromise=new Promise((resolve,reject)=>{ resolveToken=resolve; rejectToken=reject; });
@@ -4879,20 +4879,20 @@ function requestGoogleTokenNow(clientId,forceConsent=false){
     });
     const granted=googleWasGranted();
     // 必須留在按鈕點擊的同一個同步呼叫中；iOS Safari 否則可能把登入視窗當成未經允許的彈出視窗。
-    googleTokenClient.requestAccessToken({prompt:(forceConsent||!granted)?'consent':''});
+    googleTokenClient.requestAccessToken({prompt:forceConsent||!granted?'consent':(forceAccount?'select_account':'')});
   }catch(e){
     googleTokenPromise=null;
     rejectToken(e instanceof Error?e:new Error('Google 登入視窗無法開啟'));
   }
   return pendingToken;
 }
-async function ensureGoogleToken(forceConsent=false){
+async function ensureGoogleToken(forceConsent=false,forceAccount=false){
   if(googleAccessToken && Date.now()<googleTokenExpiresAt-60000) return googleAccessToken;
   if(googleTokenPromise) return googleTokenPromise;
   const clientId=cloudClientId();
   if(!validGoogleClientId(clientId)) throw new Error('請先填入有效的 Google OAuth Client ID');
   if(!cloudOriginAllowed()) throw new Error('Google 登入必須從 GitHub Pages 的 HTTPS 網址開啟；file:// 本機檔不能登入');
-  if(googleIdentityReady()) return requestGoogleTokenNow(clientId,forceConsent);
+  if(googleIdentityReady()) return requestGoogleTokenNow(clientId,forceConsent,forceAccount);
   await loadGoogleIdentity();
   // 載入期間使用者手勢可能已在 iOS Safari 失效；不冒險自動開窗，請使用者再點一次。
   throw new Error('Google 登入已準備完成，請再按一次「重新連接並同步」');
@@ -5227,14 +5227,18 @@ document.getElementById('btnGoogleReconnect').onclick=async()=>{
   const btn=document.getElementById('btnGoogleReconnect'); btn.disabled=true;
   let connected=false;
   try{
-    await ensureGoogleToken(false);
+    await ensureGoogleToken(false,true);
     connected=true;
     hideGoogleReconnectPrompt();
     if(cloudAutoEnabled()) await reconcileCloud('重新連接');
     setCloudBadge('已同步','ok'); cloudSay('已重新連接並完成進度比較。',true);
   }catch(e){
-    cloudSay(e&&e.message?e.message:'重新連接失敗',false);
-    if(!connected) showGoogleReconnectPrompt('重新連接尚未完成。本機進度仍安全保留；你可以再試一次，或按「稍後」。');
+    const message=e&&e.message?e.message:'重新連接失敗';
+    cloudSay(message,false);
+    if(!connected){
+      setCloudBadge('需要重新連接','warn');
+      showGoogleReconnectPrompt(`${message}。本機進度仍安全保留；你可以再試一次，或按「稍後」。`);
+    }
   }finally{ btn.disabled=false; }
 };
 document.getElementById('btnGoogleReconnectLater').onclick=()=>{
