@@ -142,6 +142,17 @@
   .cloud-badge.err{color:var(--again); border-color:var(--again);}
   #cloudInfo{font-size:11.5px; line-height:1.55; color:var(--muted); margin-top:8px; min-height:18px; white-space:pre-line;}
   #cloudInfo.ok{color:var(--good);} #cloudInfo.err{color:var(--again);}
+  .cloud-conflict{margin-top:10px; padding:10px; border:1px solid var(--again); border-radius:10px; background:#fff;}
+  .cloud-conflict p{margin:0 0 8px; font-size:12px; line-height:1.55; color:var(--ink);}
+  .cloud-conflict-times{display:grid; gap:5px; margin:8px 0 10px; padding:8px; border-radius:8px; background:var(--panel); font-size:11.5px;}
+  .cloud-conflict-time{display:grid; grid-template-columns:74px minmax(0,1fr); gap:6px;}
+  .cloud-conflict-time b{color:var(--pine);}
+  .cloud-conflict-time span{color:var(--ink); overflow-wrap:anywhere;}
+  .cloud-conflict-time.is-latest{margin:-2px -4px; padding:2px 4px; border-radius:5px; background:var(--mark);}
+  .cloud-conflict-time.is-latest span{font-weight:700;}
+  .cloud-conflict-time.is-latest b::after{content:"較新"; display:inline-block; margin-left:4px; padding:0 4px; border-radius:999px; background:var(--pine); color:#fff; font-size:9px; line-height:1.5; vertical-align:1px;}
+  .cloud-conflict-actions{display:flex; gap:6px; flex-wrap:wrap;}
+  .cloud-conflict-actions .bkbtn{flex:1 1 150px; min-height:38px;}
   .reconnect-overlay{position:fixed; inset:0; z-index:1000; display:flex; align-items:center; justify-content:center; padding:20px; background:rgba(24,32,29,.46);}
   .reconnect-overlay.hide{display:none;}
   .reconnect-dialog{width:min(390px,100%); box-sizing:border-box; padding:20px; border:1px solid var(--line); border-radius:16px; background:#fff; box-shadow:0 18px 55px rgba(0,0,0,.2);}
@@ -255,6 +266,18 @@
     </div>
     <label class="cloud-toggle"><input type="checkbox" id="cloudAuto" checked> 答題後自動同步（建議開啟）</label>
     <div id="cloudInfo">尚未連接 Google Drive。</div>
+    <div id="cloudConflictPanel" class="cloud-conflict hide">
+      <p id="cloudConflictMessage">手機與電腦兩邊都有新進度。請選擇要繼續使用哪一份；被取代的版本會先另存成雲端備份。</p>
+      <div class="cloud-conflict-times">
+        <div class="cloud-conflict-time" id="cloudConflictLocalRow"><b>這台裝置</b><span id="cloudConflictLocalTime">最後答題時間讀取中</span></div>
+        <div class="cloud-conflict-time" id="cloudConflictRemoteRow"><b>雲端進度</b><span id="cloudConflictRemoteTime">最後答題時間讀取中</span></div>
+        <div class="cloud-conflict-time"><b>雲端備份</b><span id="cloudConflictExportTime">備份時間讀取中</span></div>
+      </div>
+      <div class="cloud-conflict-actions">
+        <button class="bkbtn cloud-primary" id="btnConflictUseCloud">採用雲端</button>
+        <button class="bkbtn" id="btnConflictUseLocal">採用這台裝置</button>
+      </div>
+    </div>
   </div>
   <div id="googleReconnectOverlay" class="reconnect-overlay hide" role="dialog" aria-modal="true" aria-labelledby="googleReconnectTitle" aria-describedby="googleReconnectMessage">
     <div class="reconnect-dialog">
@@ -4782,6 +4805,28 @@ function cloudSay(msg,ok){
   el.textContent=msg;
   el.className=ok===false?'err':(ok===true?'ok':'');
 }
+function conflictTimeValue(value){
+  const ms=Number(value)||new Date(value||'').getTime();
+  return Number.isFinite(ms)&&ms>0?ms:0;
+}
+function conflictTimeText(value,emptyText){
+  const ms=conflictTimeValue(value);
+  return Number.isFinite(ms)&&ms>0?new Date(ms).toLocaleString('zh-TW'):emptyText;
+}
+function showCloudConflict(message='',local=null,remote=null){
+  const panel=document.getElementById('cloudConflictPanel'),msg=document.getElementById('cloudConflictMessage');
+  if(message&&msg) msg.textContent=message+' 請選擇要保留哪一份；被取代的版本會先另存成雲端備份。';
+  const localTime=document.getElementById('cloudConflictLocalTime'),remoteTime=document.getElementById('cloudConflictRemoteTime'),exportTime=document.getElementById('cloudConflictExportTime');
+  if(localTime) localTime.textContent=conflictTimeText(local&&local.summary&&local.summary.lastActivity,'尚無答題紀錄');
+  if(remoteTime) remoteTime.textContent=conflictTimeText(remote&&remote.envelope&&remote.envelope.summary&&remote.envelope.summary.lastActivity,'尚無答題紀錄');
+  if(exportTime) exportTime.textContent=conflictTimeText(remote&&remote.envelope&&remote.envelope.exportedAt,'無法取得備份時間');
+  const localMs=conflictTimeValue(local&&local.summary&&local.summary.lastActivity),remoteMs=conflictTimeValue(remote&&remote.envelope&&remote.envelope.summary&&remote.envelope.summary.lastActivity);
+  const localRow=document.getElementById('cloudConflictLocalRow'),remoteRow=document.getElementById('cloudConflictRemoteRow');
+  if(localRow) localRow.classList.toggle('is-latest',localMs>0&&localMs>=remoteMs);
+  if(remoteRow) remoteRow.classList.toggle('is-latest',remoteMs>0&&remoteMs>=localMs);
+  if(panel) panel.classList.remove('hide');
+}
+function hideCloudConflict(){ const panel=document.getElementById('cloudConflictPanel'); if(panel) panel.classList.add('hide'); }
 function cloudAutoEnabled(){ try{ return localStorage.getItem(CLOUD_AUTO_KEY)!=='0'; }catch(e){ return true; } }
 function tokenIsFresh(){ return !!googleAccessToken&&Date.now()<googleTokenExpiresAt-90000; }
 function setCloudBadge(text,state=''){
@@ -5112,6 +5157,7 @@ async function reconcileCloud(reason='自動同步'){
     const localChanged=base.hash!==local.stateHash,cloudChanged=base.hash!==r.stateHash;
     if(localChanged&&cloudChanged){
       setCloudBadge('發現衝突','err');
+      showCloudConflict('手機與電腦兩邊都有新進度。',local,remote);
       throw new Error('手機與電腦兩邊都有新進度，已停止自動覆蓋。請先下載本機備份，再決定保留哪一邊。');
     }
     if(cloudChanged&&!localChanged){
@@ -5125,6 +5171,7 @@ async function reconcileCloud(reason='自動同步'){
     await applyCloudEnvelope(remote); setCloudBadge('已同步','ok'); cloudSay('已自動載入雲端進度。',true); return 'downloaded';
   }
   setCloudBadge('需要確認','err');
+  showCloudConflict('這台裝置和雲端都有不同進度，且尚無共同同步點。',local,remote);
   throw new Error('這台裝置和雲端都有不同進度，且尚無共同同步點。為避免誤蓋，請先下載本機備份，再用「立即備份」或「載入雲端進度」決定。');
 }
 function scheduleAutoSync(delay=6000,reason='進度變更'){
@@ -5196,6 +5243,26 @@ async function cloudRestore(){
     cloudSay(`已載入雲端進度：${r.summary.studied} 張卡有進度。`,true);
   }
 }
+async function resolveCloudConflict(prefer){
+  await ensureGoogleToken(false,true);
+  const local=await makeCloudEnvelope(),remote=await latestCloudBackup();
+  if(!remote) throw new Error('雲端目前沒有可用的進度，無法處理衝突');
+  const folder=await findCloudFolder(true);
+  if(prefer==='cloud'){
+    await createCloudFile(folder,local);
+    await applyCloudEnvelope(remote);
+    await pruneCloudBackups(folder);
+    hideCloudConflict(); setCloudBadge('已同步','ok');
+    cloudSay('已採用雲端進度；原本這台裝置的進度已另存成雲端備份。',true);
+    return 'cloud';
+  }
+  await createCloudFile(folder,remote.envelope);
+  const file=await upsertCloudCurrent(folder,local);
+  saveSyncMeta(local.stateHash,file); saveLastBackup('cloud'); await pruneCloudBackups(folder);
+  hideCloudConflict(); setCloudBadge('已同步','ok');
+  cloudSay('已採用這台裝置的進度；原本的雲端進度已另存成備份。',true);
+  return 'local';
+}
 async function cloudAction(fn){
   const buttons=['btnCloudConnect','btnCloudBackup','btnCloudRestore','btnCloudDisconnect'].map(id=>document.getElementById(id));
   buttons.forEach(b=>b.disabled=true); cloudOperationBusy=true;
@@ -5223,6 +5290,14 @@ document.getElementById('btnCloudConnect').onclick=()=>cloudAction(async()=>{
 });
 document.getElementById('btnCloudBackup').onclick=()=>cloudAction(cloudBackup);
 document.getElementById('btnCloudRestore').onclick=()=>cloudAction(cloudRestore);
+document.getElementById('btnConflictUseCloud').onclick=()=>{
+  if(!confirm('確定採用雲端進度？這台裝置目前的進度會先另存成雲端備份，再換成雲端版本。')) return;
+  cloudAction(()=>resolveCloudConflict('cloud'));
+};
+document.getElementById('btnConflictUseLocal').onclick=()=>{
+  if(!confirm('確定採用這台裝置的進度？目前雲端進度會先另存成備份，再由這台裝置取代。')) return;
+  cloudAction(()=>resolveCloudConflict('local'));
+};
 document.getElementById('btnGoogleReconnect').onclick=async()=>{
   const btn=document.getElementById('btnGoogleReconnect'); btn.disabled=true;
   let connected=false;
