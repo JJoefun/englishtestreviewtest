@@ -66,12 +66,15 @@
   .article-meta{color:var(--muted); font-size:12px;}
   .article-actions{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px;}
   .article-actions .bkbtn{background:#fff;}
-  .article-hint{margin:0 0 18px; padding:10px 12px; border-left:3px solid var(--pine); border-radius:0 8px 8px 0; background:var(--panel); color:var(--muted); font-size:13px; line-height:1.55;}
-  .article-hint strong{color:var(--pine);}
+  .article-guide{margin:0 0 18px; padding:10px 12px; border-left:3px solid var(--pine); border-radius:0 8px 8px 0; background:var(--panel); color:var(--muted); font-size:13px; line-height:1.55;}
+  .article-inline-note{margin:-.35em 0 1.15em; padding:10px 12px; border-left:3px solid var(--pine); border-radius:0 8px 8px 0; background:var(--panel); color:var(--muted); font-family:system-ui,-apple-system,"Segoe UI","Noto Sans TC",sans-serif; font-size:13px; line-height:1.55; animation:note-in .14s ease-out;}
+  .article-inline-note strong{color:var(--pine);}
+  @keyframes note-in{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:none}}
   .article-body{font-family:Georgia,"Times New Roman","Noto Serif TC",serif; font-size:18px; line-height:1.82;}
   .article-body p{margin:0 0 1.15em;}
+  .article-body h3{margin:1.65em 0 .7em; color:var(--pine); font-family:system-ui,-apple-system,"Segoe UI","Noto Sans TC",sans-serif; font-size:17px; line-height:1.4;}
   .article-word{display:inline; margin:0; padding:0 2px; border:0; border-radius:3px; background:var(--mark); color:inherit; font:inherit; line-height:inherit; box-decoration-break:clone; -webkit-box-decoration-break:clone;}
-  .article-word:hover,.article-word:focus{outline:2px solid rgba(30,95,87,.28); outline-offset:1px;}
+  .article-word:hover,.article-word:focus,.article-word.active{outline:2px solid rgba(30,95,87,.38); outline-offset:1px;}
   .article-source{margin-top:24px; padding-top:16px; border-top:1px solid var(--line); font-family:inherit; font-size:12px;}
   .article-finish{width:100%; margin-top:18px; padding:12px; background:var(--pine); color:#fff; font-weight:650;}
 
@@ -3267,6 +3270,211 @@ const ARTICLES = [
       "“I think both are equally valuable to us,” he said. “Both are equally valid.”",
       "With additional reporting by Madeline Halpert and James FitzGerald."
     ]
+  },
+  {
+    id:"bbc-seoul-ants",
+    sourceTag:"BBC・Seoul ants",
+    title:"Michelin-starred Seoul restaurant fined for using ants as [[garnish|菜餚上的裝飾配料、點綴食材]]",
+    dek:"A two Michelin-starred restaurant in Seoul was fined after serving ants that were not approved for human consumption in South Korea.",
+    author:"Malu Cursino",
+    location:"Seoul",
+    date:"16 September 2026",
+    sourceUrl:"https://www.bbc.com/news/articles/c639m42y43v4o",
+    paragraphs:[
+      `A two Michelin-starred restaurant in Seoul has been fined for using ants as a dessert garnish.`,
+      `The owner of Evett in the South Korean capital was fined 15 million won (£8,144; $10,965), while the company operating the restaurant was fined 10 million won for violating the Food Sanitation Act, local media report.`,
+      `Ants are not among the 10 insect species approved for human consumption in the east Asian nation. The approved list includes [[grasshoppers|蚱蜢、草蜢]], [[locusts|蝗蟲]] and some [[silkworms|蠶]].`,
+      `Prosecutors had sought a one-year prison term for the restaurant's owner, as well as a 20 million won fine - but the judge took the owner admitting the charge and having no prior criminal record into account.`,
+      `However, the judge is reported as saying that, as well as violating food standards, the presence of heavy metals exceeding standards was detected in the ants when they were tested, meaning the “[[culpability|應受責備或處罰的責任、罪責]] is not light”.`,
+      `The owner was said to have been unaware that providing ants in food was prohibited in South Korea, as they are used as food elsewhere.`,
+      `Their use as a topping for [[sorbets|雪酪、冰沙甜點]] at Evett [[came to light|真相或資訊被發現、曝光]] after the Ministry of Food and Drug Safety found online reviews accompanied by photographs.`,
+      `It said the owner had [[sprinkled|把少量配料撒在食物表面]] three to five ants on certain dishes to give them a “sour taste”, over a period of nearly four years - amounting to approximately 49,000 ants used as a garnish.`,
+      `Most of the ants were imported from the US, while some came from Thailand, the ministry said.`,
+      `The owner had argued that they were used in a “small part” of the restaurant's 15-course menu and that [[diners|用餐者、餐廳顧客]] were told they could [[opt for|選擇、決定採用]] a non-ant alternative [[topping|鋪在食物上面的配料]].`,
+      `Ants are eaten and sometimes even valued as a [[delicacy|珍饈、特殊而珍貴的食物]] in several Asian, African and Latin American cultures. [[Weaver ants|織蟻]] and their eggs are used in Thai and Cambodian cooking, while in Colombia, queen ants are as prized as [[caviar|魚子醬]].`,
+      `The Michelin Guide considers a two-star establishment as one that does “excellent cooking” and is “[[worth a detour|值得特地繞道前往]]”.`,
+      `## Related headline shown in the PDF`,
+      `Michelin-starred [[restaurateur|餐廳老闆、餐飲業者]] faces jail for using ants as dessert garnish.`
+    ]
+  },
+  {
+    id:"bbc-ai-firms",
+    sourceTag:"BBC・AI firms",
+    title:"OpenAI boss says world 'right to be afraid' but 'should trust' AI firms",
+    dek:"Sam Altman argued that fear of AI is justified while asking the public to trust AI companies to keep safety ahead of capability growth.",
+    author:"Kali Hays",
+    location:"San Francisco",
+    date:"16 September 2026",
+    sourceUrl:"https://www.bbc.com/news/articles/cqx2zpj4y525o",
+    paragraphs:[
+      `OpenAI boss Sam Altman thinks people should have more faith in his company and others like it to do the right thing when it comes to artificial intelligence (AI) development [[amid|在某種情勢或背景下]] rising public concerns about all the risks.`,
+      `“The world should trust that we are going to do the right thing because it's the right thing and we feel the [[magnitude|重大程度、規模]] of this,” Altman said on Tuesday during a conference in San Francisco.`,
+      `However, Altman noted that people were [[justified|有正當理由的、情有可原的]] in their fears around AI, as the capability of the tools has progressed rapidly.`,
+      `“It doesn't take as much imagination as it used to for [us] to imagine how this could go wrong,” he said. “I think the world is right to be afraid of this.”`,
+      `Altman's comments came during an appearance at an annual conference hosted by software firm Salesforce.`,
+      `It was the first time he had spoken publicly since a post [[went viral|在網路上迅速爆紅、廣泛流傳]] last week by a researcher who quit the AI firm Anthropic. The researcher claimed AI could kill all humans by the end of the decade if left unchecked.`,
+      `A handful of other AI executives and experts responded by saying they agreed with the assessment, though they didn't explain how they came to their conclusions or how exactly AI could accomplish such a thing.`,
+      `The [[fervor|強烈而熱烈的情緒、熱潮]] over the claims has led to more scrutiny of AI development in recent days, and in response, Anthropic chief executive Dario Amodei called for the pace of all AI development to slow and urged governments to regulate the industry.`,
+      `The post was applauded by Altman, as well as co-founder of Google's DeepMind Demis Hassabis, and Elon Musk, owner of social media site X and AI assistant Grok.`,
+      `By Tuesday, more AI leaders were voicing support for self-regulation rather than government involvement.`,
+      `Altman said that he felt AI companies like his own were capable of essentially regulating themselves.`,
+      `“We will get it right, I'm very confident in our company's and industry's ability to do this safely,” Altman said, adding that he was sure that they would “keep [[alignment|讓 AI 行為符合相關人類價值、指令、目標及意圖]] and safety way ahead of capabilities” and if they couldn't, they would “slow down or stop”.`,
+      `After Altman's comments, Meta boss Mark Zuckerberg wrote on X that every AI lab has the ability and the [[incentive|促使人採取行動的誘因]] “to take its own actions” towards making AI tools and models that are designed for safety.`,
+      `“Any lab that doesn't focus on alignment will fall behind,” Zuckerberg wrote. “Labs face significant [[liability|法律責任、賠償責任]] if their models cause harm, so they have a strong incentive to prevent this as well.”`,
+      `Jensen Huang, head of Nvidia, also said at the same Tuesday conference that the AI firms should decide if new versions of the technology should be released and not be managed by outside forces.`,
+      `“We don't need new laws or regulations,” Huang said, adding that there should not be a “false choice” between the speed of innovation and the safety of AI products.`,
+      `Nvidia is the biggest company in the world by [[valuation|估值；按公司價值衡量]], with its profits having boomed as a result of rampant demand for the AI computing chips it makes.`,
+      `“Safety is paramount. However, safety is an engineering problem,” Huang said.`,
+      `He added that if at any time a leader of an AI company lacks confidence in their product they should choose to not release it.`,
+      `“That's a very obvious thing to do,” Huang said. “Run as fast as you can, but if at any time you feel the institution is not in control, take a pause.”`,
+      `## Related headlines shown in the PDF`,
+      `Why doomsday warnings are not the only threat to the AI [[juggernaut|勢不可擋的龐大力量]].`,
+      `Trump says AI safety fears a “[[hoax|騙局、惡作劇式假消息]]” as he rejects calls for greater safeguards.`,
+      `Some industry figures have argued [[resurgent|再度興起、重新增強的]] AI fears were overblown and were being jumped on to generate hype for the industry.`,
+      `During the conference, Altman addressed a crowd of hundreds of business people, telling them they should use AI tools to aid in their work, but also needed them in order to protect their businesses from potentially AI-enabled cyber attacks.`,
+      `The idea of AI executives being left to entirely regulate themselves has [[struck some in the industry as|讓某些業界人士覺得、給他們……印象]] a bad idea.`,
+      `Jack Clark, an Anthropic executive and co-founder, told the BBC on Monday that leaving AI to be a “totally unregulated industry” was “[[rolling dice with immense risks|拿極大的風險下注、冒巨大風險碰運氣]]”.`,
+      `Patrick Hillman, the chief operating officer of Logical Intelligence, which is chaired by Yann LeCun, a [[sage|智者、德高望重的專家]] of the AI industry, noted Tuesday how little faith people have in tech companies to do anything truly in the public interest.`,
+      `“The only institution that Americans might trust less than Washington these days is Silicon Valley. I have worked and lived in both and I assure you both have earned this [[scepticism|懷疑態度、不信任]],” Hillman said.`,
+      `AI staff 'genuinely frightened' for [[humanity's|全人類、人類整體的]] future, ex-Anthropic researcher tells BBC.`,
+      `Leaders of OpenAI and Anthropic have said they have recently started working towards some sort of industry-wide agreement on safety.`,
+      `Amodei, during a [[cameo|短暫但引人注意的露面]] at the conference on Tuesday, said Anthropic is now in “a dialogue with the rest of the industry” about committing to better safety standards and checks on AI tools and development.`,
+      `He also said that one of the biggest surprises of the AI boom was not how the technology itself has advanced, but its broader impact.`,
+      `“We didn't appreciate that it would lead to companies growing so fast, and how quickly they would become central to things,” Amodei said.`,
+      `OpenAI executive Chris Lehane said last week that the company was also working with other AI labs “to advance frontier AI standards, building a [[voluntary|自願的、非強制的]] effort now, with or without government support.” Those labs include Anthropic and Google DeepMind.`,
+      `“With [[stakes this high|事關重大、成敗風險很高]], we cannot let the perfect become the enemy of the good,” Lehane wrote.`
+    ]
+  },
+  {
+    id:"bbc-margherita-hut",
+    sourceTag:"BBC・Margherita hut",
+    title:"Rifugio Capanna Regina Margherita: An icy 4,554m hike to Europe's highest [[overnight stay|過夜住宿]]",
+    dek:"A climb to Europe's highest building combines glacier travel, extreme altitude and the communal life of a remote Italian mountain refuge.",
+    author:"Stuart Butler",
+    location:"Monte Rosa",
+    date:"9 September 2026",
+    sourceUrl:"https://www.bbc.com/travel/article/20260902-rifugio-capanna-regina-margherita-the-hike-to-europes-highest-overnight-stay",
+    paragraphs:[
+      `You can sleep over at this historic mountain refuge [[straddling|橫跨、跨越兩側]] the Italy-Switzerland border - but only if you're willing to [[undertake|著手、承擔]] a days-long, high-altitude icy mountain [[trek|艱苦的長途跋涉]].`,
+      `I'm [[roped to four strangers|用繩索把彼此連在一起]], concentrating on the [[light cast by|某物投射出的光線]] my [[headtorch|頭燈]], as I [[wend my way|蜿蜒前行、慢慢走去]] through the icy [[labyrinth|迷宮般錯綜複雜之處]] of [[crevasses|冰川裂縫、冰隙]] tearing across the Alpine Lys Glacier. We've been here since 05:00, [[tugging|用力拉、拖曳]] each other ever higher up the Monte Rosa mountain [[massif|山體、山脈群]] towards the highest altitude building in Europe.`,
+      `We've just reached a giant [[mountain bowl|碗狀山谷、山間凹地]] filled with clouds of snow. The milky blue [[twilight|曙暮光、晨昏微光]] fades to the soft glow of dawn. Our guide [[squints into the distance|瞇眼望向遠方]].`,
+      `“Up on that [[ridge|山脊、稜線]],” he says, “Do you see it? That's the Margherita refuge.” I can't see anything, but the peak he's pointing towards is so [[sheer-sided|四壁陡峭近乎垂直的]] that I'm convinced he must be mistaken. We [[press on|繼續前進]] and, by midday we finally arrive at the [[summit|山頂、峰頂]], 4,554m (14,941ft) above sea level. The [[crystal-frosted|覆滿晶瑩冰霜的]] world of the Punta Gnifetti peak is revealed.`,
+      `I can see the refuge now. I gasp.`,
+      `Somewhat resembling a giant [[tin can|馬口鐵罐、金屬罐]], the narrow [[three-storey|三層樓的]] metal building is not so much built onto the mountain as it is balanced on the edge of a [[precipice|懸崖、峭壁]]. On one side is a [[steeply|陡峭地、急劇傾斜地]] falling snow slope and on the other, there's just a vertical kilometre of thin air.`,
+      `This is Rifugio Capanna Regina Margherita; the highest building in Europe. And it's where I'm supposed to sleep tonight.`,
+      `## A refuge fit for a queen`,
+      `Sharing the Alpine border between Italy and Switzerland, the Monte Rosa massif contains some of the highest peaks in the Alps, including Monte Rosa itself, which at 4,634m (15,203ft) is behind only Mont Blanc. Punta Gnifetti (also called Signalkuppe) comes in sixth. It's here where an Italian scientific research facility and mountaineers' shelter was constructed and named for the [[then-queen|當時的女王]] of Italy, Margherita of Savoy. The queen, famed for her adventurous, [[athletic|健壯活躍、擅長運動的]] nature, insisted on climbing to the refuge herself for its 1893 [[inauguration|正式啟用、落成典禮]] and spending the night.`,
+      `When to go: The Rifugio Capanna Regina Margherita is staffed only between mid-June and early September. This is a very popular hike, so make guided tour, accommodation and travel reservations well in advance. The refuge sleeps 70 in summertime.`,
+      `How to do it: Most people climb with a qualified local guide on organised tours, which depart daily in summer. To stay overnight at the [[rifugio|義大利山屋、山間避難所]], choose the three-day climb.`,
+      `What you need: Winter clothing, sturdy mountain hiking boots and [[crampons|冰爪、尖釘鞋底]] (not micro [[spikes|尖釘、鞋底釘齒]]).`,
+      `More than a century later, the refuge still supports scientific research while also operating as a mountain hut (rifugio) offering [[rustic|鄉野樸實的、簡樸的]] accommodation and thrilling [[panoramic|全景的、視野遼闊的]] views. Hiking the massif's eternal winter landscapes has become a popular trek in its own right. Roughly 30,000 hikers [[summit|登上山頂]] the peak each year and 4,000 stay overnight, ready like me - and Queen Margherita - to say they've slept in the continent's highest beds.`,
+      `I [[opted for|選擇、決定採用]] a three-day guided hike, which requires crampons and ropes. As a frequent hiker, this didn't [[faze|使慌亂、使擔憂]] me. If anything worried me, it was the altitude. The hike to the refuge involves a [[dramatic gain|大幅增加]] in altitude, from 1,200 to 4,554m (3,937 to 14,941ft) in just two days, so steady [[acclimatisation|適應新氣候或高海拔的過程]] is essential.`,
+      `## More than 4,000m into the air`,
+      `My journey began a day earlier in the Italian mountain village of Alagna Valsesia, at the slopes of the Monte Rosa massif - the [[literal end|真正、字面意義上的盡頭]] of the [[paved|鋪設路面的]] road before the mountainous [[ascent|攀登、上升路程]]. From here, a series of [[cable-car rides|纜車行程]] [[whizzed|飛快移動、呼嘯而過]] me uphill to Punta Indren, (3,275m/ 10,745ft) where I met my guide and the four other members of our climbing group.`,
+      `Since we were all still [[acclimatising|逐漸適應氣候或高海拔]], our first day involved little more than an hour's hiking across rock and ice to where we would spend our first night, the Rifugio Città di Mantova (3,498m/ 11,476ft), a large wooden mountain refuge set just below the start of the Lys Glacier. There was a marked difference in temperature from Alagna Valsesia, but by [[wrapping up warm|穿暖和、裹緊保暖]] from the [[biting wind|刺骨寒風]], I could enjoy the panoramic [[terrace|露台、平台]] with views of the green valley [[far below|在遠遠下方]].`,
+      `Despite the [[stunning setting|令人驚嘆的環境景致]], I slept [[fitfully|斷斷續續地、不安穩地]] - due, I suspect, to excitement about the coming day's 1,000m (3,281ft) ascent and my body adjusting to the altitude. It was almost a relief when the alarm [[went off|警報器響起]] at 04:00 and we crawled out of our beds. We [[strapped|用帶子繫上、穿戴]] the crampons onto our boots to prevent sliding on the glacial ice and roped ourselves up together - just in case someone slipped into a crevasse.`,
+      `We set out over the glacier and, after an hour or so of [[hauling ourselves through|費力拖著身體穿過]] a spiderweb of crevasses, cleared a ridge and [[trudged|沉重緩慢地跋涉]] across the mountain bowl. Behind us, dawn clouds [[bubbled|如氣泡般翻湧]] in the valleys and ahead stood the walls of 4,000m (13,123ft) peaks.`,
+      `Despite the [[drama|壯觀而引人注目的景象]] of the Alpine scenery, this middle section of the hike was [[considerably|相當多地、大幅地]] easier than [[traversing|橫越、穿越]] the steep, [[ruptured|破裂、裂開的]] and [[torn-up|被撕裂、弄得破碎不平的]] glacier crossing. Before I knew it, we were starting the final haul up to the refuge.`,
+      `Although I've never suffered major ill effects from altitude, I do struggle with [[vertigo|眩暈、因高度產生的暈眩感]]. As we [[zig-zagged|以之字形前進]] sharply up the [[summit cone|錐形山頂段]], [[teetering|搖搖欲墜地行走]] alongside a ridge that [[fell away into the haze|向下陡落並隱沒在霧靄中]], I began feeling the unmistakable [[dizzy sensation kicking in|暈眩感開始襲來]] and, instead of taking in the view, concentrated on where I was placing my feet. But when I next raised my head, we had made it.`,
+      `The vertigo eased as I stepped out onto the snowy dome. Fold after fold of mountain peaks [[sparkling with icy crowns|以冰雪覆頂、閃閃發亮]] stretched out around me - and the refuge itself. I was [[exhausted|筋疲力盡的]]. But would I be able to sleep in what was easily one of the most [[hair-raising|驚險嚇人的、令人毛骨悚然的]] buildings I had ever seen?`,
+      `## The highest sleep in Europe`,
+      `Once inside, the refuge felt more like a safe [[cocoon|繭狀庇護所、安全包覆感]], and it was easy to forget how [[precarious|危險而不穩定的]] our situation was. A dining room took up almost the entirety of the ground floor while the upper two were filled with dormitory-style beds which, the night of my stay, were completely booked. I dropped my backpack onto one of the [[bunks|窄小臥鋪、上下舖床位]] and headed downstairs to order a [[frothy|起泡沫的、泡沫豐富的]] bowl of cioccolato caldo (hot chocolate) topped with a [[dollop|一團、一大匙柔軟食物]] of Chantilly cream.`,
+      `As I [[savoured|細細品味、享受]] the drink, I fell into conversation with Tommaso Bagnati, one of the refuge's four [[wardens|管理員、看守人]], who told me how the weather conditions can bring the reality of living on the top of Europe into [[stark focus|格外清楚鮮明的焦點]].`,
+      `“When there's a big storm the building shakes a bit and you can feel very small,” he said. “If there's a thunderstorm it can feel like you're right in the middle of it. All our supplies are delivered by helicopter, so when the weather is very bad and the helicopters can't fly, you can feel a bit cut off from the world.”`,
+      `As I sat down to dinner, a weather front rolled across the mountains. The refuge became blanketed in clouds and [[sleet|雨夾雪、冰雨]] [[splattered|飛濺、啪嗒濺落]] against the windows. Sitting next to me at the [[communal|共用的、公共的]] dining table was Chinese YouTuber Jianpeng Cui, who told me that despite the “end of the world” feel to the place, he was [[pleasantly surprised|感到意外驚喜]].`,
+      `“I thought there'd only be a bed,” he said. “No toilet. No kitchen. But it's not at all like that. I can even buy pizza and juice up here!”`,
+      `I was relieved that altitude sickness had missed me this time. But not everyone was so lucky. Mikhail Morozov, whom I met on his way down from the summit, had suffered headaches and [[nausea|噁心、作嘔感]]. “Coping with the altitude was the hardest part,” he said. “I wasn't acclimatised and you go up very fast. After a couple of hours, the altitude started to hit me hard.”`,
+      `Life in the Rifugio Capanna Regina Margherita - as with all mountain huts - is very [[communal|共用且重視群體共享的]]. Sleeping at high altitude in a [[cramped|狹窄擁擠的]] dormitory with seven or eight strangers, sharing two toilets with no shower, means you get far [[cosier|更溫暖親近、更有親密感]] than you perhaps want. But the shared effort of reaching the refuge also creates an easy [[camaraderie|共同經歷形成的夥伴情誼]].`,
+      `“The best part for me has been meeting people from all over the world who have come here to climb the mountain,” said Craig Shaw, a New Zealander living in Switzerland. “Seeing all these different nationalities together in this refuge is just [[phenomenal|非凡出色的、驚人的]].”`,
+      `Perhaps the real magic of this mountain is not just its ability to support a [[crazily positioned|位在極其驚險位置的]] refuge. It's an ability to bring people together.`,
+      `If you liked this story, sign up for The Essential List newsletter - a [[handpicked|精心挑選的]] selection of features, videos and can't-miss news.`,
+      `The article also describes the refuge's rustic Italian [[mountain-hut culture|山屋文化]].`
+    ]
+  },
+  {
+    id:"bbc-tasia-fortune",
+    sourceTag:"BBC・Tasia Fortune",
+    title:"Mother demands answers, weeks after black woman found [[hanging|懸掛、吊著；標題只描述被發現時的狀態]] from Mississippi tree",
+    dek:"Tasia Fortune's family and community sought answers while police waited for a medical examiner to determine her official cause and manner of death.",
+    author:"Brandon Drenon",
+    location:"Jackson, Mississippi",
+    date:"9 September 2026",
+    sourceUrl:"https://www.bbc.com/news/articles/ckgwydke178o",
+    paragraphs:[
+      `Christy Spivey told the BBC she was angered by the investigative [[hold-ups over|調查延誤；over 表示「關於這宗死亡事件」，不是 hold-up 的固定介系詞]] the death of her daughter, Tasia Fortune.`,
+      `The mother of a black woman whose body was found hanging from a tree in Jackson, Mississippi, has told the BBC she is still waiting for answers from officials more than a month later.`,
+      `Her demands have been echoed by a community in the southern US state that has been left shocked and angry.`,
+      `After weeks of silence, police on Tuesday confirmed for the first time that they were investigating the death of Tasia Fortune, 29, as a potential [[homicide|他殺；一人被另一人殺害，不等同已證明是 murder]] - while clarifying that her official cause of death has yet to be confirmed.`,
+      `Authorities discovered Fortune's body on 3 August, hanging from a tree in the [[lot|一塊地、空地]] of an abandoned home.`,
+      `Local concern over her death has been [[heightened|加劇、提高]] by the fact that the state has a dark history of racial violence and [[lynchings|私刑處死、私刑殺害]].`,
+      `The majority-black city has been left on edge. As the question [[lingers|疑問持續未解]], [[petitions|請願書、連署]] online signed by tens of thousands of people have called for more [[transparency|透明度、資訊公開]], and members of US Congress have asked for federal [[intervention|介入、干預]].`,
+      `“It's making me angry,” Fortune's mother, Christy Spivey, said. “What is the hold up?”`,
+      `Spivey described [[desperate|迫切渴望的、極度需要的]] attempts to understand the status of the investigation and how multiple [[enquiries|詢問、查詢；英式拼法]] to police had gone unanswered.`,
+      `The first update she had received from authorities in weeks came in a public city meeting on Tuesday evening as Jackson Police Chief RaShall Brackney discussed the case and said the department “has been investigating this case from day one as a homicide”.`,
+      `Brackney, in a statement to the BBC, [[elaborated|進一步說明、詳述]] and said the department always treats any [[pending|尚待完成或決定的]] death case as a “potential homicide” so that crucial evidence is not lost as police wait on [[autopsy|驗屍、屍體解剖]] results.`,
+      `The department, though, had only previously described the case as a death investigation.`,
+      `Tuesday's statement from Brackney said “we are conducting the investigation at the highest [[appropriate|適當的、合宜的]] level while we await the medical examiner's findings”, which would include an [[official cause and manner of death|官方認定的死因，以及 natural、accident、suicide、homicide 等死亡方式分類]].`,
+      `The medical examiner's office said it would not comment on the pending case.`,
+      `Spivey last saw her daughter alive on 26 July, when Fortune had travelled from Mississippi, where she had lived for roughly the last decade, to Kentucky, where Spivey lives, for a family [[reunion|團聚、重聚；聚會]].`,
+      `The next time she saw her daughter - in a funeral home, days before her [[burial|埋葬、安葬]] - she could barely look at her body.`,
+      `“I didn't look straight at her. Her daddy did,” she said. “I kind of looked from the side.”`,
+      `Spivey remembered their last conversation. “She was talking about, you know, maybe even coming home,” she explained.`,
+      `Fortune's death has left the community concerned that racial violence in Mississippi could be on the rise again. And in the absence of concrete details about the case, [[their suspicions are left to fester|因缺乏具體案情，外界的疑慮被擱著不處理，持續累積並惡化]].`,
+      `Fortune's death was the third incident in Mississippi in less than a year where police found someone dead and hanged from a tree.`,
+      `The other two bodies - one black male, one white - were discovered in September 2025, on the exact same day.`,
+      `Both were ruled a suicide, though the mother of one of [[the deceased|死者、亡者]] - Trey Reed - contests those findings.`,
+      `[[Fed-up|受夠了的、厭煩的]] residents have launched an online petition, which has gathered more than 50,000 signatures, for an independent investigation into the state's chief medical examiner, Dr Staci Turner, over the handling of a recent [[spate|短期內接連發生的一連串事件]] of cases involving people of colour. Another petition asks for the FBI to launch an investigation into Fortune's death.`,
+      `The BBC has asked Turner for comment.`,
+      `Jackson City Councilman Kenneth Stokes has also expressed concerns about the police investigation, saying he'd been outside the home where Fortune was thought to have lived multiple times and has never seen officers.`,
+      `“All cases are important, but this one - a hanging in Mississippi - should rise to [[the top of the food chain|最優先或權力最高的位置]],” Stokes said.`,
+      `He told the BBC he sent letters to both federal [[prosecutors|檢察官、公訴人]] at [[the Mississippi US attorney's office|密西西比州的美國聯邦檢察官辦公室]] and the FBI weeks ago, urging that the investigation was “[[in dire need of|迫切需要……]] assistance”. He has yet to hear back from either.`,
+      `“Nothing from nobody,” Stokes said. “It's like nobody cares.”`,
+      `The BBC has reached out to the Mississippi US attorney's office and the local FBI office for comment.`,
+      `US Congresswoman Jasmine Crockett has similarly requested federal intervention. In a letter to the US Department of Justice, she asked for an investigation into recent deaths in Mississippi - including that of Tasia Fortune - calling them “possible cases of modern-day lynchings”. She cited the state's “[[appalling|駭人、令人震驚且無法接受的]] historical reputation of violent terrorism against black Americans”.`,
+      `In addition to Mississippi, there have been multiple other cases nationally of black Americans found hanged from trees, including four in North Carolina this year alone. Three were [[ruled a suicide|被正式判定為自殺]]. An autopsy is pending for the fourth death.`,
+      `The BBC has reached out to the justice department for comment.`,
+      `Stokes is clear that he does not know whether Fortune's death was a lynching, or whether race played a part at all. Nor does he care. He just wants answers.`,
+      `Brandon King, president of the student National Association for the Advancement of Colored People (NAACP) [[chapter|組織的地方分會]] at nearby Jackson State University, said the mystery of Fortune's death, combined with minimal updates from police, has led him and others to be “extra cautious” around [[campus|校園、校區]].`,
+      `The feeling, King said, was that “hey, you could be next. This is in Jackson. This is in your backyard”.`,
+      `The thought is extra worrying, he continued, because “this is supposed to be the capital. This is where I'm supposed to feel the most safe”.`,
+      `As for Spivey, she cried before heading to a [[funeral home|殯儀館]] for her daughter, [[dreading|非常害怕或不願面對]] having to fill out a death certificate and decide whether to [[cremate|火化、將遺體焚化]] or bury her firstborn child.`,
+      `She wanted to cremate her daughter but decided, in the end, for a burial. She said she was holding out hope there would be updates in the investigation, which might mean needing to [[exhume|掘出已下葬的遺體、開棺驗屍]] her [[corpse|屍體、遺體]].`
+    ]
+  },
+  {
+    id:"bbc-eiffel-tower",
+    sourceTag:"BBC・Eiffel Tower",
+    title:"Eiffel Tower shut by staff protest after female workers moved for religious visit",
+    dek:"Staff went on strike after women were moved from their posts during the visit of a Hindu religious group.",
+    author:"Dan Sales and Mimi Swaby",
+    location:"Paris",
+    date:"7 September 2026",
+    sourceUrl:"https://www.bbc.com/news/articles/clyenxp540vo",
+    paragraphs:[
+      `The Eiffel Tower was closed on Monday after staff went on strike over female workers being removed for the visit of a Hindu religious group, workers and management said.`,
+      `A delegation of around 100 people linked to the Bochasanwasi Akshar Purushottam Swaminarayan Sanstha (BAPS) group visited the landmark in the French capital on Saturday.`,
+      `Staff union representative Diane Davoine says as they arrived at the monument, women were told to move.`,
+      `“During the visit of this delegation, women were asked to leave their places of work in order to place men there,” she told Reuters. Davoine also said management had [[since|此後、從那以後]] apologised to workers over the incident.`,
+      `“So that absolutely does not go down well with the employees, with women obviously, who are all humiliated by what happened, by the way some were treated,” Davoine said.`,
+      `She added: “Tensions [[mounted|逐漸增加、加劇]] over the weekend, so this morning, the employees decided to meet: first, to open a dialogue with management, and second, to ensure that women are never treated this way at the company again.”`,
+      `Société d'Exploitation de la tour Eiffel (SETE), the company that operates the monument in Paris, confirmed the delegation had asked the visit be organised to limit “[[interactions|交流、互動]] with women”, according to the AFP news agency.`,
+      `The firm told AFP that “these conditions should not have been accepted”.`,
+      `[[They were not in line with SETE's values, nor with the principles of equality between men and women.|這些條件既不符合 SETE 的價值觀，也不符合男女平等原則。nor with B 承接前面的 not in line with A，省略重複的 were they in line。]]`,
+      `SETE president Ariel Weil said: “It is clearly not an acceptable practice.”`,
+      `“I restate the Eiffel Tower's [[commitment|投入、堅定支持]] to [[republican|共和國的、共和政體的]] values and to the equality of men and women.”`,
+      `The BBC has contacted the Union Confédération générale du travail (CGT) for a response.`,
+      `BAPS [[consecrated|為宗教場所祝聖、使成為神聖]] its first major temple in France on Sunday, in the suburbs of Paris.`,
+      `In a statement on X, the BAPS temple in Paris said their trip was “arranged [[in conjunction with|與……共同、配合……]] the Eiffel Tower team at the start of normal opening hours to avoid disrupting or inconveniencing others”.`,
+      `It apologised “for any pain or inconvenience caused”, adding “we believe in the universal values of [[mutual|相互的、共同的]] respect and service”.`,
+      `On its website, BAPS describes itself as a “spiritual, volunteer-driven fellowship dedicated to improving society” through Hindu values.`,
+      `It has temples in major cities around the world, including London, Los Angeles and Sydney.`,
+      `Paris Mayor Emmanuel Grégoire said there would be an investigation into the circumstances of the visit.`,
+      `“I am taking note of the anger expressed by the employees of the Eiffel Tower, and I want to tell them that their [[discontent|不滿、不滿情緒]] is [[legitimate|正當合理的、可接受的]],” he wrote on X.`,
+      `“Equality between women and men will never stop at the foot of our historical monuments, nor anywhere in this city. It must be applied everywhere, for everyone.”`,
+      `French hard-right leader Marine Le Pen said: “In France, we will never accept that the presence of women be 'limited'.”`,
+      `Former centre-right French Prime Minister Gabriel Attal, who has said he will run for the [[presidency|總統職位]] next year, said: [[“In France, no culture, no belief, no worship, nothing nor anyone can come to dictate to women their place.”|任何文化、信仰、宗教崇拜，任何事物或任何人，都不能跑來規定女性應處的位置或角色。dictate to sb＝對某人發號施令；come to 在此是帶批判語氣的「跑來做……」。]]`,
+      `Yaël Braun-Pivet, the president of France's National Assembly, said: “I refuse to allow women to be compelled to step aside in order to meet the demands of foreign visitors.”`
+    ]
   }
 ];
 
@@ -4798,13 +5006,18 @@ function renderArticleMarkedText(raw){
   let out="",last=0,m;
   while((m=re.exec(text))){
     out+=escapeArticleText(text.slice(last,m.index));
-    out+=`<button type="button" class="article-word" data-note="${escapeArticleText(m[2])}">${escapeArticleText(m[1])}</button>`;
+    out+=`<button type="button" class="article-word" aria-expanded="false" data-note="${escapeArticleText(m[2])}">${escapeArticleText(m[1])}</button>`;
     last=re.lastIndex;
   }
   return out+escapeArticleText(text.slice(last));
 }
 function plainArticleText(raw){
   return String(raw).replace(/\[\[([^|]+)\|[^\]]+\]\]/g,"$1");
+}
+function renderArticleBlock(raw){
+  const text=String(raw);
+  if(text.startsWith("## ")) return `<h3>${renderArticleMarkedText(text.slice(3))}</h3>`;
+  return `<p>${renderArticleMarkedText(text)}</p>`;
 }
 function syncViewChrome(){
   const articleMode=APP_VIEW==="articles";
@@ -4816,11 +5029,23 @@ function syncViewChrome(){
   if(articlesButton) articlesButton.classList.toggle("active",articleMode);
 }
 function bindArticleHints(root){
-  const hint=root.querySelector("#articleHint");
+  let activeWord=null, activeNote=null;
   root.querySelectorAll(".article-word").forEach(word=>{
     word.onclick=()=>{
-      if(!hint) return;
-      hint.innerHTML=`<strong>${escapeArticleText(word.textContent)}</strong> → ${escapeArticleText(word.dataset.note||"")}`;
+      const sameWord=activeWord===word;
+      if(activeWord){ activeWord.classList.remove("active"); activeWord.setAttribute("aria-expanded","false"); }
+      if(activeNote) activeNote.remove();
+      activeWord=null; activeNote=null;
+      if(sameWord) return;
+      const note=document.createElement("div");
+      note.className="article-inline-note";
+      note.setAttribute("role","note");
+      note.innerHTML=`<strong>${escapeArticleText(word.textContent)}</strong> → ${escapeArticleText(word.dataset.note||"")}`;
+      const anchor=word.closest("p, h2, h3")||word.parentElement;
+      anchor.insertAdjacentElement("afterend",note);
+      word.classList.add("active");
+      word.setAttribute("aria-expanded","true");
+      activeWord=word; activeNote=note;
     };
   });
 }
@@ -4852,8 +5077,8 @@ function renderArticleLibrary(){
       <p class="article-dek">${escapeArticleText(article.dek)}</p>
       <div class="article-meta">${escapeArticleText(article.author)} · ${escapeArticleText(article.location)} · ${escapeArticleText(article.date)}</div>
     </header>
-    <div class="article-hint" id="articleHint">黃色文字是你在 PDF 裡標記的地方。先自己判斷，真的不確定時再點它查看本文意思或句型解析。</div>
-    <div class="article-body">${article.paragraphs.map(p=>`<p>${renderArticleMarkedText(p)}</p>`).join("")}</div>
+    <div class="article-guide">黃色文字是你在 PDF 裡標記的地方。點擊後，解釋會直接展開在該段下方；再點同一處即可收起。</div>
+    <div class="article-body">${article.paragraphs.map(renderArticleBlock).join("")}</div>
     <div class="article-source">來源：<a href="${escapeArticleText(article.sourceUrl)}" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">BBC 原文</a></div>
     <button type="button" class="article-finish" id="articleFinish">讀完了，回到單字卡</button>
   </article>`;
